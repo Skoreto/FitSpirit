@@ -72,15 +72,25 @@
                         <li class="nav-item"><a href="<spring:url value="/rooms" htmlEscape="true"/>"><i class="fa fa-map-marker"></i> Místnosti</a></li>
                         <li class="nav-item"><a href="#"><i class="fa fa-photo"></i> Galerie</a></li>
                         <li class="nav-item"><a href="#"><i class="fa fa-users"></i> Instruktoři</a></li>                     
-                        <li class="nav-item"><a href="#"><i class="fa fa-sign-in"></i> Přihlásit se</a></li>
+                        <li class="nav-item"><a href="#"><i class="fa fa-sign-in"></i> Přihlásit se</a></li>                                            
                     </ul>
                 </div>
             </div>
         </nav>
-        <!-- ==== NÁSLEDUJE OBSAH JEDNOTLIVÉ STRÁNKY ==== -->
-        <div class="content container">
-	       <!-- @RenderSection("FlexSlider", false) -->
-	       <div class="page-wrapper">
-	           <!--  @RenderSection("PageHeading", false) -->
-	           <div class="page-content" id="dynamicContent">
-				<!-- Hlavní tělo stránky, tady se v .NETu injektuje -->
+        <!-- ==== HLAVNÍ OBSAH ==== -->
+    <div class="content container">       
+        <div class="page-wrapper">
+            <header class="page-heading clearfix">
+                <h1 class="heading-title pull-left">Titulek stránky</h1>
+                <!-- ==== DROBEČKOVÁ NAVIGACE ==== -->
+                <div class="breadcrumbs pull-right">
+                    <ul class="breadcrumbs-list">
+				        <li class="breadcrumbs-label">Nacházíte se zde:</li>
+				        <li><a href="#">Předchozí stránka</a><i class="fa fa-angle-right"></i></li>
+				        <li class="current">Titulek stránky</li>
+			    	</ul>                  
+                </div>
+            </header>
+            <div class="page-content">
+                <div class="row page-row">
+                	<div class="col-md-8 col-sm-7" id="dynamicContent">

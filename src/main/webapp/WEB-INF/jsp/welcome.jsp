@@ -14,13 +14,13 @@
 <h3>Zkušební rozcestník</h3>
 <ul>
   <li><a href="<spring:url value="/index" htmlEscape="true" />">Hlavní strana FitSpirit - FUNKČNÍ ODKAZ</a></li>
-  <li><a href='<spring:url value="/rooms/new" htmlEscape="true"/>'>Formulář pro vytvoření nové místnosti - NEFUNKČNÍ ODKAZ</a></li>
+  <li><a href="<spring:url value="/rooms" htmlEscape="true"/>">Formulář pro vytvoření nové místnosti</a></li>
 </ul>
 
 <p>&nbsp;</p>
 <h4>Potřeba udělat</h4>
 <ul>
-	<li>UTF-8 diakritika</li>
+	<li></li>
 </ul>
 
 <%@ include file="/WEB-INF/jsp/footer.jsp" %>

@@ -1,8 +1,22 @@
-	            </div>
-	        </div>
-	    </div>
-	</div>
-   <footer class="footer">
+                    </div>
+                    <aside class="page-sidebar col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1">
+                        <!-- ==== PANEL PROFIL UŽIVATELE ==== -->
+                        <section class="widget has-divider ">
+                            <h3 class="title col-md-offset-1" hidden="hidden">Profil uživatele</h3>
+                            <%@ include file="/WEB-INF/jsp/sideBar/profileBarAuthenticated.jsp" %>
+                        </section>
+                        <!-- ==== PANEL NADCHÃZEJÍCÍ LEKCE ==== -->
+                        <section class="events col-md-offset-1">
+                            <h3 class="title">Nadcházející lekce</h3>
+                            <%@ include file="/WEB-INF/jsp/sideBar/eventsBar.jsp" %>
+                        </section>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <footer class="footer">
        <div class="footer-content">
            <div class="container">
                <div class="row">
@@ -73,7 +87,7 @@
        <div class="bottom-bar">
            <div class="container">
                <div class="row">
-                   <small class="copyright col-md-6 col-sm-12 col-xs-12">Copyright 2016 FitClub SPIRIT Poděbrady | Školní projekt <a href="mailto:tomik.sko@seznam.cz">Tomáš Skořepa</a></small>
+                   <small class="copyright col-md-6 col-sm-12 col-xs-12">Copyright 2016 FitClub SPIRIT Poděbrady | Školní projekt <a href="mailto:tomik.sko@seznam.cz">Tomáš Skořepa</a></small>
                    <ul class="social pull-right col-md-6 col-sm-12 col-xs-12">
                        <li><a href="https://www.facebook.com/FitSpirit"><i class="fa fa-facebook"></i></a></li>
                        <li class="row-end"><a href="https://www.youtube.com/user/FitSpiritgirls"><i class="fa fa-youtube"></i></a></li>
