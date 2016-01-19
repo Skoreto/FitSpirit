@@ -59,20 +59,6 @@ public class ClinicController {
 		vets.getVetList().addAll(this.clinic.getVets());
 		return new ModelMap(vets);
 	}
-
-	@RequestMapping("/vets2")
-	public ModelMap vets2Handler() {
-		Vets vets = new Vets();
-		vets.getVetList().addAll(this.clinic.getVets());
-		return new ModelMap(vets);
-	}	
-	
-	@RequestMapping("/vets3")
-	public ModelMap vets3Handler() {
-		Vets vets = new Vets();
-		vets.getVetList().addAll(this.clinic.getVets());
-		return new ModelMap(vets);
-	}	
 	
 	/**
 	 * Custom handler for displaying an owner.
@@ -99,5 +85,5 @@ public class ClinicController {
 		mav.addObject("visits", this.clinic.loadPet(petId).getVisits());
 		return mav;
 	}
-
+	
 }

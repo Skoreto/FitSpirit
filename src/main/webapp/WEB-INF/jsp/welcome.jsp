@@ -4,16 +4,23 @@
 <img src="<spring:url value="/static/images/pets.png" htmlEscape="true" />" align="right" style="position:relative;right:30px;">
 <h2><fmt:message key="welcome"/></h2>
 
+<h3>Odkazy z původní aplikace</h3>
 <ul>
   <li><a href="<spring:url value="/owners/search" htmlEscape="true" />">Find owner</a></li>
   <li><a href="<spring:url value="/vets" htmlEscape="true" />">Display all veterinarians</a></li>
   <li><a href="<spring:url value="/static/html/tutorial.html" htmlEscape="true" />">Tutorial</a></li>
-  <li><a href="<spring:url value="/vets2" htmlEscape="true" />">Test</a></li>
-  <li><a href="<spring:url value="/vets3" htmlEscape="true" />">Test</a></li>
 </ul>
 
+<h3>Zkušební rozcestník</h3>
+<ul>
+  <li><a href="<spring:url value="/index" htmlEscape="true" />">Hlavní strana FitSpirit - FUNKČNÍ ODKAZ</a></li>
+  <li><a href='<spring:url value="/rooms/new" htmlEscape="true"/>'>Formulář pro vytvoření nové místnosti - NEFUNKČNÍ ODKAZ</a></li>
+</ul>
 
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Potřeba udělat</h4>
+<ul>
+	<li>UTF-8 diakritika</li>
+</ul>
 
 <%@ include file="/WEB-INF/jsp/footer.jsp" %>
