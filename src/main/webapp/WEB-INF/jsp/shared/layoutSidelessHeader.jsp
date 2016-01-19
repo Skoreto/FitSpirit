@@ -10,9 +10,9 @@
 
     <title>Titulek stránky | FitSPIRIT</title>
 
-    <!-- Globální Bootstrap CSS -->
+    <!-- GlobÃ¡lnÃ­ Bootstrap CSS -->
     <link href="static/styles/bootstrap.min.css" rel="stylesheet">
-    <!-- Hlavní CSS -->
+    <!-- HlavnÃ­ CSS -->
     <link href="static/styles/stylesTomSkoRed.css" rel="stylesheet">
     <!-- Pluginy CSS => Font Awesome, FlexSlider, blueimp Gallery, BS 3 DatePicker od Eonasdan -->
     <link href="static/styles/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -20,7 +20,7 @@
     <!-- <link href="@Url.Content("~/Content/blueimp-gallery/css/blueimp-gallery.min.css")" rel="stylesheet"> -->
     <!-- Fonty Open Sans z CDN Google https://www.google.com/fonts#UsePlace:use/Collection:Open+Sans -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" type="text/css">
-    <!-- HTML5Shiv a Respond.js - skripty pro aplikaci CSS na HTML5 elementy ve starších IE -->
+    <!-- HTML5Shiv a Respond.js - skripty pro aplikaci CSS na HTML5 elementy ve starÅ¡Ã­ch IE -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -77,10 +77,10 @@
                 </div>
             </div>
         </nav>
-        <!-- ==== NÁSLEDUJE OBSAH JEDNOTLIVÉ STRÁNKY ==== -->
+        <!-- ==== NÁSLEDUJE OBSAH JEDNOTLIVÉ STRÁNKY ==== -->
         <div class="content container">
 	       <!-- @RenderSection("FlexSlider", false) -->
 	       <div class="page-wrapper">
 	           <!--  @RenderSection("PageHeading", false) -->
 	           <div class="page-content" id="dynamicContent">
-				<!-- Hlavní tělo stránky tady se v .NETu injektuje ... ve Springu nevím jak pořešit -->
+				<!-- Hlavní tělo stránky, tady se v .NETu injektuje -->

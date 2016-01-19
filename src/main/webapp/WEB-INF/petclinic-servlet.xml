@@ -66,8 +66,10 @@
 		- Message source for this context, loaded from localized "messages_xx" files.
 		- Could also reside in the root application context, as it is generic,
 		- but is currently just used within PetClinic's web tier.
+		- Pro UTF-8 je nutné použít defaultEncoding a od JDK 1.6 ReloadableResourceBundleMessageSource .
 	-->
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
-			p:basename="messages"/>
-
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="messages" />
+   		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
 </beans>
