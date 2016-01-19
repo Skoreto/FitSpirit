@@ -14,7 +14,7 @@
 <h3>Zkušební rozcestník</h3>
 <ul>
   <li><a href="<spring:url value="/index" htmlEscape="true" />">Hlavní strana FitSpirit - FUNKČNÍ ODKAZ</a></li>
-  <li><a href="<spring:url value="/rooms" htmlEscape="true"/>">Formulář pro vytvoření nové místnosti</a></li>
+  <li><a href="<spring:url value="/rooms/create" htmlEscape="true"/>">Formulář pro vytvoření nové místnosti</a></li>
 </ul>
 
 <p>&nbsp;</p>

@@ -92,20 +92,20 @@
   <!-- jQuery UI nutnÃ© k autocomplete --> <!--  
   <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.11.4.min.js")"></script> -->
   <!-- NutnÃ© k DatePickeru a Ajaxu -->
-  <script type="text/javascript" src="static/scripts/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="<spring:url value="/static/scripts/jquery-2.1.3.min.js" htmlEscape="true" />"></script>
   <!-- NutnÃ© k Ajaxu --> <!--  
   <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"></script>
   <script type="text/javascript" src="@Url.Content("~/Scripts/MicrosoftAjax.js")"></script>
   <script type="text/javascript" src="@Url.Content("~/Scripts/MicrosoftMvcAjax.js")"></script> -->
-  <!-- Bootstrap hlavnÃ­-->
-  <script type="text/javascript" src="static/scripts/bootstrap.min.js"></script>
-  <!-- Unobtrusive validace formulÃ¡ÅÅ¯ --> <!-- 
+  <!-- Bootstrap hlavní -->
+  <script type="text/javascript" src="<spring:url value="/static/scripts/bootstrap.min.js" htmlEscape="true" />"></script>
+  <!-- Unobtrusive validace formulářů --> <!-- 
   <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
   <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script> -->
   <!-- blueimp Bootstrap Gallery, FlexSlider 2.4.0 --> <!-- 
   <script type="text/javascript" src="@Url.Content("~/Scripts/blueimp-gallery/js/jquery.blueimp-gallery.min.js")"></script>  -->
-  <script type="text/javascript" src="static/scripts/flexslider/jquery.flexslider-min.js"></script>
+  <script type="text/javascript" src="<spring:url value="/static/scripts/flexslider/jquery.flexslider-min.js" htmlEscape="true" />"></script>
   <!-- VLASTNÃ NASTAVENÃ => Flexslider a carousely hlavnÃ­ strany -->
-    <script type="text/javascript" src="static/scripts/carousels-configuration.js"></script>
+    <script type="text/javascript" src="<spring:url value="/static/scripts/carousels-configuration.js" htmlEscape="true" />"></script>
 </body>
 </html>

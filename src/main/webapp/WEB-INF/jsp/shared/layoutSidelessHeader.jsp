@@ -10,13 +10,13 @@
 
     <title>Titulek stránky | FitSPIRIT</title>
 
-    <!-- GlobÃ¡lnÃ­ Bootstrap CSS -->
-    <link href="static/styles/bootstrap.min.css" rel="stylesheet">
-    <!-- HlavnÃ­ CSS -->
-    <link href="static/styles/stylesTomSkoRed.css" rel="stylesheet">
+    <!-- Globální Bootstrap CSS -->
+    <link href="<spring:url value="/static/styles/bootstrap.min.css" htmlEscape="true" />" rel="stylesheet">
+    <!-- Hlavní CSS -->
+    <link href="<spring:url value="/static/styles/stylesTomSkoRed.css" htmlEscape="true" />" rel="stylesheet">
     <!-- Pluginy CSS => Font Awesome, FlexSlider, blueimp Gallery, BS 3 DatePicker od Eonasdan -->
-    <link href="static/styles/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="static/styles/flexslider/flexslider.css" rel="stylesheet">
+    <link href="<spring:url value="/static/styles/font-awesome/css/font-awesome.min.css" htmlEscape="true" />" rel="stylesheet">
+    <link href="<spring:url value="/static/styles/flexslider/flexslider.css" htmlEscape="true" />" rel="stylesheet">
     <!-- <link href="@Url.Content("~/Content/blueimp-gallery/css/blueimp-gallery.min.css")" rel="stylesheet"> -->
     <!-- Fonty Open Sans z CDN Google https://www.google.com/fonts#UsePlace:use/Collection:Open+Sans -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" type="text/css">
@@ -36,7 +36,7 @@
         <header class="header">
             <div class="header-main container">
                 <h1 class="logo col-md-4 col-sm-4">
-                    <a href="#"><img id="logo" src="static/images/logoFitSpirit.png" alt="FitSPIRIT"></a>
+                    <a href="#"><img id="logo" src="<spring:url value="/static/images/logoFitSpirit.png" htmlEscape="true" />" alt="FitSPIRIT"></a>
                 </h1>
                 <div class="info col-md-8 col-sm-8">
                     <ul class="menu-top navbar-right hidden-xs">

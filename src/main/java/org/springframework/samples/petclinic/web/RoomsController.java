@@ -9,7 +9,7 @@ public class RoomsController {
 
 //	private final Room room;
 	
-	@RequestMapping("/rooms")
+	@RequestMapping("/rooms/create")
 	public String roomHandler() {
 		return "rooms/create";
 		
