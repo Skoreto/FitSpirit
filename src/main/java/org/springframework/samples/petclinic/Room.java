@@ -10,11 +10,9 @@ public class Room extends BaseEntity {
 	
 	private String name;
 	
-//	private String ShortDescription;
+//	private String illustrationImageName;
 	
-//	private String IllustrationImageName;
-	
-//	private String IllustrationThumbImageName;
+//	private String illustrationThumbImageName;
 
 	@Column(name="NAME")
 	public String getName() {

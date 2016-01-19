@@ -1,9 +1,10 @@
 eclipse.preferences.version=1
 encoding//src/main/webapp/WEB-INF/jsp/index.jsp=UTF-8
-encoding//src/main/webapp/WEB-INF/jsp/rooms/create.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/rooms/createForm.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/rooms/index.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/shared/layoutSidebarFooter.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/shared/layoutSidebarHeader.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/shared/layoutSidelessFooter.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/shared/layoutSidelessHeader.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/sideBar/profileBarAuthenticated.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/welcome.jsp=UTF-8

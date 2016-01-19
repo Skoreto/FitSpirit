@@ -65,6 +65,11 @@ public class EntityManagerClinic implements Clinic {
 	public Owner loadOwner(int id) {
 		return this.em.find(Owner.class, id);
 	}
+	
+	@Transactional(readOnly = true)
+	public Room loadRoom(int id) {
+		return this.em.find(Room.class, id);
+	}
 
 	@Transactional(readOnly = true)
 	public Pet loadPet(int id) {
@@ -77,6 +82,12 @@ public class EntityManagerClinic implements Clinic {
 		Owner merged = this.em.merge(owner);
 		this.em.flush();
 		owner.setId(merged.getId());
+	}
+	
+	public void storeRoom(Room room) {
+		Room merged = this.em.merge(room);
+		this.em.flush();
+		room.setId(merged.getId());
 	}
 
 	public void storePet(Pet pet) {

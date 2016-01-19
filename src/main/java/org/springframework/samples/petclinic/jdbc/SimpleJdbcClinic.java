@@ -61,6 +61,7 @@ public class SimpleJdbcClinic implements Clinic {
 	private SimpleJdbcTemplate simpleJdbcTemplate;
 
 	private SimpleJdbcInsert insertOwner;
+	private SimpleJdbcInsert insertRoom;
 	private SimpleJdbcInsert insertPet;
 	private SimpleJdbcInsert insertVisit;
 
@@ -75,6 +76,9 @@ public class SimpleJdbcClinic implements Clinic {
 		this.insertOwner = new SimpleJdbcInsert(dataSource)
 			.withTableName("owners")
 			.usingGeneratedKeyColumns("id");
+		this.insertRoom = new SimpleJdbcInsert(dataSource)
+				.withTableName("rooms")
+				.usingGeneratedKeyColumns("id");
 		this.insertPet = new SimpleJdbcInsert(dataSource)
 			.withTableName("pets")
 			.usingGeneratedKeyColumns("id");
@@ -204,6 +208,27 @@ public class SimpleJdbcClinic implements Clinic {
 		loadPetsAndVisits(owner);
 		return owner;
 	}
+	
+	/**
+	 * Naète místnost.
+	 * @param id
+	 * @return
+	 * @throws DataAccessException
+	 */
+	@Transactional(readOnly = true)
+	public Room loadRoom(int id) throws DataAccessException {
+		Room room;
+		try {
+			room = this.simpleJdbcTemplate.queryForObject(
+					"SELECT id, name FROM rooms WHERE id=?",
+					ParameterizedBeanPropertyRowMapper.newInstance(Room.class),
+					id);
+		}
+		catch (EmptyResultDataAccessException ex) {
+			throw new ObjectRetrievalFailureException(Room.class, new Integer(id));
+		}		
+		return room;
+	}
 
 	@Transactional(readOnly = true)
 	public Pet loadPet(int id) throws DataAccessException {
@@ -236,6 +261,25 @@ public class SimpleJdbcClinic implements Clinic {
 					"UPDATE owners SET first_name=:firstName, last_name=:lastName, address=:address, " +
 					"city=:city, telephone=:telephone WHERE id=:id",
 					new BeanPropertySqlParameterSource(owner));
+		}
+	}
+	
+	/**
+	 * Pøidá místnost když je nová nebo updatne.
+	 * @param room
+	 * @throws DataAccessException
+	 */
+	@Transactional
+	public void storeRoom(Room room) throws DataAccessException {
+		if (room.isNew()) {
+			Number newKey = this.insertRoom.executeAndReturnKey(
+					new BeanPropertySqlParameterSource(room));
+			room.setId(newKey.intValue());
+		}
+		else {
+			this.simpleJdbcTemplate.update(
+					"UPDATE rooms SET name=:name WHERE id=:id",
+					new BeanPropertySqlParameterSource(room));		
 		}
 	}
 
@@ -364,7 +408,5 @@ public class SimpleJdbcClinic implements Clinic {
 			return pet;
 		}
 	}
-
-
 
 }

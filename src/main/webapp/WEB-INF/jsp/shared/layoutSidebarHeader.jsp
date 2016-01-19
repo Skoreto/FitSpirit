@@ -25,18 +25,13 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->   
-    <style type="text/css">
-		.avatar {
-		    background-image: url(<spring:url value="/static/images/manSilhouette.png" htmlEscape="true" />);
-		}
-	</style>
 </head>
 <body class="home-page">
     <div class="wrapper">
         <header class="header">
             <div class="header-main container">
                 <h1 class="logo col-md-4 col-sm-4">
-                    <a href="#"><img id="logo" src="<spring:url value="/static/images/logoFitSpirit.png" htmlEscape="true" />" alt="FitSPIRIT"></a>
+                    <a href="<spring:url value="/index" htmlEscape="true"/>"><img id="logo" src="<spring:url value="/static/images/logoFitSpirit.png" htmlEscape="true" />" alt="FitSPIRIT"></a>
                 </h1>
                 <div class="info col-md-8 col-sm-8">
                     <ul class="menu-top navbar-right hidden-xs">

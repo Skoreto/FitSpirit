@@ -86,6 +86,18 @@ public class ClinicController {
 		mav.addObject(this.clinic.loadOwner(ownerId));
 		return mav;
 	}
+	
+	/**
+	 * Vlastní handler pro zobrazení detailu o místnosti.
+	 * @param roomId
+	 * @return
+	 */
+	@RequestMapping("/rooms/{roomId}")
+	public ModelAndView roomHandler(@PathVariable("roomId") int roomId) {
+		ModelAndView mav = new ModelAndView("rooms/detail");
+		mav.addObject(this.clinic.loadRoom(roomId));
+		return mav;
+	}
 
 	/**
 	 * Custom handler for displaying an list of visits.

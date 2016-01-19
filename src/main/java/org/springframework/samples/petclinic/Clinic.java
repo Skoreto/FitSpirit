@@ -52,6 +52,15 @@ public interface Clinic {
 	 * @throws org.springframework.dao.DataRetrievalFailureException if not found
 	 */
 	Owner loadOwner(int id) throws DataAccessException;
+	
+	
+	/**
+	 * Vr·tÌ MÌstnost z data store podle id.
+	 * @param id id mÌstnosti, kterou hled·m
+	 * @return poûadovan· MÌstnost, pokud byla nalezena
+	 * @throws DataAccessException
+	 */
+	Room loadRoom(int id) throws DataAccessException;
 
 	/**
 	 * Retrieve a <code>Pet</code> from the data store by id.
@@ -68,6 +77,13 @@ public interface Clinic {
 	 */
 	void storeOwner(Owner owner) throws DataAccessException;
 
+	/**
+	 * UloûÌ mÌstnost do data store, aù uû insertovanou nebo updatovanou.
+	 * @param room mÌstnost, kterou chci uloûit
+	 * @throws DataAccessException
+	 */
+	void storeRoom(Room room) throws DataAccessException;
+	
 	/**
 	 * Save a <code>Pet</code> to the data store, either inserting or updating it.
 	 * @param pet the <code>Pet</code> to save
