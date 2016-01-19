@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.Clinic;
+import org.springframework.samples.petclinic.Rooms;
 import org.springframework.samples.petclinic.Vets;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -58,6 +59,19 @@ public class ClinicController {
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.clinic.getVets());
 		return new ModelMap(vets);
+	}
+	
+	
+	/**
+	 * Vlastní handler pro zobrazení místností.
+	 * 
+	 * @return ModelMap s atributy modelu pro dané view
+	 */
+	@RequestMapping("/rooms/index")
+	public ModelMap roomsHandler() {
+		Rooms rooms = new Rooms();
+		rooms.getRoomList().addAll(this.clinic.getRooms());
+		return new ModelMap(rooms);
 	}
 	
 	/**

@@ -10,6 +10,7 @@ import org.springframework.samples.petclinic.Clinic;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
+import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.Vet;
 import org.springframework.samples.petclinic.Visit;
 import org.springframework.stereotype.Repository;
@@ -38,6 +39,12 @@ public class EntityManagerClinic implements Clinic {
 	@SuppressWarnings("unchecked")
 	public Collection<Vet> getVets() {
 		return this.em.createQuery("SELECT vet FROM Vet vet ORDER BY vet.lastName, vet.firstName").getResultList();
+	}
+	
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public Collection<Room> getRooms() {
+		return this.em.createQuery("SELECT room FROM Room room ORDER BY room.name").getResultList();
 	}
 
 	@Transactional(readOnly = true)

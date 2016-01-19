@@ -26,6 +26,7 @@ import org.springframework.samples.petclinic.Clinic;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
+import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.Specialty;
 import org.springframework.samples.petclinic.Vet;
 import org.springframework.samples.petclinic.Visit;
@@ -64,6 +65,7 @@ public class SimpleJdbcClinic implements Clinic {
 	private SimpleJdbcInsert insertVisit;
 
 	private final List<Vet> vets = new ArrayList<Vet>();
+	private final List<Room> rooms = new ArrayList<Room>();
 
 
 	@Autowired
@@ -120,7 +122,25 @@ public class SimpleJdbcClinic implements Clinic {
 		}
 	}
 
-
+	
+	/**
+	 * Refreshne cache Místností, kterou udržuje rozhraní FitnessCente (zatím Clinic)
+	 * @throws DataAccessException
+	 */
+	@ManagedOperation
+	@Transactional(readOnly = true)
+	public void refreshRoomsCache() throws DataAccessException {
+		synchronized (this.rooms) {
+			this.logger.info("Refreshuju chache místností");
+			
+			// Vrátí list všech místností
+			this.rooms.clear();
+			this.rooms.addAll(this.simpleJdbcTemplate.query("SELECT id, name FROM rooms ORDER BY name",
+					ParameterizedBeanPropertyRowMapper.newInstance(Room.class)));			
+		}
+	}
+	
+	
 	// START of Clinic implementation section *******************************
 
 	@Transactional(readOnly = true)
@@ -131,6 +151,14 @@ public class SimpleJdbcClinic implements Clinic {
 			}
 			return this.vets;
 		}
+	}
+	
+	@Transactional(readOnly = true)
+	public Collection<Room> getRooms() throws DataAccessException {
+		synchronized (this.rooms) {
+			refreshRoomsCache();
+		}
+		return this.rooms;
 	}
 
 	@Transactional(readOnly = true)
@@ -336,5 +364,7 @@ public class SimpleJdbcClinic implements Clinic {
 			return pet;
 		}
 	}
+
+
 
 }

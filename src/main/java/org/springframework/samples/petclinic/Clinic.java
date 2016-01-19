@@ -23,6 +23,14 @@ public interface Clinic {
 	Collection<Vet> getVets() throws DataAccessException;
 
 	/**
+	 * Retrieve all <code>Room</code>s from the data store.
+	 * @return a <code>Collection</code> of <code>Room</code>s
+	 */
+	Collection<Room> getRooms() throws DataAccessException;
+	
+	
+	
+	/**
 	 * Retrieve all <code>PetType</code>s from the data store.
 	 * @return a <code>Collection</code> of <code>PetType</code>s
 	 */

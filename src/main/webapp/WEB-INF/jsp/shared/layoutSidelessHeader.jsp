@@ -66,13 +66,13 @@
                 </div>
                 <div class="navbar-collapse collapse" id="navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="nav-item"><a href="#"><i class="fa fa-home"></i> Úvod</a></li>
-                        <li class="nav-item"><a href="#"><i class="fa fa-calendar"></i> Lekce</a></li>
-                        <li class="nav-item"><a href="#"><i class="fa fa-child"></i> Aktivity</a></li>
-                        <li class="nav-item"><a href="<spring:url value="/rooms" htmlEscape="true"/>"><i class="fa fa-map-marker"></i> Místnosti</a></li>
+                        <li class="nav-item"><a href="<spring:url value="/index" htmlEscape="true"/>"><i class="fa fa-home"></i> Úvod</a></li>
+                        <li class="nav-item"><a href="<spring:url value="/lessons/index" htmlEscape="true"/><spring:url value="/rooms" htmlEscape="true"/>"><i class="fa fa-calendar"></i> Lekce</a></li>
+                        <li class="nav-item"><a href="<spring:url value="/activityTypes/index" htmlEscape="true"/>"><i class="fa fa-child"></i> Aktivity</a></li>
+                        <li class="nav-item"><a href="<spring:url value="/rooms/index" htmlEscape="true"/>"><i class="fa fa-map-marker"></i> Místnosti</a></li>
                         <li class="nav-item"><a href="#"><i class="fa fa-photo"></i> Galerie</a></li>
-                        <li class="nav-item"><a href="#"><i class="fa fa-users"></i> Instruktoři</a></li>                     
-                        <li class="nav-item"><a href="#"><i class="fa fa-sign-in"></i> Přihlásit se</a></li>
+                        <li class="nav-item"><a href="<spring:url value="/instructors/index" htmlEscape="true"/>"><i class="fa fa-users"></i> Instruktoři</a></li>                     
+                        <li class="nav-item"><a href="#"><i class="fa fa-sign-in"></i> Přihlásit se</a></li>  
                     </ul>
                 </div>
             </div>
