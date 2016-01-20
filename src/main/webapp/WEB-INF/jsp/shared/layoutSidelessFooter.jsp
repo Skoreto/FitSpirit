@@ -102,8 +102,8 @@
   <!-- Unobtrusive validace formulářů --> <!-- 
   <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
   <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script> -->
-  <!-- blueimp Bootstrap Gallery, FlexSlider 2.4.0 --> <!-- 
-  <script type="text/javascript" src="@Url.Content("~/Scripts/blueimp-gallery/js/jquery.blueimp-gallery.min.js")"></script>  -->
+  <!-- blueimp Bootstrap Gallery, FlexSlider 2.4.0 -->
+  <script type="text/javascript" src="<spring:url value="/static/scripts/blueimp-gallery/jquery.blueimp-gallery.min.js" htmlEscape="true" />"></script>
   <script type="text/javascript" src="<spring:url value="/static/scripts/flexslider/jquery.flexslider-min.js" htmlEscape="true" />"></script>
   <!-- VLASTNÃ NASTAVENÃ => Flexslider a carousely hlavnÃ­ strany -->
     <script type="text/javascript" src="<spring:url value="/static/scripts/carousels-configuration.js" htmlEscape="true" />"></script>
