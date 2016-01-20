@@ -112,4 +112,13 @@ public class ClinicController {
 		return mav;
 	}
 	
+	/**
+	 * Handler pro JSP k nahrávání obrázku.
+	 * @return
+	 */
+	@RequestMapping("/upload")
+	public String uploadHandler() {
+		return "upload";
+	}
+	
 }

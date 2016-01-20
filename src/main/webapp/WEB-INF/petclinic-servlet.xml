@@ -61,6 +61,14 @@
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/jsp/"
 			p:suffix=".jsp" />
 
+	<!-- Nahrávání obrázku - Konfigurace multipartResolveru pro využití Apache Commons FileUpload k handlingu multipart requestů -->
+	<bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+ 
+         <!-- setting maximum upload size -->
+        <property name="maxUploadSize" value="10000000" />
+    </bean>
+
 
 	<!--
 		- Message source for this context, loaded from localized "messages_xx" files.
