@@ -16,12 +16,11 @@
 </div>
 <div class="row page-row">
   <c:forEach var="room" items="${rooms.roomList}">
-
         <div class="col-md-6 col-sm-6 col-xs-12 text-center">
             <div class="album-cover rooms-staff">
-                    <a href="<spring:url value="/static/images/room_thumbnail_example.jpg" htmlEscape="true" />" data-gallery><img class="img-responsive" src="<spring:url value="/static/images/room_thumbnail_example.jpg" htmlEscape="true" />" alt="Ilustrace ${room.name}" /></a>
+                    <a href="<spring:url value="/static/uploads/roomImages/${room.illustrationImageName}" htmlEscape="true" />" data-gallery><img class="img-responsive" src="<spring:url value="/static/uploads/roomImages/${room.illustrationImageName}" htmlEscape="true" />" alt="Ilustrace ${room.name}" /></a>
                 <div class="desc">
-                    <h4><small><a href="<spring:url value="/static/images/room_thumbnail_example.jpg" htmlEscape="true" />" title="${room.name}" data-gallery>${room.name}</a></small></h4>                  
+                    <h4><small><a href="<spring:url value="/static/uploads/roomImages/${room.illustrationImageName}" htmlEscape="true" />" title="${room.name}">${room.name}</a></small></h4>                  
                 	<a href="<spring:url value="/rooms/create" htmlEscape="true"/>" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Upravit</a>
                     <a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Zrušit</a>
                 </div>

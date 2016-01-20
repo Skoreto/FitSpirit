@@ -19,7 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class FileUploadController {
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
- 
+	
+	// BUG Nutné mìnit apsolutní cestu ke složce "static" v projektu.
+	private String myProjectPath = "C:\\Users\\Tomas\\Documents\\workspace-sts-3.7.2.RELEASE\\petclinic\\src\\main\\webapp\\static";
+	
     /**
      * Upload single file using Spring Controller
      */
@@ -32,26 +35,21 @@ public class FileUploadController {
                 byte[] bytes = file.getBytes();
  
                 // Creating the directory to store file
-                String rootPath = System.getProperty("catalina.home");
-//                String rootPath = System.getProperty("user.dir");
-                           
-//                // The idea is to get the current folder with ".", and then fetch the absolute position to it and remove the filename from it. - nepomùže
-//                File currentDirFile = new File(".");
-//                String helper = currentDirFile.getAbsolutePath();
-//                String currentDir = helper.substring(0, helper.length() - currentDirFile.getCanonicalPath().length());
+//                String rootPath = System.getProperty("catalina.home");
+                
+                String rootPath = myProjectPath;
                        
                 File dir = new File(rootPath + File.separator + "slozkaObrazku");
                 
                 if (!dir.exists())
                     dir.mkdirs();
- 
-                
+                 
                 // Create the file on server
                 File serverFile = new File(dir.getAbsolutePath() + File.separator + name + ".jpg");
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
                 stream.write(bytes);
                 stream.close();
- 
+
                 logger.info("Umisteni souboru na Serveru = " + serverFile.getAbsolutePath());
  
                 return "Uspesne se podarilo nahrat soubor = " + name;

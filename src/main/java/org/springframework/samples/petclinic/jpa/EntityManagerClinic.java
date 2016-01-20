@@ -44,7 +44,7 @@ public class EntityManagerClinic implements Clinic {
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public Collection<Room> getRooms() {
-		return this.em.createQuery("SELECT room FROM Room room ORDER BY room.name").getResultList();
+		return this.em.createQuery("SELECT room FROM Room room ORDER BY room.id").getResultList();
 	}
 
 	@Transactional(readOnly = true)

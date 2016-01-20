@@ -139,7 +139,7 @@ public class SimpleJdbcClinic implements Clinic {
 			
 			// Vrátí list všech místností
 			this.rooms.clear();
-			this.rooms.addAll(this.simpleJdbcTemplate.query("SELECT id, name FROM rooms ORDER BY name",
+			this.rooms.addAll(this.simpleJdbcTemplate.query("SELECT id, name, illustration_image_name FROM rooms ORDER BY id",
 					ParameterizedBeanPropertyRowMapper.newInstance(Room.class)));			
 		}
 	}
@@ -220,7 +220,7 @@ public class SimpleJdbcClinic implements Clinic {
 		Room room;
 		try {
 			room = this.simpleJdbcTemplate.queryForObject(
-					"SELECT id, name FROM rooms WHERE id=?",
+					"SELECT id, name, illustration_image_name FROM rooms WHERE id=?",
 					ParameterizedBeanPropertyRowMapper.newInstance(Room.class),
 					id);
 		}
@@ -278,7 +278,7 @@ public class SimpleJdbcClinic implements Clinic {
 		}
 		else {
 			this.simpleJdbcTemplate.update(
-					"UPDATE rooms SET name=:name WHERE id=:id",
+					"UPDATE rooms SET name=:name, illustration_image_name=:illustrationImageName WHERE id=:id",
 					new BeanPropertySqlParameterSource(room));		
 		}
 	}

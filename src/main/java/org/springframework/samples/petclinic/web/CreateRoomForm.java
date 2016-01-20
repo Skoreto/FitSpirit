@@ -1,5 +1,11 @@
 package org.springframework.samples.petclinic.web;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.Clinic;
 import org.springframework.samples.petclinic.Owner;
@@ -14,7 +20,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * JavaBean form controller pro pøidání nové místnosti do systému.
@@ -25,6 +33,10 @@ import org.springframework.web.bind.support.SessionStatus;
 public class CreateRoomForm {
 
 	private final Clinic clinic;
+	
+	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
+	// Nutné mìnit apsolutní cestu ke složce "uploads" v projektu.
+	private String myProjectPath = "C:\\Users\\Tomas\\Documents\\workspace-sts-3.7.2.RELEASE\\petclinic\\src\\main\\webapp\\static\\uploads";
 	
 	@Autowired
 	public CreateRoomForm(Clinic clinic) {
@@ -44,16 +56,40 @@ public class CreateRoomForm {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public String processSubmit(@ModelAttribute Room room, BindingResult result, SessionStatus status) {
+	public String processSubmit(@ModelAttribute Room room, BindingResult result, SessionStatus status, @RequestParam("file") MultipartFile file) {
 		new RoomValidator().validate(room, result);
 		if (result.hasErrors()) {
 			return "rooms/createForm";
 		}
-		else {
-			this.clinic.storeRoom(room);
-			status.setComplete();
-//			return "redirect:/rooms/" + room.getId();
-			return "redirect:/rooms/index";
+		else {			
+			if (!file.isEmpty()) {
+	            try {
+	                byte[] bytes = file.getBytes();
+	 
+	                // Creating the directory to store file                                       
+	                File directory = new File(myProjectPath + File.separator + "roomImages");
+	                
+	                String originalFileName = file.getOriginalFilename();
+	                
+	                // Create the file on server
+	                File serverFile = new File(directory.getAbsolutePath() + File.separator + originalFileName);
+	                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+	                stream.write(bytes);
+	                stream.close();
+
+	                logger.info("Uspesne umisteni souboru na Serveru = " + serverFile.getAbsolutePath());
+	                
+	                room.setIllustrationImageName(originalFileName);
+	                
+	                this.clinic.storeRoom(room);
+	    			status.setComplete();
+	    			return "redirect:/rooms/index";	               	                
+	            } catch (Exception e) {
+	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
+	            }
+	        } else {
+	            return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " protoze soubor je prazdny.";
+	        }						
 		}
 	}
 	
