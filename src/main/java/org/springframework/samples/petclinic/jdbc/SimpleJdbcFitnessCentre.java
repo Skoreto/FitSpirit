@@ -22,7 +22,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.samples.petclinic.Clinic;
+import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * A simple JDBC-based implementation of the {@link Clinic} interface.
+ * A simple JDBC-based implementation of the {@link FitnessCentre} interface.
  *
  * <p>This class uses Java 5 language features and the {@link SimpleJdbcTemplate}
  * plus {@link SimpleJdbcInsert}. It also takes advantage of classes like
@@ -54,7 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Mark Fisher
  */
 @Service
-public class SimpleJdbcClinic implements Clinic {
+public class SimpleJdbcFitnessCentre implements FitnessCentre {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -90,7 +90,7 @@ public class SimpleJdbcClinic implements Clinic {
 
 	/**
 	 * Refresh the cache of Vets that the Clinic is holding.
-	 * @see org.springframework.samples.petclinic.Clinic#getVets()
+	 * @see org.springframework.samples.petclinic.FitnessCentre#getVets()
 	 */
 	@ManagedOperation
 	@Transactional(readOnly = true)

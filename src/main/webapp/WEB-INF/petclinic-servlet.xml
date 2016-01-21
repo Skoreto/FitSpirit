@@ -31,7 +31,7 @@
 	-->
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="webBindingInitializer">
-			<bean class="org.springframework.samples.petclinic.web.ClinicBindingInitializer"/>
+			<bean class="org.springframework.samples.petclinic.web.FitnessCentreBindingInitializer"/>
 		</property>
 	</bean>
 

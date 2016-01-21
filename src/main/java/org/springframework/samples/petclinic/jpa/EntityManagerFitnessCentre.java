@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.springframework.samples.petclinic.Clinic;
+import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
@@ -29,7 +29,7 @@ import org.springframework.dao.DataAccessException;
  */
 @Repository
 @Transactional
-public class EntityManagerClinic implements Clinic {
+public class EntityManagerFitnessCentre implements FitnessCentre {
 
 	@PersistenceContext
 	private EntityManager em;

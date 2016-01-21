@@ -2,7 +2,7 @@
 package org.springframework.samples.petclinic.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.Clinic;
+import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.validation.OwnerValidator;
 import org.springframework.stereotype.Controller;
@@ -29,12 +29,12 @@ import org.springframework.web.bind.support.SessionStatus;
 @SessionAttributes(types = Owner.class)
 public class AddOwnerForm {
 
-	private final Clinic clinic;
+	private final FitnessCentre fitnessCentre;
 
 
 	@Autowired
-	public AddOwnerForm(Clinic clinic) {
-		this.clinic = clinic;
+	public AddOwnerForm(FitnessCentre fitnessCentre) {
+		this.fitnessCentre = fitnessCentre;
 	}
 
 	@InitBinder
@@ -56,7 +56,7 @@ public class AddOwnerForm {
 			return "owners/form";
 		}
 		else {
-			this.clinic.storeOwner(owner);
+			this.fitnessCentre.storeOwner(owner);
 			status.setComplete();
 			return "redirect:/owners/" + owner.getId();
 		}

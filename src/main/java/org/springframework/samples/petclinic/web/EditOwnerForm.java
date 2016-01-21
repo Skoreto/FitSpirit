@@ -2,7 +2,7 @@
 package org.springframework.samples.petclinic.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.Clinic;
+import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.validation.OwnerValidator;
 import org.springframework.stereotype.Controller;
@@ -29,12 +29,12 @@ import org.springframework.web.bind.support.SessionStatus;
 @SessionAttributes(types = Owner.class)
 public class EditOwnerForm {
 
-	private final Clinic clinic;
+	private final FitnessCentre fitnessCentre;
 
 
 	@Autowired
-	public EditOwnerForm(Clinic clinic) {
-		this.clinic = clinic;
+	public EditOwnerForm(FitnessCentre fitnessCentre) {
+		this.fitnessCentre = fitnessCentre;
 	}
 
 	@InitBinder
@@ -44,7 +44,7 @@ public class EditOwnerForm {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@PathVariable("ownerId") int ownerId, Model model) {
-		Owner owner = this.clinic.loadOwner(ownerId);
+		Owner owner = this.fitnessCentre.loadOwner(ownerId);
 		model.addAttribute(owner);
 		return "owners/form";
 	}
@@ -56,7 +56,7 @@ public class EditOwnerForm {
 			return "owners/form";
 		}
 		else {
-			this.clinic.storeOwner(owner);
+			this.fitnessCentre.storeOwner(owner);
 			status.setComplete();
 			return "redirect:/owners/" + owner.getId();
 		}

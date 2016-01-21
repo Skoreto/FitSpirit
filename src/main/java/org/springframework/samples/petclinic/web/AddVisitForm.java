@@ -2,7 +2,7 @@
 package org.springframework.samples.petclinic.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.Clinic;
+import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.Visit;
 import org.springframework.samples.petclinic.validation.VisitValidator;
@@ -31,12 +31,12 @@ import org.springframework.web.bind.support.SessionStatus;
 @SessionAttributes("visit")
 public class AddVisitForm {
 
-	private final Clinic clinic;
+	private final FitnessCentre fitnessCentre;
 
 
 	@Autowired
-	public AddVisitForm(Clinic clinic) {
-		this.clinic = clinic;
+	public AddVisitForm(FitnessCentre fitnessCentre) {
+		this.fitnessCentre = fitnessCentre;
 	}
 
 	@InitBinder
@@ -46,7 +46,7 @@ public class AddVisitForm {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@PathVariable("petId") int petId, Model model) {
-		Pet pet = this.clinic.loadPet(petId);
+		Pet pet = this.fitnessCentre.loadPet(petId);
 		Visit visit = new Visit();
 		pet.addVisit(visit);
 		model.addAttribute("visit", visit);
@@ -60,7 +60,7 @@ public class AddVisitForm {
 			return "pets/visitForm";
 		}
 		else {
-			this.clinic.storeVisit(visit);
+			this.fitnessCentre.storeVisit(visit);
 			status.setComplete();
 			return "redirect:/owners/" + visit.getPet().getOwner().getId();
 		}

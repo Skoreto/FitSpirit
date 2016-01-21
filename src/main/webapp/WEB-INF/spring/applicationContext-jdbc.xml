@@ -45,7 +45,7 @@
 
 
 	<!-- PetClinic's central data access object using Spring's SimpleJdbcTemplate -->
-	<bean id="clinic" class="org.springframework.samples.petclinic.jdbc.SimpleJdbcClinic"/>
+	<bean id="clinic" class="org.springframework.samples.petclinic.jdbc.SimpleJdbcFitnessCentre"/>
 
 
 </beans>

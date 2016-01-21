@@ -4,7 +4,7 @@ package org.springframework.samples.petclinic.web;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.Clinic;
+import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
@@ -33,17 +33,17 @@ import org.springframework.web.bind.support.SessionStatus;
 @SessionAttributes("pet")
 public class EditPetForm {
 
-	private final Clinic clinic;
+	private final FitnessCentre fitnessCentre;
 
 
 	@Autowired
-	public EditPetForm(Clinic clinic) {
-		this.clinic = clinic;
+	public EditPetForm(FitnessCentre fitnessCentre) {
+		this.fitnessCentre = fitnessCentre;
 	}
 
 	@ModelAttribute("types")
 	public Collection<PetType> populatePetTypes() {
-		return this.clinic.getPetTypes();
+		return this.fitnessCentre.getPetTypes();
 	}
 
 	@InitBinder
@@ -53,7 +53,7 @@ public class EditPetForm {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@PathVariable("petId") int petId, Model model) {
-		Pet pet = this.clinic.loadPet(petId);
+		Pet pet = this.fitnessCentre.loadPet(petId);
 		model.addAttribute("pet", pet);
 		return "pets/form";
 	}
@@ -65,7 +65,7 @@ public class EditPetForm {
 			return "pets/form";
 		}
 		else {
-			this.clinic.storePet(pet);
+			this.fitnessCentre.storePet(pet);
 			status.setComplete();
 			return "redirect:/owners/" + pet.getOwner().getId();
 		}
@@ -73,9 +73,9 @@ public class EditPetForm {
 
 	@RequestMapping(method = RequestMethod.DELETE)
 	public String deletePet(@PathVariable int petId) {
-		Pet pet = this.clinic.loadPet(petId);
+		Pet pet = this.fitnessCentre.loadPet(petId);
 		Owner o = pet.getOwner();		
-		this.clinic.deletePet(petId);
+		this.fitnessCentre.deletePet(petId);
 		return "redirect:/owners/" + o.getId();
 	}
 

@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.Clinic;
+import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.validation.OwnerValidator;
@@ -32,15 +32,15 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/rooms/create")
 public class CreateRoomForm {
 
-	private final Clinic clinic;
+	private final FitnessCentre fitnessCentre;
 	
 	private static final Logger logger = LoggerFactory.getLogger(CreateRoomForm.class);
 	// Nutné mìnit absolutní cestu ke složce "uploads" v projektu.
 	private final String myProjectPath = "C:\\Users\\Tomas\\Documents\\workspace-sts-3.7.2.RELEASE\\petclinic\\src\\main\\webapp\\static\\uploads";
 	
 	@Autowired
-	public CreateRoomForm(Clinic clinic) {
-		this.clinic = clinic;
+	public CreateRoomForm(FitnessCentre fitnessCentre) {
+		this.fitnessCentre = fitnessCentre;
 	}
 	
 	@InitBinder
@@ -81,7 +81,7 @@ public class CreateRoomForm {
 	                
 	                room.setIllustrationImageName(originalFileName);
 	                
-	                this.clinic.storeRoom(room);
+	                this.fitnessCentre.storeRoom(room);
 	    			status.setComplete();
 	    			return "redirect:/rooms/index";	               	                
 	            } catch (Exception e) {

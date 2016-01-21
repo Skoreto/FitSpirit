@@ -14,7 +14,7 @@ import org.springframework.dao.DataAccessException;
  * @author Juergen Hoeller
  * @author Sam Brannen
  */
-public interface Clinic {
+public interface FitnessCentre {
 
 	/**
 	 * Retrieve all <code>Vet</code>s from the data store.

@@ -4,7 +4,7 @@ package org.springframework.samples.petclinic.web;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.Clinic;
+import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class FindOwnersForm {
 
-	private final Clinic clinic;
+	private final FitnessCentre fitnessCentre;
 
 
 	@Autowired
-	public FindOwnersForm(Clinic clinic) {
-		this.clinic = clinic;
+	public FindOwnersForm(FitnessCentre fitnessCentre) {
+		this.fitnessCentre = fitnessCentre;
 	}
 
 	@InitBinder
@@ -53,7 +53,7 @@ public class FindOwnersForm {
 		}
 
 		// find owners by last name
-		Collection<Owner> results = this.clinic.findOwners(owner.getLastName());
+		Collection<Owner> results = this.fitnessCentre.findOwners(owner.getLastName());
 		if (results.size() < 1) {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
