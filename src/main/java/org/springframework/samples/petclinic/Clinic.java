@@ -103,4 +103,8 @@ public interface Clinic {
 	 */
 	void deletePet(int id) throws DataAccessException;
 
+	/**
+	 * Deletes a <code>Room</code> from the data store.
+	 */
+	void deleteRoom(int id) throws DataAccessException;
 }

@@ -313,6 +313,10 @@ public class SimpleJdbcClinic implements Clinic {
 	public void deletePet(int id) throws DataAccessException {
 		this.simpleJdbcTemplate.update("DELETE FROM pets WHERE id=?", id);
 	}
+	
+	public void deleteRoom(int id) throws DataAccessException {
+		this.simpleJdbcTemplate.update("DELETE FROM rooms WHERE id=?", id);	
+	}
 
 	// END of Clinic implementation section ************************************
 

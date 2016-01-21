@@ -34,9 +34,9 @@ public class CreateRoomForm {
 
 	private final Clinic clinic;
 	
-	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
-	// Nutné mìnit apsolutní cestu ke složce "uploads" v projektu.
-	private String myProjectPath = "C:\\Users\\Tomas\\Documents\\workspace-sts-3.7.2.RELEASE\\petclinic\\src\\main\\webapp\\static\\uploads";
+	private static final Logger logger = LoggerFactory.getLogger(CreateRoomForm.class);
+	// Nutné mìnit absolutní cestu ke složce "uploads" v projektu.
+	private final String myProjectPath = "C:\\Users\\Tomas\\Documents\\workspace-sts-3.7.2.RELEASE\\petclinic\\src\\main\\webapp\\static\\uploads";
 	
 	@Autowired
 	public CreateRoomForm(Clinic clinic) {

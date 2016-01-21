@@ -111,4 +111,9 @@ public class EntityManagerClinic implements Clinic {
 		this.em.remove(pet);
 	}
 
+	public void deleteRoom(int id) throws DataAccessException {
+		Room room = loadRoom(id);
+		this.em.remove(room);
+	}
+
 }
