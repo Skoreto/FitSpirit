@@ -21,7 +21,7 @@
                     <a href="<spring:url value="/static/uploads/roomImages/${room.illustrationImageName}" htmlEscape="true" />" data-gallery><img class="img-responsive" src="<spring:url value="/static/uploads/roomImages/${room.illustrationImageName}" htmlEscape="true" />" alt="Ilustrace ${room.name}" /></a>
                 <div class="desc">
                     <h4><small><a href="<spring:url value="/static/uploads/roomImages/${room.illustrationImageName}" htmlEscape="true" />" title="${room.name}">${room.name}</a></small></h4>                  
-                	<a href="<spring:url value="/rooms/create" htmlEscape="true"/>" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Upravit</a>                                   
+                	<a href="<spring:url value="/rooms/${room.id}/edit" htmlEscape="true"/>" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Upravit</a>                                   
                     <a href="<spring:url value="/rooms/${room.id}/delete" htmlEscape="true"/>" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Zrušit</a>
                 </div>
             </div>
