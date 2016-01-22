@@ -2,6 +2,8 @@
 package org.springframework.samples.petclinic.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.ActivityType;
+import org.springframework.samples.petclinic.ActivityTypes;
 import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Rooms;
 import org.springframework.samples.petclinic.Vets;
@@ -71,6 +73,18 @@ public class FitnessCentreController {
 	public ModelMap roomsHandler() {
 		Rooms rooms = new Rooms();
 		rooms.getRoomList().addAll(this.fitnessCentre.getRooms());
+		return new ModelMap(rooms);
+	}
+	
+	/**
+	 * Vlastní handler pro zobrazení místností.
+	 * 
+	 * @return ModelMap s atributy modelu pro dané view
+	 */
+	@RequestMapping("/rooms/index")
+	public ModelMap activityTypesHandler() {
+		ActivityTypes activityTypes = new ActivityTypes();
+		activityTypes.getActivityTypeList().addAll(this.fitnessCentre.getActivityTypes());
 		return new ModelMap(rooms);
 	}
 	

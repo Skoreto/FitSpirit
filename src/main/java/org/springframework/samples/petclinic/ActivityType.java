@@ -8,14 +8,18 @@ import javax.persistence.Table;
 @Table(name="ACTIVITY_TYPES")
 public class ActivityType extends BaseEntity {
 	private String name;
-
-//	private String ShortDescription;
 	
-//	private String Description;
+	// Cena za jednu lekci dane aktivity.
+	// TODO Mel by byt BigDecimal.
+	private double price;
 	
-//	private String IllustrationImageName;
+	private String illustrationImageName;
 	
-//	private String IllustrationThumbImageName;
+//	private String illustrationThumbImageName;
+	
+	private String shortDescription;
+	
+	private String description;
 	
 	@Column(name="NAME")
 	public String getName() {
@@ -25,5 +29,41 @@ public class ActivityType extends BaseEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	@Column(name="PRICE")
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	@Column(name="ILLUSTRATION_IMAGE_NAME")
+	public String getIllustrationImageName() {
+		return illustrationImageName;
+	}
+
+	public void setIllustrationImageName(String illustrationImageName) {
+		this.illustrationImageName = illustrationImageName;
+	}
+
+	@Column(name="SHORT_DESCRIPTION")
+	public String getShortDescription() {
+		return shortDescription;
+	}
+
+	public void setShortDescription(String shortDescription) {
+		this.shortDescription = shortDescription;
+	}
+
+	@Column(name="DESCRIPTION")
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+		
 }

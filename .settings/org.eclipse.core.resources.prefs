@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
+encoding//src/main/webapp/WEB-INF/jsp/activityTypes/createForm.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/activityTypes/index.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/index.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/rooms/createForm.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/rooms/index.jsp=UTF-8

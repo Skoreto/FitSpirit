@@ -22,6 +22,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.orm.ObjectRetrievalFailureException;
+import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
@@ -62,6 +63,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 
 	private SimpleJdbcInsert insertOwner;
 	private SimpleJdbcInsert insertRoom;
+	private SimpleJdbcInsert insertActivityType;
 	private SimpleJdbcInsert insertPet;
 	private SimpleJdbcInsert insertVisit;
 
@@ -78,6 +80,9 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			.usingGeneratedKeyColumns("id");
 		this.insertRoom = new SimpleJdbcInsert(dataSource)
 				.withTableName("rooms")
+				.usingGeneratedKeyColumns("id");
+		this.insertActivityType = new SimpleJdbcInsert(dataSource)
+				.withTableName("activity_types")
 				.usingGeneratedKeyColumns("id");
 		this.insertPet = new SimpleJdbcInsert(dataSource)
 			.withTableName("pets")
@@ -163,6 +168,14 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			refreshRoomsCache();
 		}
 		return this.rooms;
+	}
+	
+	@Transactional(readOnly = true)
+	public Collection<ActivityType> getActivityTypes() throws DataAccessException {
+		synchronized (this.activityTypes) {
+			refreshActivityTypesCache();
+		}
+		return this.activityTypes;
 	}
 
 	@Transactional(readOnly = true)
@@ -283,6 +296,25 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 		}
 	}
 
+	/**
+	 * Prida novou mistnost nebo updatne stavajici.
+	 * @param activityType
+	 * @throws DataAccessException
+	 */
+	@Transactional
+	public void storeActivityType(ActivityType activityType) throws DataAccessException {
+		if (activityType.isNew()) {
+			Number newKey = this.insertActivityType.executeAndReturnKey(
+					new BeanPropertySqlParameterSource(activityType));
+			activityType.setId(newKey.intValue());
+		}
+		else {
+			this.simpleJdbcTemplate.update(
+					"UPDATE activity_types SET name=:name, price=:price, illustration_image_name=:illustrationImageName, short_description=:shortDescription, description=:description WHERE id=:id",
+					new BeanPropertySqlParameterSource(activityType));	
+		}
+	}
+	
 	@Transactional
 	public void storePet(Pet pet) throws DataAccessException {
 		if (pet.isNew()) {

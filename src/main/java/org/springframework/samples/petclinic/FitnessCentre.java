@@ -28,7 +28,11 @@ public interface FitnessCentre {
 	 */
 	Collection<Room> getRooms() throws DataAccessException;
 	
-	
+	/**
+	 * Retrieve all <code>Room</code>s from the data store.
+	 * @return a <code>Collection</code> of <code>Room</code>s
+	 */
+	Collection<ActivityType> getActivityTypes() throws DataAccessException;
 	
 	/**
 	 * Retrieve all <code>PetType</code>s from the data store.
@@ -83,6 +87,13 @@ public interface FitnessCentre {
 	 * @throws DataAccessException
 	 */
 	void storeRoom(Room room) throws DataAccessException;
+	
+	/**
+	 * Ulozi druh aktivity do data store, at uz insertovanou nebo updatovanou.
+	 * @param activityType
+	 * @throws DataAccessException
+	 */
+	void storeActivityType(ActivityType activityType) throws DataAccessException;
 	
 	/**
 	 * Save a <code>Pet</code> to the data store, either inserting or updating it.

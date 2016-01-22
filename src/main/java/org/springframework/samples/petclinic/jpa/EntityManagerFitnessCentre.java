@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
@@ -88,6 +89,12 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 		Room merged = this.em.merge(room);
 		this.em.flush();
 		room.setId(merged.getId());
+	}
+	
+	public void storeActivityType(ActivityType activityType) throws DataAccessException {
+		ActivityType merged = this.em.merge(activityType);
+		this.em.flush();
+		activityType.setId(merged.getId());
 	}
 
 	public void storePet(Pet pet) {
