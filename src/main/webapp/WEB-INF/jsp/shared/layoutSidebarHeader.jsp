@@ -16,8 +16,8 @@
     <link href="<spring:url value="/static/styles/stylesTomSkoRed.css" htmlEscape="true" />" rel="stylesheet">
     <!-- Pluginy CSS => Font Awesome, FlexSlider, blueimp Gallery, BS 3 DatePicker od Eonasdan -->
     <link href="<spring:url value="/static/styles/font-awesome/css/font-awesome.min.css" htmlEscape="true" />" rel="stylesheet">
-    <link href="<spring:url value="/static/styles/flexslider/flexslider.css" htmlEscape="true" />" rel="stylesheet">
     <link href="<spring:url value="/static/styles/blueimp-gallery/css/blueimp-gallery.min.css" htmlEscape="true" />" rel="stylesheet">
+    <link href="<spring:url value="/static/styles/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" htmlEscape="true" />" rel="stylesheet">
     <!-- Fonty Open Sans z CDN Google https://www.google.com/fonts#UsePlace:use/Collection:Open+Sans -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" type="text/css">
     <!-- HTML5Shiv a Respond.js - skripty pro aplikaci CSS na HTML5 elementy ve starších IE -->

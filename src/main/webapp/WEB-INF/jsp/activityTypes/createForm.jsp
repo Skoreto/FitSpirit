@@ -34,14 +34,14 @@
 	<div class="form-group">
 	    <label class="col-sm-2 control-label">Krátký popis</label>
 	    <div class="col-sm-10">
-	    	<form:input type="text" path="shortDescription" class="form-control" />
+	    	<form:input type="text" path="shortDescription" class="form-control tinymce" />
 	    </div>
 	</div>
     
 	<div class="form-group">
 	    <label class="col-sm-2 control-label">Detailní popis</label>
 	    <div class="col-sm-10">
-	    	<form:input type="text" path="description" class="form-control" />
+	    	<form:input type="text" path="description" class="form-control tinymce" />
 	    </div>
 	</div>
 		 

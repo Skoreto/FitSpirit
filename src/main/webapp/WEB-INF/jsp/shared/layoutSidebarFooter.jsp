@@ -116,10 +116,14 @@
   <!-- Unobtrusive validace formulÃ¡ÅÅ¯ --> <!-- 
   <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
   <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script> -->
-  <!-- blueimp Bootstrap Gallery, FlexSlider 2.4.0 -->
+  <!-- BS 3 DateTimePicker od Eonasdan -->
+  <script type="text/javascript" src="<spring:url value="/static/scripts/moment/moment.min.js" htmlEscape="true" />"></script>
+  <script type="text/javascript" src="<spring:url value="/static/scripts/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js" htmlEscape="true" />"></script>
+  <script type="text/javascript" src="<spring:url value="/static/scripts/moment/csTomSko.js" htmlEscape="true" />"></script>
+  <!-- TinyMCE, blueimp Bootstrap Gallery -->
+  <script type="text/javascript" src="<spring:url value="/static/scripts/tinymce/tinymce.min.js" htmlEscape="true" />"></script>
   <script type="text/javascript" src="<spring:url value="/static/scripts/blueimp-gallery/jquery.blueimp-gallery.min.js" htmlEscape="true" />"></script>
-  <script type="text/javascript" src="<spring:url value="/static/scripts/flexslider/jquery.flexslider-min.js" htmlEscape="true" />"></script>
-  <!-- VLASTNÃ NASTAVENÃ => Flexslider a carousely hlavnÃ­ strany -->
-    <script type="text/javascript" src="<spring:url value="/static/scripts/carousels-configuration.js" htmlEscape="true" />"></script>
+  <!-- VLASTNÍ NASTAVENÍ => BS 3 DateTimePicker, TinyMCE -->
+  <script type="text/javascript" src="<spring:url value="/static/scripts/plugins-configuration.js" htmlEscape="true" />"></script>  
 </body>
 </html>
