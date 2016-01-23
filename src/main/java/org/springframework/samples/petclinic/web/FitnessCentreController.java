@@ -77,15 +77,15 @@ public class FitnessCentreController {
 	}
 	
 	/**
-	 * Vlastní handler pro zobrazení místností.
+	 * Vlastní handler pro zobrazení aktivit.
 	 * 
 	 * @return ModelMap s atributy modelu pro dané view
 	 */
-	@RequestMapping("/rooms/index")
+	@RequestMapping("/activityTypes/index")
 	public ModelMap activityTypesHandler() {
 		ActivityTypes activityTypes = new ActivityTypes();
 		activityTypes.getActivityTypeList().addAll(this.fitnessCentre.getActivityTypes());
-		return new ModelMap(rooms);
+		return new ModelMap(activityTypes);
 	}
 	
 	/**
@@ -102,9 +102,7 @@ public class FitnessCentreController {
 	}
 	
 	/**
-	 * Vlastní handler pro zobrazení detailu o místnosti.
-	 * @param roomId
-	 * @return
+	 * Vlastni handler pro zobrazeni detailu o mistnosti.
 	 */
 	@RequestMapping("/rooms/{roomId}")
 	public ModelAndView roomHandler(@PathVariable("roomId") int roomId) {
@@ -112,7 +110,17 @@ public class FitnessCentreController {
 		mav.addObject(this.fitnessCentre.loadRoom(roomId));
 		return mav;
 	}
-
+	
+	/**
+	 * Vlastni handler pro zobrazeni detailu o aktivite.
+	 */
+	@RequestMapping("/activityTypes/{activityTypeId}")
+	public ModelAndView activityTypeHandler(@PathVariable("activityTypeId") int activityTypeId) {
+		ModelAndView mav = new ModelAndView("activityTypes/detail");
+		mav.addObject(this.fitnessCentre.loadActivityType(activityTypeId));
+		return mav;
+	}
+	
 	/**
 	 * Custom handler for displaying an list of visits.
 	 *

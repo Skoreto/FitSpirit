@@ -29,8 +29,8 @@ public interface FitnessCentre {
 	Collection<Room> getRooms() throws DataAccessException;
 	
 	/**
-	 * Retrieve all <code>Room</code>s from the data store.
-	 * @return a <code>Collection</code> of <code>Room</code>s
+	 * Retrieve all <code>ActivityType</code>s from the data store.
+	 * @return a <code>Collection</code> of <code>ActivityType</code>s
 	 */
 	Collection<ActivityType> getActivityTypes() throws DataAccessException;
 	
@@ -57,7 +57,6 @@ public interface FitnessCentre {
 	 */
 	Owner loadOwner(int id) throws DataAccessException;
 	
-	
 	/**
 	 * Vrátí Místnost z data store podle id.
 	 * @param id id místnosti, kterou hledám
@@ -65,6 +64,11 @@ public interface FitnessCentre {
 	 * @throws DataAccessException
 	 */
 	Room loadRoom(int id) throws DataAccessException;
+	
+	/**
+	 * Vrati Aktivitu z data store podle id.
+	 */
+	ActivityType loadActivityType(int id) throws DataAccessException;
 
 	/**
 	 * Retrieve a <code>Pet</code> from the data store by id.
@@ -118,4 +122,5 @@ public interface FitnessCentre {
 	 * Deletes a <code>Room</code> from the data store.
 	 */
 	void deleteRoom(int id) throws DataAccessException;
+
 }

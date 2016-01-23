@@ -47,6 +47,12 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	public Collection<Room> getRooms() {
 		return this.em.createQuery("SELECT room FROM Room room ORDER BY room.id").getResultList();
 	}
+	
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public Collection<ActivityType> getActivityTypes() throws DataAccessException {
+		return this.em.createQuery("SELECT activityType FROM ActivityType activityType ORDER BY activityType.id").getResultList();
+	}
 
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
@@ -70,6 +76,11 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	@Transactional(readOnly = true)
 	public Room loadRoom(int id) {
 		return this.em.find(Room.class, id);
+	}
+	
+	@Transactional(readOnly = true)
+	public ActivityType loadActivityType(int id) throws DataAccessException {
+		return this.em.find(ActivityType.class, id);
 	}
 
 	@Transactional(readOnly = true)

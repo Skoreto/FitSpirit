@@ -69,7 +69,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 
 	private final List<Vet> vets = new ArrayList<Vet>();
 	private final List<Room> rooms = new ArrayList<Room>();
-
+	private final List<ActivityType> activityTypes = new ArrayList<ActivityType>();
 
 	@Autowired
 	public void init(DataSource dataSource) {
@@ -133,19 +133,36 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 
 	
 	/**
-	 * Refreshne cache Místností, kterou udržuje rozhraní FitnessCente (zatím Clinic)
+	 * Refreshne cache Místností, kterou udržuje rozhraní FitnessCente
 	 * @throws DataAccessException
 	 */
 	@ManagedOperation
 	@Transactional(readOnly = true)
 	public void refreshRoomsCache() throws DataAccessException {
 		synchronized (this.rooms) {
-			this.logger.info("Refreshuju chache místností");
+			this.logger.info("Refreshuju cache místností");
 			
-			// Vrátí list všech místností
+			// Vrátí list všech Místností
 			this.rooms.clear();
 			this.rooms.addAll(this.simpleJdbcTemplate.query("SELECT id, name, illustration_image_name FROM rooms ORDER BY id",
 					ParameterizedBeanPropertyRowMapper.newInstance(Room.class)));			
+		}
+	}
+	
+	/**
+	 * Refreshne cache Aktivit, ktetou udržuje rozhraní FitnessCentre
+	 * @throws DataAccessException
+	 */
+	@ManagedOperation
+	@Transactional(readOnly = true)
+	private void refreshActivityTypesCache() throws DataAccessException {
+		synchronized (this.activityTypes) {
+			this.logger.info("Refreshuju cache aktivit");
+			
+			// Vrátí list všech Aktivit
+			this.activityTypes.clear();
+			this.activityTypes.addAll(this.simpleJdbcTemplate.query("SELECT id, name, price, illustration_image_name, short_description, description FROM activity_types ORDER BY id",
+					ParameterizedBeanPropertyRowMapper.newInstance(ActivityType.class)));			
 		}
 	}
 	
@@ -177,6 +194,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 		}
 		return this.activityTypes;
 	}
+
 
 	@Transactional(readOnly = true)
 	public Collection<PetType> getPetTypes() throws DataAccessException {
@@ -223,10 +241,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	}
 	
 	/**
-	 * Naète místnost.
-	 * @param id
-	 * @return
-	 * @throws DataAccessException
+	 * Naète Mistnost.
 	 */
 	@Transactional(readOnly = true)
 	public Room loadRoom(int id) throws DataAccessException {
@@ -241,6 +256,24 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			throw new ObjectRetrievalFailureException(Room.class, new Integer(id));
 		}		
 		return room;
+	}
+	
+	/**
+	 * Nacte Aktivitu.
+	 */
+	@Transactional(readOnly = true)
+	public ActivityType loadActivityType(int id) throws DataAccessException {
+		ActivityType activityType;
+		try {
+			activityType = this.simpleJdbcTemplate.queryForObject(
+					"SELECT id, name, price, illustration_image_name, short_description, description FROM activity_types WHERE id=?",
+					ParameterizedBeanPropertyRowMapper.newInstance(ActivityType.class),
+					id);
+		}
+		catch (EmptyResultDataAccessException ex) {
+			throw new ObjectRetrievalFailureException(ActivityType.class, new Integer(id));
+		}		
+		return activityType;
 	}
 
 	@Transactional(readOnly = true)

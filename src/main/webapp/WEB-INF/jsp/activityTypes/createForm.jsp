@@ -8,7 +8,7 @@
 
 <h2><c:if test="${activityType['new']}">Nová </c:if>aktivita:</h2>
 
-<form:form class="form-horizontal" modelAttribute="room" method="${method}" enctype="multipart/form-data">
+<form:form class="form-horizontal" modelAttribute="activityType" method="${method}" enctype="multipart/form-data">
 	<div class="form-group">
 	    <label class="col-sm-2 control-label">Název aktivity <form:errors path="name" cssClass="errors"/></label>
 	    <div class="col-sm-10">
