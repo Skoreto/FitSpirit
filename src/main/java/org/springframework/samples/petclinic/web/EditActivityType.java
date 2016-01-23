@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.FitnessCentre;
+import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.validation.ActivityTypeValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -116,5 +117,26 @@ public class EditActivityType {
 		}
 	}	
 	
+	/**
+	 * Metoda pro smazani Aktivity dle zakaneho id.
+	 * Nejprve odstrani fotografii Aktivity ze slozky activityTypeImages, pote vymaze zaznam z databaze.
+	 */
+	@RequestMapping(value="/activityTypes/{activityTypeId}/delete")
+	public String deleteActivityType(@PathVariable int activityTypeId) {
+		ActivityType activityType = this.fitnessCentre.loadActivityType(activityTypeId);
+		String illustrationImageName = activityType.getIllustrationImageName();	
+		String illustrationImagePath = myProjectPath + File.separator + "activityTypeImages" + File.separator + illustrationImageName;
+		File illustrationImage = new File(illustrationImagePath);
 		
+		// Smaže soubor a zároveò vrací bool, jestli byl soubor úspìšnì smazán.
+		if (illustrationImage.delete()) {
+			logger.info("Smazán obrázek: " + illustrationImageName);
+		} else {
+			logger.info("Nezdaøilo se smazat obrázek: " + illustrationImageName + " z umístìní " + illustrationImagePath);
+		}
+				
+		this.fitnessCentre.deleteActivityType(activityTypeId);
+		return "redirect:/activityTypes/index";	
+	}
+	
 }

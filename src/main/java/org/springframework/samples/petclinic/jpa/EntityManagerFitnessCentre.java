@@ -134,4 +134,9 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 		this.em.remove(room);
 	}
 
+	public void deleteActivityType(int id) throws DataAccessException {
+		ActivityType activityType = loadActivityType(id);
+		this.em.remove(activityType);
+	}
+
 }
