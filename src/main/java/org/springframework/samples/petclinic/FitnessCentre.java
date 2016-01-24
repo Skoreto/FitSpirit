@@ -35,6 +35,12 @@ public interface FitnessCentre {
 	Collection<ActivityType> getActivityTypes() throws DataAccessException;
 	
 	/**
+	 * Retrieve all <code>User</code>s from the data store.
+	 * @return a <code>Collection</code> of <code>User</code>s
+	 */
+	Collection<User> getUsers() throws DataAccessException;
+	
+	/**
 	 * Retrieve all <code>PetType</code>s from the data store.
 	 * @return a <code>Collection</code> of <code>PetType</code>s
 	 */
@@ -69,6 +75,11 @@ public interface FitnessCentre {
 	 * Vrati Aktivitu z data store podle id.
 	 */
 	ActivityType loadActivityType(int id) throws DataAccessException;
+	
+	/**
+	 * Vrati uzivatelskou roli z data store dle zadaneho id.
+	 */
+	UserRole loadUserRole(int id) throws DataAccessException;
 
 	/**
 	 * Retrieve a <code>Pet</code> from the data store by id.
@@ -98,6 +109,13 @@ public interface FitnessCentre {
 	 * @throws DataAccessException
 	 */
 	void storeActivityType(ActivityType activityType) throws DataAccessException;
+	
+	/**
+	 * Ulozi uzivatele do data store, at uz insertovaneho nebo updatovaneho.
+	 * @param user
+	 * @throws DataAccessException
+	 */
+	void storeUser(User user) throws DataAccessException;
 	
 	/**
 	 * Save a <code>Pet</code> to the data store, either inserting or updating it.

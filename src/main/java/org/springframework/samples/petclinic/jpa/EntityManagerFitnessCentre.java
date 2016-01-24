@@ -12,6 +12,8 @@ import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
 import org.springframework.samples.petclinic.Room;
+import org.springframework.samples.petclinic.User;
+import org.springframework.samples.petclinic.UserRole;
 import org.springframework.samples.petclinic.Vet;
 import org.springframework.samples.petclinic.Visit;
 import org.springframework.stereotype.Repository;
@@ -53,6 +55,12 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	public Collection<ActivityType> getActivityTypes() throws DataAccessException {
 		return this.em.createQuery("SELECT activityType FROM ActivityType activityType ORDER BY activityType.id").getResultList();
 	}
+	
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public Collection<User> getUsers() throws DataAccessException {
+		return this.em.createQuery("SELECT user FROM User user ORDER BY user.id").getResultList();
+	}
 
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
@@ -82,6 +90,11 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	public ActivityType loadActivityType(int id) throws DataAccessException {
 		return this.em.find(ActivityType.class, id);
 	}
+	
+	@Transactional(readOnly = true)
+	public UserRole loadUserRole(int id) throws DataAccessException {
+		return this.em.find(UserRole.class, id);
+	}
 
 	@Transactional(readOnly = true)
 	public Pet loadPet(int id) {
@@ -106,6 +119,12 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 		ActivityType merged = this.em.merge(activityType);
 		this.em.flush();
 		activityType.setId(merged.getId());
+	}
+	
+	public void storeUser(User user) throws DataAccessException {
+		User merged = this.em.merge(user);
+		this.em.flush();
+		user.setId(merged.getId());
 	}
 
 	public void storePet(Pet pet) {

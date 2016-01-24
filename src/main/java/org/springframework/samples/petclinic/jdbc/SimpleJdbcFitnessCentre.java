@@ -29,6 +29,8 @@ import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
 import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.Specialty;
+import org.springframework.samples.petclinic.User;
+import org.springframework.samples.petclinic.UserRole;
 import org.springframework.samples.petclinic.Vet;
 import org.springframework.samples.petclinic.Visit;
 import org.springframework.samples.petclinic.util.EntityUtils;
@@ -70,6 +72,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	private final List<Vet> vets = new ArrayList<Vet>();
 	private final List<Room> rooms = new ArrayList<Room>();
 	private final List<ActivityType> activityTypes = new ArrayList<ActivityType>();
+	private final List<User> users = new ArrayList<User>();
 
 	@Autowired
 	public void init(DataSource dataSource) {
@@ -133,14 +136,14 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 
 	
 	/**
-	 * Refreshne cache Místností, kterou udržuje rozhraní FitnessCente
+	 * Refreshne cache Místností, kterou udržuje rozhraní FitnessCentre.
 	 * @throws DataAccessException
 	 */
 	@ManagedOperation
 	@Transactional(readOnly = true)
 	public void refreshRoomsCache() throws DataAccessException {
 		synchronized (this.rooms) {
-			this.logger.info("Refreshuju cache místností");
+			this.logger.info("Refreshuji cache mistnosti");
 			
 			// Vrátí list všech Místností
 			this.rooms.clear();
@@ -150,19 +153,36 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	}
 	
 	/**
-	 * Refreshne cache Aktivit, ktetou udržuje rozhraní FitnessCentre
+	 * Refreshne cache Aktivit, ktetou udržuje rozhraní FitnessCentre.
 	 * @throws DataAccessException
 	 */
 	@ManagedOperation
 	@Transactional(readOnly = true)
 	private void refreshActivityTypesCache() throws DataAccessException {
 		synchronized (this.activityTypes) {
-			this.logger.info("Refreshuju cache aktivit");
+			this.logger.info("Refreshuji cache aktivit");
 			
 			// Vrátí list všech Aktivit
 			this.activityTypes.clear();
 			this.activityTypes.addAll(this.simpleJdbcTemplate.query("SELECT id, name, price, illustration_image_name, short_description, description FROM activity_types ORDER BY id",
 					ParameterizedBeanPropertyRowMapper.newInstance(ActivityType.class)));			
+		}
+	}
+	
+	/**
+	 * Refreshne cache Uzivatelu, ktetou udrzuje rozhrani FitnessCentre.
+	 * @throws DataAccessException
+	 */
+	@ManagedOperation
+	@Transactional(readOnly = true)
+	private void refreshUsersCache() throws DataAccessException {
+		synchronized (this.users) {
+			this.logger.info("Refreshuji cache uzivatelu");
+			
+			// Vrátí list všech Uzivatelu
+			this.users.clear();
+			this.users.addAll(this.simpleJdbcTemplate.query("SELECT id, first_name, last_name, street, city, postcode, mail, telephone, credit, description, profile_photo_name, login, password, user_role_id FROM users ORDER BY id",
+					ParameterizedBeanPropertyRowMapper.newInstance(User.class)));			
 		}
 	}
 	
@@ -194,7 +214,14 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 		}
 		return this.activityTypes;
 	}
-
+	
+	@Transactional(readOnly = true)
+	public Collection<User> getUsers() throws DataAccessException {
+		synchronized (this.users) {
+			refreshUsersCache();
+		}
+		return this.users;
+	}
 
 	@Transactional(readOnly = true)
 	public Collection<PetType> getPetTypes() throws DataAccessException {
@@ -275,6 +302,24 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 		}		
 		return activityType;
 	}
+	
+	/**
+	 * Nacte Uzivatelskou roli.
+	 */
+	@Transactional(readOnly = true)
+	public UserRole loadUserRole(int id) throws DataAccessException {
+		UserRole userRole;
+		try {
+			userRole = this.simpleJdbcTemplate.queryForObject(
+					"SELECT id, identificator, role_description FROM user_roles WHERE id=?",
+					ParameterizedBeanPropertyRowMapper.newInstance(UserRole.class),
+					id);
+		}
+		catch (EmptyResultDataAccessException ex) {
+			throw new ObjectRetrievalFailureException(UserRole.class, new Integer(id));
+		}		
+		return userRole;
+	}
 
 	@Transactional(readOnly = true)
 	public Pet loadPet(int id) throws DataAccessException {
@@ -343,8 +388,29 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 		}
 		else {
 			this.simpleJdbcTemplate.update(
-					"UPDATE activity_types SET name=:name, price=:price, illustration_image_name=:illustrationImageName, short_description=:shortDescription, description=:description WHERE id=:id",
+					"UPDATE activity_types SET name=:name, price=:price, illustration_image_name=:illustrationImageName, " + 
+					"short_description=:shortDescription, description=:description WHERE id=:id",
 					new BeanPropertySqlParameterSource(activityType));	
+		}
+	}
+	
+	/**
+	 * Prida noveho uzivatele nebo updatne stavajiciho.
+	 */
+	@Transactional
+	public void storeUser(User user) throws DataAccessException {
+		if (user.isNew()) {
+			Number newKey = this.insertActivityType.executeAndReturnKey(
+					new BeanPropertySqlParameterSource(user));
+			user.setId(newKey.intValue());
+		}
+		else {
+			this.simpleJdbcTemplate.update(
+					"UPDATE activity_types SET first_name=:firstName, last_name=:lastName, " +
+					"street=:street, city=:city, postcode=:postcode, mail=:mail, telephone=:telephone, " +
+					"credit=:credit, description=:description, profile_photo_name=:profilePhotoName, " + 
+					"login=:login, password=:password, user_role_id=:user_role_id, is_active=:isActive WHERE id=:id",
+					new BeanPropertySqlParameterSource(user));	
 		}
 	}
 	

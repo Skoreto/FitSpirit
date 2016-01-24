@@ -1,11 +1,17 @@
 
 package org.springframework.samples.petclinic.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.ActivityTypes;
 import org.springframework.samples.petclinic.FitnessCentre;
+import org.springframework.samples.petclinic.Instructors;
 import org.springframework.samples.petclinic.Rooms;
+import org.springframework.samples.petclinic.User;
+import org.springframework.samples.petclinic.Users;
 import org.springframework.samples.petclinic.Vets;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -86,6 +92,26 @@ public class FitnessCentreController {
 		ActivityTypes activityTypes = new ActivityTypes();
 		activityTypes.getActivityTypeList().addAll(this.fitnessCentre.getActivityTypes());
 		return new ModelMap(activityTypes);
+	}
+	
+	/**
+	 * Vlastní handler pro zobrazení instruktorù.
+	 * 
+	 * @return ModelMap s atributy modelu pro dané view
+	 */
+	@RequestMapping("/instructors/index")
+	public ModelMap instructorsHandler() {
+		List<User> instructors = new ArrayList<User>();
+		List<User> users = new ArrayList<User>();
+		users.addAll(this.fitnessCentre.getUsers());
+		
+		// TODO Rychlejsi by byl dotaz primo na databazi, nez prochazet vsechny usery.
+		for (User user : users) {
+			if (user.getUserRole().getId() == 2) {
+				instructors.add(user);
+			}
+		}
+		return new ModelMap(instructors);
 	}
 	
 	/**
