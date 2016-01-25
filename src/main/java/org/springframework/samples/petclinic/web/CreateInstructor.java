@@ -50,8 +50,8 @@ private final FitnessCentre fitnessCentre;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(Model model) {
-		User instructor = new User();
-		model.addAttribute(instructor);
+		User user = new User();
+		model.addAttribute(user);
 		return "instructors/createForm";
 	}
 	
@@ -90,7 +90,7 @@ private final FitnessCentre fitnessCentre;
 	    			status.setComplete();
 	    			return "redirect:/instructors/index";	               	                
 	            } catch (Exception e) {
-	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
+	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " CHYBA => " + e.getMessage();
 	            }
 	        } else {
 	        	logger.info("Nepodarilo se uploadnout " + file.getOriginalFilename() + " protoze soubor je prazdny.");

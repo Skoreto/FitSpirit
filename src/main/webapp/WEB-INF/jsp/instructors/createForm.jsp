@@ -2,13 +2,13 @@
 <%@ include file="/WEB-INF/jsp/shared/layoutSidebarHeader.jsp" %>
 
 <c:choose>
-	<c:when test="${instructor['new']}"><c:set var="method" value="post"/></c:when>
+	<c:when test="${user['new']}"><c:set var="method" value="post"/></c:when>
 	<c:otherwise><c:set var="method" value="put"/></c:otherwise>
 </c:choose>
 
-<h2><c:if test="${instructor['new']}">Nový </c:if>instruktor:</h2>
+<h2><c:if test="${user['new']}">Nový </c:if>instruktor:</h2>
 
-<form:form class="form-horizontal" modelAttribute="instructor" method="${method}" enctype="multipart/form-data">
+<form:form class="form-horizontal" modelAttribute="user" method="${method}" enctype="multipart/form-data">
 	<div class="form-group">
 	    <label class="col-sm-2 control-label">Jméno <form:errors path="firstName" cssClass="errors"/></label>
 	    <div class="col-sm-10">
@@ -92,7 +92,7 @@
 	<div class="form-group">
 	    <div class="col-sm-offset-2 col-sm-10">
 	    	<c:choose>
-	    		<c:when test="${activityType['new']}">
+	    		<c:when test="${user['new']}">
 	    			<button type="submit" class="btn btn-default">Přidat instruktora</button>
 	    		</c:when>
 	    		<c:otherwise>

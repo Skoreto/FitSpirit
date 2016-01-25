@@ -10,7 +10,7 @@ public class Reservation extends BaseEntity {
 	private Lesson lesson;
 	
 	// Klient jako vlastník dané rezervace.
-	private FitnessCentreUser client;
+	private User client;
 	
 	// Pomocná vlastnost na oznaèení rezervací, které již nelze zrušit z dùvodù vnitøní politiky fitness centra
 	// Napø. 6 hodin pøed zahájením lekce klient již nemùže zrušit rezervaci lekce.

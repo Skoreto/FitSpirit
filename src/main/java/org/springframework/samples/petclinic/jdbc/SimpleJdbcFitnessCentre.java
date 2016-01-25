@@ -68,6 +68,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	private SimpleJdbcInsert insertActivityType;
 	private SimpleJdbcInsert insertPet;
 	private SimpleJdbcInsert insertVisit;
+	private SimpleJdbcInsert insertUser;
 
 	private final List<Vet> vets = new ArrayList<Vet>();
 	private final List<Room> rooms = new ArrayList<Room>();
@@ -93,6 +94,9 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 		this.insertVisit = new SimpleJdbcInsert(dataSource)
 			.withTableName("visits")
 			.usingGeneratedKeyColumns("id");
+		this.insertUser = new SimpleJdbcInsert(dataSource)
+				.withTableName("users")
+				.usingGeneratedKeyColumns("id");
 	}
 
 
@@ -179,10 +183,19 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 		synchronized (this.users) {
 			this.logger.info("Refreshuji cache uzivatelu");
 			
-			// Vrátí list všech Uzivatelu
+			// Vrati list vsech Uzivatelu
 			this.users.clear();
 			this.users.addAll(this.simpleJdbcTemplate.query("SELECT id, first_name, last_name, street, city, postcode, mail, telephone, credit, description, profile_photo_name, login, password, user_role_id FROM users ORDER BY id",
-					ParameterizedBeanPropertyRowMapper.newInstance(User.class)));			
+					ParameterizedBeanPropertyRowMapper.newInstance(User.class)));
+			
+			// Vrati list vsech moznych Uzivatelskych roli
+			final List<UserRole> userRoles = this.simpleJdbcTemplate.query(
+					"SELECT id, identificator, role_description FROM user_roles", 
+					ParameterizedBeanPropertyRowMapper.newInstance(UserRole.class));
+			
+			
+			
+			
 		}
 	}
 	
@@ -400,8 +413,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	@Transactional
 	public void storeUser(User user) throws DataAccessException {
 		if (user.isNew()) {
-			Number newKey = this.insertActivityType.executeAndReturnKey(
-					new BeanPropertySqlParameterSource(user));
+			Number newKey = this.insertUser.executeAndReturnKey(createUserParameterSource(user));
 			user.setId(newKey.intValue());
 		}
 		else {
@@ -417,8 +429,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	@Transactional
 	public void storePet(Pet pet) throws DataAccessException {
 		if (pet.isNew()) {
-			Number newKey = this.insertPet.executeAndReturnKey(
-					createPetParameterSource(pet));
+			Number newKey = this.insertPet.executeAndReturnKey(createPetParameterSource(pet));
 			pet.setId(newKey.intValue());
 		}
 		else {
@@ -467,6 +478,28 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			.addValue("birth_date", pet.getBirthDate())
 			.addValue("type_id", pet.getType().getId())
 			.addValue("owner_id", pet.getOwner().getId());
+	}
+	
+	/**
+	 * Creates a {@link MapSqlParameterSource} based on data values from the
+	 * supplied {@link User} instance.
+	 */
+	private MapSqlParameterSource createUserParameterSource(User user) {
+		return new MapSqlParameterSource()
+			.addValue("id", user.getId())
+			.addValue("first_name", user.getFirstName())
+			.addValue("last_name", user.getLastName())
+			.addValue("street", user.getStreet())
+			.addValue("city", user.getCity())
+			.addValue("postcode", user.getPostcode())
+			.addValue("mail", user.getMail())
+			.addValue("telephone", user.getTelephone())
+			.addValue("credit", user.getCredit())
+			.addValue("description", user.getDescription())
+			.addValue("profile_photo_name", user.getProfilePhotoName())
+			.addValue("login", user.getLogin())
+			.addValue("password", user.getPassword())
+			.addValue("user_role_id", user.getUserRole().getId());
 	}
 
 	/**

@@ -1,7 +1,6 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <%@ include file="/WEB-INF/jsp/shared/layoutSidebarHeader.jsp" %>
 
-
 <div class="page-row">
     <p>Naše studio je zaměřené pro klientky všech věkových kategorií a různé fyzické kondice. Z aktivit, které nabízíme si vybere opravdu každý!</p>
 </div>

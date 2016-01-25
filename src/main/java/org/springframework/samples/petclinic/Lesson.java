@@ -19,7 +19,7 @@ public class Lesson extends BaseEntity {
 	// originalCapacity - poèet zarezervovaných míst
 	private int actualCapacity;
 	
-	private FitnessCentreUser instructor;
+	private User instructor;
 	
 	// Poznámka k dané lekci.
 	private String descriptionLesson;
