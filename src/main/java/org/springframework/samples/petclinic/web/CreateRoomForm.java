@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Room;
+import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.samples.petclinic.validation.OwnerValidator;
 import org.springframework.samples.petclinic.validation.RoomValidator;
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,7 @@ public class CreateRoomForm {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CreateRoomForm.class);
 	// Nutné mìnit absolutní cestu ke složce "uploads" v projektu.
-	private final String myProjectPath = "C:\\Users\\Tomas\\Documents\\workspace-sts-3.7.2.RELEASE\\petclinic\\src\\main\\webapp\\static\\uploads";
+	private final String myProjectPath = ProjectUtils.getMyProjectPath();
 	
 	@Autowired
 	public CreateRoomForm(FitnessCentre fitnessCentre) {

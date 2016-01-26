@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.rmi.ServerRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +22,7 @@ public class FileUploadController {
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 	
 	// BUG Nutné mìnit apsolutní cestu ke složce "static" v projektu.
-	private String myProjectPath = "C:\\Users\\Tomas\\Documents\\workspace-sts-3.7.2.RELEASE\\petclinic\\src\\main\\webapp\\static";
+	private String myProjectPath = ProjectUtils.getMyProjectPath();
 	
     /**
      * Upload single file using Spring Controller

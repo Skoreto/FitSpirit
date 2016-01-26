@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Room;
+import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.samples.petclinic.validation.RoomValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +32,7 @@ public class EditRoomForm {
 	private final FitnessCentre fitnessCentre;
 	
 	private static final Logger logger = LoggerFactory.getLogger(EditRoomForm.class);
-	private final String myProjectPath = "C:\\Users\\Tomas\\Documents\\workspace-sts-3.7.2.RELEASE\\petclinic\\src\\main\\webapp\\static\\uploads";
+	private final String myProjectPath = ProjectUtils.getMyProjectPath();
 	
 	@Autowired
 	public EditRoomForm(FitnessCentre fitnessCentre) {
