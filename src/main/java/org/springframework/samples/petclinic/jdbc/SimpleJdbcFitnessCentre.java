@@ -439,7 +439,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 					"UPDATE activity_types SET first_name=:firstName, last_name=:lastName, " +
 					"street=:street, city=:city, postcode=:postcode, mail=:mail, telephone=:telephone, " +
 					"credit=:credit, description=:description, profile_photo_name=:profilePhotoName, " + 
-					"login=:login, password=:password, user_role_id=:user_role_id, is_active=:isActive WHERE id=:id",
+					"login=:login, password=:password, userRole_id=:userRole_id, is_active=:isActive WHERE id=:id",
 					new BeanPropertySqlParameterSource(user));	
 		}
 	}
