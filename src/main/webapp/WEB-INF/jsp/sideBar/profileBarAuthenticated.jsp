@@ -1,8 +1,8 @@
-<!--  <style type="text/css">
+<style type="text/css">
     .avatar {
-        background-image: url(static/images/manSilhouette.png);
+        background-image: url(../static/images/manSilhouette.png);
     }
-</style> -->
+</style>
 
 <div class="section-content">
     <div class="avatar"></div>

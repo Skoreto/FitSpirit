@@ -169,4 +169,12 @@ public class FitnessCentreController {
 		return "upload";
 	}
 	
+	/**
+	 * Handler pro zobrazeni JSP Prihlasovaci obrazovky.
+	 */
+	@RequestMapping("/login")
+	public String loginHandler() {
+		return "login/login";
+	}
+	
 }

@@ -67,7 +67,7 @@
                         <li class="nav-item"><a href="<spring:url value="/rooms/index" htmlEscape="true"/>"><i class="fa fa-map-marker"></i> Místnosti</a></li>
                         <li class="nav-item"><a href="#"><i class="fa fa-photo"></i> Galerie</a></li>
                         <li class="nav-item"><a href="<spring:url value="/instructors/index" htmlEscape="true"/>"><i class="fa fa-users"></i> Instruktoři</a></li>                     
-                        <li class="nav-item"><a href="#"><i class="fa fa-sign-in"></i> Přihlásit se</a></li>                                           
+                        <li class="nav-item"><a href="<spring:url value="/login" htmlEscape="true"/>"><i class="fa fa-sign-in"></i> Přihlásit se</a></li>                                           
                     </ul>
                 </div>
             </div>
