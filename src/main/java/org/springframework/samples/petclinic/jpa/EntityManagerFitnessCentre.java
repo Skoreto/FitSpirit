@@ -95,6 +95,11 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	public UserRole loadUserRole(int id) throws DataAccessException {
 		return this.em.find(UserRole.class, id);
 	}
+	
+	@Transactional(readOnly = true)
+	public User loadUser(int id) throws DataAccessException {
+		return this.em.find(User.class, id);
+	}
 
 	@Transactional(readOnly = true)
 	public Pet loadPet(int id) {

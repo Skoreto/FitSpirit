@@ -77,9 +77,14 @@ public interface FitnessCentre {
 	ActivityType loadActivityType(int id) throws DataAccessException;
 	
 	/**
-	 * Vrati uzivatelskou roli z data store dle zadaneho id.
+	 * Vrati Uzivatelskou roli z data store dle zadaneho id.
 	 */
 	UserRole loadUserRole(int id) throws DataAccessException;
+	
+	/**
+	 * Vrati Uzivatele z data store dle zadaneho id.
+	 */
+	User loadUser(int id) throws DataAccessException;
 
 	/**
 	 * Retrieve a <code>Pet</code> from the data store by id.

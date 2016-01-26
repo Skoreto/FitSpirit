@@ -185,13 +185,13 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			
 			// Vrati list vsech Uzivatelu
 			this.users.clear();
-			this.users.addAll(this.simpleJdbcTemplate.query("SELECT id, first_name, last_name, street, city, postcode, mail, telephone, credit, description, profile_photo_name, login, password, user_role_id FROM users ORDER BY id",
+			this.users.addAll(this.simpleJdbcTemplate.query("SELECT id, first_name, last_name, street, city, postcode, mail, telephone, credit, description, profile_photo_name, login, password, userRole_id FROM users ORDER BY id",
 					ParameterizedBeanPropertyRowMapper.newInstance(User.class)));
 			
 			// Vrati list vsech moznych Uzivatelskych roli
-			final List<UserRole> userRoles = this.simpleJdbcTemplate.query(
-					"SELECT id, identificator, role_description FROM user_roles", 
-					ParameterizedBeanPropertyRowMapper.newInstance(UserRole.class));
+//			final List<UserRole> userRoles = this.simpleJdbcTemplate.query(
+//					"SELECT id, identificator, role_description FROM user_roles", 
+//					ParameterizedBeanPropertyRowMapper.newInstance(UserRole.class));
 			
 			
 			
@@ -332,6 +332,24 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			throw new ObjectRetrievalFailureException(UserRole.class, new Integer(id));
 		}		
 		return userRole;
+	}
+	
+	/**
+	 * Nacte Uzivatele dle id.
+	 */
+	@Transactional(readOnly = true)
+	public User loadUser(int id) throws DataAccessException {
+		User user;
+		try {
+			user = this.simpleJdbcTemplate.queryForObject(
+					"SELECT id, first_name, last_name, street, city, postcode, mail, telephone, credit, description, profile_photo_name, login, password, userRole_id, is_active FROM users WHERE id=?",
+					ParameterizedBeanPropertyRowMapper.newInstance(User.class),
+					id);
+		}
+		catch (EmptyResultDataAccessException ex) {
+			throw new ObjectRetrievalFailureException(User.class, new Integer(id));
+		}		
+		return user;
 	}
 
 	@Transactional(readOnly = true)
@@ -499,7 +517,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			.addValue("profile_photo_name", user.getProfilePhotoName())
 			.addValue("login", user.getLogin())
 			.addValue("password", user.getPassword())
-			.addValue("user_role_id", user.getUserRole().getId());
+			.addValue("userRole_id", user.getUserRole().getId());
 	}
 
 	/**

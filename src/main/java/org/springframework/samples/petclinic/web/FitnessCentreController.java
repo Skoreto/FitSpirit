@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.ActivityTypes;
 import org.springframework.samples.petclinic.FitnessCentre;
-import org.springframework.samples.petclinic.Instructors;
 import org.springframework.samples.petclinic.Rooms;
 import org.springframework.samples.petclinic.User;
 import org.springframework.samples.petclinic.Users;
@@ -95,22 +93,28 @@ public class FitnessCentreController {
 	}
 	
 	/**
-	 * Vlastní handler pro zobrazení instruktorù.
+	 * Vlastni handler pro zobrazeni instruktoru.
+	 * Nejprve ziska seznam vsech uzivatelu. Z nich vybere ty, s id instruktora, a naplni
+	 * je do pomocneho seznamu instructorUsers. Teprve pomocny seznam instructorUsers
+	 * preleje do seznamu instructors tridy Users, ktery slouzi pro ucely odkazani ve view.
 	 * 
 	 * @return ModelMap s atributy modelu pro dané view
 	 */
 	@RequestMapping("/instructors/index")
 	public ModelMap instructorsHandler() {
-		List<User> instructors = new ArrayList<User>();
-		List<User> users = new ArrayList<User>();
-		users.addAll(this.fitnessCentre.getUsers());
+		List<User> instructorUsers = new ArrayList<User>();
+		List<User> allUsers = new ArrayList<User>();
+		allUsers.addAll(this.fitnessCentre.getUsers());
 		
 		// TODO Rychlejsi by byl dotaz primo na databazi, nez prochazet vsechny usery.
-		for (User user : users) {
+		for (User user : allUsers) {
 			if (user.getUserRole().getId() == 2) {
-				instructors.add(user);
+				instructorUsers.add(user);
 			}
 		}
+		
+		Users instructors = new Users();
+		instructors.getUserList().addAll(instructorUsers);
 		return new ModelMap(instructors);
 	}
 	
@@ -144,6 +148,16 @@ public class FitnessCentreController {
 	public ModelAndView activityTypeHandler(@PathVariable("activityTypeId") int activityTypeId) {
 		ModelAndView mav = new ModelAndView("activityTypes/detail");
 		mav.addObject(this.fitnessCentre.loadActivityType(activityTypeId));
+		return mav;
+	}
+	
+	/**
+	 * Handler pro zobrazeni detailu instruktora.
+	 */
+	@RequestMapping("/instructors/{instructorId}")
+	public ModelAndView instructorHandler(@PathVariable("instructorId") int instructorId) {
+		ModelAndView mav = new ModelAndView("instructors/detail");
+		mav.addObject(this.fitnessCentre.loadUser(instructorId));
 		return mav;
 	}
 	
