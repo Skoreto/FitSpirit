@@ -119,7 +119,7 @@ public class EditActivityType {
 	}	
 	
 	/**
-	 * Metoda pro smazani Aktivity dle zakaneho id.
+	 * Metoda pro smazani Aktivity dle zadaneho id.
 	 * Nejprve odstrani fotografii Aktivity ze slozky activityTypeImages, pote vymaze zaznam z databaze.
 	 */
 	@RequestMapping(value="/activityTypes/{activityTypeId}/delete")

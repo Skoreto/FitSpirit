@@ -481,6 +481,10 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	public void deleteActivityType(int id) throws DataAccessException {
 		this.simpleJdbcTemplate.update("DELETE FROM activity_types WHERE id=?", id);
 	}
+	
+	public void deleteUser(int id) throws DataAccessException {
+		this.simpleJdbcTemplate.update("DELETE FROM users WHERE id=?", id);
+	}
 
 	// END of Clinic implementation section ************************************
 

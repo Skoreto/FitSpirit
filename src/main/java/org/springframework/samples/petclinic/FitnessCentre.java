@@ -150,5 +150,10 @@ public interface FitnessCentre {
 	 * Deletes a <code>ActivityType</code> from the data store.
 	 */
 	void deleteActivityType(int id) throws DataAccessException;
+	
+	/**
+	 * Deletes a <code>User</code> from the data store.
+	 */
+	void deleteUser(int id) throws DataAccessException;
 
 }

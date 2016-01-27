@@ -11,7 +11,6 @@ import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.User;
 import org.springframework.samples.petclinic.util.ProjectUtils;
-import org.springframework.samples.petclinic.validation.ActivityTypeValidator;
 import org.springframework.samples.petclinic.validation.UserValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -120,8 +119,26 @@ public class EditInstructor {
 		}
 	}	
 	
-	
-	
-	
-	
+	/**
+	 * Metoda pro smazani Instruktora dle zadaneho id.
+	 * Nejprve odstrani fotografii Instruktora ze slozky userImages, pote vymaze zaznam z databaze.
+	 */
+	@RequestMapping(value="/instructors/{instructorId}/delete")
+	public String deleteInstructor(@PathVariable int instructorId) {
+		User instructor = this.fitnessCentre.loadUser(instructorId);
+		String profilePhotoName = instructor.getProfilePhotoName();	
+		String profilePhotoPath = myProjectPath + File.separator + "userImages" + File.separator + profilePhotoName;
+		File profilePhoto = new File(profilePhotoPath);
+		
+		// Smaže soubor a zároveò vrací bool, jestli byl soubor úspìšnì smazán.
+		if (profilePhoto.delete()) {
+			logger.info("Smazán obrázek: " + profilePhotoName);
+		} else {
+			logger.info("Nezdaøilo se smazat obrázek: " + profilePhotoName + " z umístìní " + profilePhotoPath);
+		}
+				
+		this.fitnessCentre.deleteUser(instructorId);
+		return "redirect:/instructors/index";	
+	}
+		
 }
