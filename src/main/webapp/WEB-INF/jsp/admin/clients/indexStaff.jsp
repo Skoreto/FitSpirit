@@ -58,7 +58,7 @@
                             <li><a href="<spring:url value="/admin/clients/${user.id}/delete" htmlEscape="true" />"><span class="glyphicon glyphicon-trash"></span> Smazat</a></li>
                         </ul>
                     </div>
-                    <a href="<spring:url value="/clients/${user.id}/activate" htmlEscape="true" />" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Aktivovat</a>
+                    <a href="<spring:url value="/admin/clients/${user.id}/activate" htmlEscape="true" />" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Aktivovat</a>
                 </td>			
 				</c:otherwise>
 			</c:choose>

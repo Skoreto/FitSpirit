@@ -233,6 +233,17 @@ public class ClientController {
 	}
 	
 	/**
+	 * Handler pro aktivaci uctu nove registrovaneho klienta.
+	 */
+	@RequestMapping("/admin/clients/{clientId}/activate")
+	public String clientActivationHandler(@PathVariable("clientId") int clientId) {
+		User client = this.fitnessCentre.loadUser(clientId);
+		client.setActive(true);
+		this.fitnessCentre.storeUser(client);
+		return "redirect:/admin/clients/indexStaff";
+	}
+	
+	/**
 	 * Handler pro smazani Klienta dle zadaneho id.
 	 * Nejprve odstrani fotografii Klienta ze slozky userImages, pote vymaze zaznam z databaze.
 	 */
