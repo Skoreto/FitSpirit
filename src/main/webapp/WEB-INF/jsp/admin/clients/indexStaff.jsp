@@ -1,6 +1,7 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <%@ include file="/WEB-INF/jsp/admin/shared/layoutSidebarHeader.jsp" %>
 
+<!--  
 <div class="row">
     <div class="col-lg-6">
         <form:form>
@@ -15,7 +16,7 @@
 </div>
 
 <br/>
-
+-->
 <table class="table table-hover table-condensed table-boxed">
     <thead>
     <tr>

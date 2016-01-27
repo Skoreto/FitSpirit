@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Tomas Skorepa
  */
 @Controller
+@SessionAttributes("user")
 public class ClientController {
 	
 	private final FitnessCentre fitnessCentre;
@@ -149,5 +151,79 @@ public class ClientController {
 		mav.addObject(this.fitnessCentre.loadUser(clientId));
 		return mav;
 	}
+	
+	/**
+	 * Metoda pro zobrazeni formulare pro vytvoreni klienta a naplneni
+	 * kolonek stavajicimi hodnotami = formular upravy klienta.
+	 * Ve view se pak odkazuji na promennou "user"!
+	 */
+	@RequestMapping(value="/admin/clients/{clientId}/edit", method = RequestMethod.GET)
+	public String setupEditForm(@PathVariable("clientId") int clientId, Model model) {
+		User client = this.fitnessCentre.loadUser(clientId);
+		model.addAttribute("user", client);
+		return "admin/clients/editForm";
+	}
+	
+	/**
+	 * Metoda pro editaci stavajiciho klienta.
+	 * Nejprve overi, zda bylo vyplneno jmeno, prijmeni, mail, heslo. 
+	 * - Pokud ne, vrati uzivatele na formular s upozornenim na povinnost vyplnit problemova pole.
+	 * Pote overi, zda byla zvolena fotografie.
+	 * - Pokud ne, vypise do konzole zpravu o nevyplneni pole fotografie a vrati uzivatele na formular.
+	 * - Pokud ano, pokusi se smazat puvodni obrazek z uloziste, nahrat novy obrazek a vlozit zaznam do databaze.
+	 */
+	@RequestMapping(value="/admin/clients/{clientId}/edit", method = {RequestMethod.PUT, RequestMethod.POST})
+	public String processEditSubmit(@ModelAttribute User client, BindingResult result, SessionStatus status, @RequestParam("file") MultipartFile file) {	
+		new UserValidator().validate(client, result);
+		if (result.hasErrors()) {
+			return "admin/clients/editForm";
+		}
+		else {			
+			if (!file.isEmpty()) {				
+				// Smazani puvodni fotografie z uloziste.
+				String profilePhotoName = client.getProfilePhotoName();	
+				String profilePhotoPath = myProjectPath + File.separator + "userImages" + File.separator + profilePhotoName;
+				File profilePhoto = new File(profilePhotoPath);
+				
+				// Smaze soubor a zaroven vraci bool, jestli byl soubor uspesne smazan.
+				if (profilePhoto.delete()) {
+					logger.info("Smazan obrazek: " + profilePhotoName);
+				} else {
+					logger.info("Nezdarilo se smazat obrazek: " + profilePhotoName + " z umisteni " + profilePhotoPath);
+				}
+							
+				// Nahrani nove fotografie.
+	            try {
+	                byte[] bytes = file.getBytes();
+	 
+	                // Creating the directory to store file                                       
+	                File directory = new File(myProjectPath + File.separator + "userImages");
+	                
+	                // TODO Lepe generovat GUID.
+	                String originalFileName = file.getOriginalFilename();
+	                
+	                // Create the file on server
+	                File serverFile = new File(directory.getAbsolutePath() + File.separator + originalFileName);
+	                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+	                stream.write(bytes);
+	                stream.close();
+
+	                logger.info("Uspesne umisteni souboru na serveru = " + serverFile.getAbsolutePath());
+	                
+	                client.setProfilePhotoName(originalFileName);
+	                
+	                this.fitnessCentre.storeUser(client);
+	    			status.setComplete();
+	    			return "redirect:/admin/clients/indexStaff";	               	                
+	            } catch (Exception e) {
+	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
+	            }
+	        } else {
+	        	// TODO Informovat uzivatele o povinnosti nahrat fotografii.
+	        	logger.info("Nepodarilo se uploadnout " + file.getOriginalFilename() + " protoze soubor je prazdny.");
+	        	return "admin/clients/editForm";
+	        }						
+		}
+	}	
 	
 }
