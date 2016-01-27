@@ -55,6 +55,9 @@ public class ClientController {
 		dataBinder.setDisallowedFields("id");
 	}
 	
+	/**
+	 * Handler pro zobrazeni formulare pro registraci noveho uzivatele.
+	 */
 	@RequestMapping(value="/registration/create", method = RequestMethod.GET)
 	public String setupForm(Model model) {
 		User user = new User();
@@ -62,6 +65,9 @@ public class ClientController {
 		return "registration/createForm";
 	}	
 	
+	/**
+	 * Handler pro registraci noveho uzivatele.
+	 */
 	@RequestMapping(value="/registration/create", method = RequestMethod.POST)
 	public String processSubmit(@ModelAttribute User client, BindingResult result, SessionStatus status, @RequestParam("file") MultipartFile file) {
 		new UserValidator().validate(client, result);
@@ -117,7 +123,7 @@ public class ClientController {
 	}
 	
 	/**
-	 * Vlastni handler pro zobrazeni klientu.
+	 * Handler pro zobrazeni klientu.
 	 * Nejprve ziska seznam vsech uzivatelu. Z nich vybere ty, s id klienta, a naplni
 	 * je do pomocneho seznamu clientUsers. Teprve pomocny seznam clientUsers
 	 * preleje do seznamu clients tridy Users, ktery slouzi pro ucely odkazani ve view.
@@ -153,7 +159,7 @@ public class ClientController {
 	}
 	
 	/**
-	 * Metoda pro zobrazeni formulare pro vytvoreni klienta a naplneni
+	 * Handler pro zobrazeni formulare pro vytvoreni klienta a naplneni
 	 * kolonek stavajicimi hodnotami = formular upravy klienta.
 	 * Ve view se pak odkazuji na promennou "user"!
 	 */
@@ -165,7 +171,7 @@ public class ClientController {
 	}
 	
 	/**
-	 * Metoda pro editaci stavajiciho klienta.
+	 * Handler pro editaci stavajiciho klienta.
 	 * Nejprve overi, zda bylo vyplneno jmeno, prijmeni, mail, heslo. 
 	 * - Pokud ne, vrati uzivatele na formular s upozornenim na povinnost vyplnit problemova pole.
 	 * Pote overi, zda byla zvolena fotografie.
@@ -224,6 +230,28 @@ public class ClientController {
 	        	return "admin/clients/editForm";
 	        }						
 		}
-	}	
+	}
+	
+	/**
+	 * Handler pro smazani Klienta dle zadaneho id.
+	 * Nejprve odstrani fotografii Klienta ze slozky userImages, pote vymaze zaznam z databaze.
+	 */
+	@RequestMapping(value="/admin/clients/{clientId}/delete")
+	public String deleteInstructor(@PathVariable int clientId) {
+		User client = this.fitnessCentre.loadUser(clientId);
+		String profilePhotoName = client.getProfilePhotoName();	
+		String profilePhotoPath = myProjectPath + File.separator + "userImages" + File.separator + profilePhotoName;
+		File profilePhoto = new File(profilePhotoPath);
+		
+		// Smaže soubor a zároveò vrací bool, jestli byl soubor úspìšnì smazán.
+		if (profilePhoto.delete()) {
+			logger.info("Smazan obrazek: " + profilePhotoName);
+		} else {
+			logger.info("Nezdarilo se smazat obrazek: " + profilePhotoName + " z umisteni " + profilePhotoPath);
+		}
+				
+		this.fitnessCentre.deleteUser(clientId);
+		return "redirect:/admin/clients/indexStaff";	
+	}
 	
 }
