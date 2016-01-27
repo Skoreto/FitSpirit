@@ -44,7 +44,7 @@
 	                            <li><a href="<spring:url value="/admin/clients/${user.id}/edit" htmlEscape="true" />"><span class="glyphicon glyphicon-pencil"></span> Upravit</a></li>
 	                        </ul>
 	                    </div>
-	                    <a href="<spring:url value="/admin/clients/${user.id}/creditAdministration" htmlEscape="true" />" class="btn btn-warning"><span class="glyphicon glyphicon-plus"></span> Kredit</a>
+	                    <a href="<spring:url value="/admin/clients/${user.id}/credit" htmlEscape="true" />" class="btn btn-warning"><span class="glyphicon glyphicon-plus"></span> Kredit</a>
 	                </td>
 				</c:when>
 				<c:otherwise>

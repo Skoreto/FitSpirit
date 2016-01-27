@@ -11,6 +11,4 @@
         <li><a href="<spring:url value="/staffs/indexStaff" htmlEscape="true"/>"><i class="fa fa-female"></i> Obsluha</a></li>
     </ul>
 </li>
-<li class="nav-item"><a href="#"><i class="fa fa-credit-card"></i> Správa kreditu</a></li>
-<li class="nav-item"><a href="#"><i class="fa fa-eye"></i> Role</a></li>
 <li class="nav-item"><a href="<spring:url value="/logout" htmlEscape="true"/>"><i class="fa fa-sign-out"></i> Odhlásit</a></li>

@@ -21,11 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * Annotation-driven <em>MultiActionController</em> that handles all non-form
  * URL's.
- *
- * @author Juergen Hoeller
- * @author Mark Fisher
- * @author Ken Krebs
- * @author Arjen Poutsma
  */
 @Controller
 public class FitnessCentreController {

@@ -244,6 +244,32 @@ public class ClientController {
 	}
 	
 	/**
+	 * Handler pro zobrazeni formulare pro pripsani kreditu klientovi.
+	 */
+	@RequestMapping(value="/admin/clients/{clientId}/credit", method = RequestMethod.GET)
+	public String setupCreditForm(@PathVariable("clientId") int clientId, Model model) {
+		User client = this.fitnessCentre.loadUser(clientId);
+		model.addAttribute("user", client);
+		return "admin/clients/creditChosenClient";
+	}
+	
+	/**
+	 * Handler pro pripsani kreditu klientovi.
+	 * Nejprve zjisti aktualni stav kreditu klienta.
+	 * Pote k nemu pricte castku vyplnenou ve formulari.
+	 */
+	@RequestMapping(value="/admin/clients/{clientId}/credit", method = {RequestMethod.PUT, RequestMethod.POST})
+	public String processCreditSubmit(@ModelAttribute User client, SessionStatus status, @RequestParam("addedCredit") double addedCredit) {		
+		// TODO Ošetøit pøipsání záporného kreditu.
+		double actualCredit = client.getCredit();
+		client.setCredit(actualCredit + addedCredit);
+		
+        this.fitnessCentre.storeUser(client);
+		status.setComplete();
+		return "redirect:/admin/clients/indexStaff";	               	                
+	}
+	
+	/**
 	 * Handler pro smazani Klienta dle zadaneho id.
 	 * Nejprve odstrani fotografii Klienta ze slozky userImages, pote vymaze zaznam z databaze.
 	 */
