@@ -3,6 +3,8 @@ package org.springframework.samples.petclinic.web;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.User;
 import org.springframework.samples.petclinic.UserRole;
+import org.springframework.samples.petclinic.Users;
 import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.samples.petclinic.validation.UserValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -31,16 +35,16 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Tomas Skorepa
  */
 @Controller
-public class CreateClient {
+public class ClientController {
 	
 	private final FitnessCentre fitnessCentre;
 	
-	private static final Logger logger = LoggerFactory.getLogger(CreateClient.class);
+	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
 	private final String myProjectPath = ProjectUtils.getMyProjectPath();
 	
 	@Autowired
-	public CreateClient(FitnessCentre fitnessCentre) {
+	public ClientController(FitnessCentre fitnessCentre) {
 		this.fitnessCentre = fitnessCentre;
 	}
 	
@@ -106,6 +110,42 @@ public class CreateClient {
 	@RequestMapping("/registration/{clientId}/success")
 	public ModelAndView instructorHandler(@PathVariable("clientId") int clientId) {
 		ModelAndView mav = new ModelAndView("registration/success");
+		mav.addObject(this.fitnessCentre.loadUser(clientId));
+		return mav;
+	}
+	
+	/**
+	 * Vlastni handler pro zobrazeni klientu.
+	 * Nejprve ziska seznam vsech uzivatelu. Z nich vybere ty, s id klienta, a naplni
+	 * je do pomocneho seznamu clientUsers. Teprve pomocny seznam clientUsers
+	 * preleje do seznamu clients tridy Users, ktery slouzi pro ucely odkazani ve view.
+	 * 
+	 * @return ModelMap s atributy modelu pro dané view
+	 */
+	@RequestMapping("/admin/clients/indexStaff")
+	public ModelMap clientsHandler() {
+		List<User> clientUsers = new ArrayList<User>();
+		List<User> allUsers = new ArrayList<User>();
+		allUsers.addAll(this.fitnessCentre.getUsers());
+		
+		// TODO Rychlejsi by byl dotaz primo na databazi, nez prochazet vsechny usery.
+		for (User user : allUsers) {
+			if (user.getUserRole().getId() == 3) {
+				clientUsers.add(user);
+			}
+		}
+		
+		Users clients = new Users();
+		clients.getUserList().addAll(clientUsers);
+		return new ModelMap(clients);
+	}
+		
+	/**
+	 * Handler pro zobrazeni detailu klienta.
+	 */
+	@RequestMapping("/admin/clients/{clientId}")
+	public ModelAndView clientHandler(@PathVariable("clientId") int clientId) {
+		ModelAndView mav = new ModelAndView("admin/clients/detail");
 		mav.addObject(this.fitnessCentre.loadUser(clientId));
 		return mav;
 	}
