@@ -14,7 +14,6 @@
 <h3>Zkušební rozcestník</h3>
 <ul>
   <li><a href="<spring:url value="/index" htmlEscape="true" />">Hlavní strana FitSpirit - FUNKČNÍ ODKAZ</a></li>
-  <li><a href="<spring:url value="/upload" htmlEscape="true" />">Upload obrázku - zkušební stránka</a></li>
 </ul>
 
 <p>&nbsp;</p>
