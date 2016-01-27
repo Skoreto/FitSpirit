@@ -3,6 +3,8 @@ package org.springframework.samples.petclinic.web;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.User;
+import org.springframework.samples.petclinic.UserRole;
+import org.springframework.samples.petclinic.Users;
 import org.springframework.samples.petclinic.util.ProjectUtils;
+import org.springframework.samples.petclinic.validation.ActivityTypeValidator;
 import org.springframework.samples.petclinic.validation.UserValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -25,33 +31,131 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * Controller pro handlovani Instruktora v systemu.
+ * @author Tomas Skorepa
+ */
 @Controller
 @SessionAttributes("user")
-public class EditInstructor {
-
+public class InstructorController {
+	
 	private final FitnessCentre fitnessCentre;
 	
-	private static final Logger logger = LoggerFactory.getLogger(EditInstructor.class);
+	private static final Logger logger = LoggerFactory.getLogger(InstructorController.class);
+
 	private final String myProjectPath = ProjectUtils.getMyProjectPath();
 	
 	@Autowired
-	public EditInstructor(FitnessCentre fitnessCentre) {
+	public InstructorController(FitnessCentre fitnessCentre) {
 		this.fitnessCentre = fitnessCentre;
 	}
 	
 	@InitBinder
-	public void setAllowedFields(WebDataBinder databinder) {
-		databinder.setDisallowedFields("id");
+	public void setAllowedFields(WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
 	}
 	
 	/**
-	 * Metoda pro zobrazeni formulare pro vytvoreni instruktora a naplneni
-	 * kolonek stavajicimi hodnotami = formular upravy instruktora.
+	 * Handler pro zobrazeni seznamu instruktoru.
+	 * Nejprve ziska seznam vsech uzivatelu. Z nich vybere ty, s id instruktora, a naplni
+	 * je do pomocneho seznamu instructorUsers. Teprve pomocny seznam instructorUsers
+	 * preleje do seznamu instructors tridy Users, ktery slouzi pro ucely odkazani ve view.
+	 * @return ModelMap s atributy modelu pro dané view
+	 */
+	@RequestMapping("/instructors/index")
+	public ModelMap instructorsHandler() {
+		List<User> instructorUsers = new ArrayList<User>();
+		List<User> allUsers = new ArrayList<User>();
+		allUsers.addAll(this.fitnessCentre.getUsers());
+		
+		// TODO Rychlejsi by byl dotaz primo na databazi, nez prochazet vsechny usery.
+		for (User user : allUsers) {
+			if (user.getUserRole().getId() == 2) {
+				instructorUsers.add(user);
+			}
+		}
+		
+		Users instructors = new Users();
+		instructors.getUserList().addAll(instructorUsers);
+		return new ModelMap(instructors);
+	}
+	
+	/**
+	 * Handler pro zobrazeni formulare pro vytvoreni noveho Instruktora.
+	 */
+	@RequestMapping(value="/instructors/create", method = RequestMethod.GET)
+	public String setupForm(Model model) {
+		User user = new User();
+		model.addAttribute(user);
+		return "instructors/createForm";
+	}
+	
+	/**
+	 * Handler pro vytvoreni noveho Instruktora.
+	 */
+	@RequestMapping(value="/instructors/create", method = RequestMethod.POST)
+	public String processSubmit(@ModelAttribute User instructor, BindingResult result, SessionStatus status, @RequestParam("file") MultipartFile file) {
+		new UserValidator().validate(instructor, result);
+		if (result.hasErrors()) {
+			return "instructors/createForm";
+		}
+		else {			
+			if (!file.isEmpty()) {
+	            try {
+	                byte[] bytes = file.getBytes();
+	 
+	                // Creating the directory to store file                                       
+	                File directory = new File(myProjectPath + File.separator + "userImages");
+	                
+	                // TODO Lepe zmenit na GUID.
+	                String originalFileName = file.getOriginalFilename();
+	                
+	                // Create the file on server
+	                File serverFile = new File(directory.getAbsolutePath() + File.separator + originalFileName);
+	                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+	                stream.write(bytes);
+	                stream.close();
+
+	                logger.info("Uspesne umisteni souboru na serveru = " + serverFile.getAbsolutePath());
+	                
+	                instructor.setProfilePhotoName(originalFileName);
+	                
+	                UserRole instructorRole = this.fitnessCentre.loadUserRole(2);	// id role instruktora = 2
+	                instructor.setUserRole(instructorRole);
+	                instructor.setActive(true);
+	                
+	                this.fitnessCentre.storeUser(instructor);
+	    			status.setComplete();
+	    			return "redirect:/instructors/index";	               	                
+	            } catch (Exception e) {
+	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " CHYBA => " + e.getMessage();
+	            }
+	        } else {
+	        	logger.info("Nepodarilo se uploadnout " + file.getOriginalFilename() + " protoze soubor je prazdny.");
+	        	return "instructors/createForm";
+	        }						
+		}
+	}
+	
+	/**
+	 * Handler pro zobrazeni detailu instruktora.
+	 */
+	@RequestMapping("/instructors/{instructorId}")
+	public ModelAndView instructorHandler(@PathVariable("instructorId") int instructorId) {
+		ModelAndView mav = new ModelAndView("instructors/detail");
+		mav.addObject(this.fitnessCentre.loadUser(instructorId));
+		return mav;
+	}
+	
+	/**
+	 * Metoda pro zobrazeni formulare pro vytvoreni Instruktora a naplneni
+	 * kolonek stavajicimi hodnotami = formular upravy Instruktora.
 	 * Ve view se pak odkazuji na promennou "user"!
 	 */
-	@RequestMapping(method = RequestMethod.GET)
-	public String setupForm(@PathVariable("instructorId") int instructorId, Model model) {
+	@RequestMapping(value="/instructors/{instructorId}/edit", method = RequestMethod.GET)
+	public String setupEditForm(@PathVariable("instructorId") int instructorId, Model model) {
 		User instructor = this.fitnessCentre.loadUser(instructorId);
 		model.addAttribute("user", instructor);
 		return "instructors/createForm";
@@ -66,7 +170,7 @@ public class EditInstructor {
 	 * - Pokud ano, pokusi se smazat puvodni obrazek z uloziste, nahrat novy obrazek a vlozit zaznam do databaze.
 	 */
 	@RequestMapping(value="/instructors/{instructorId}/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-	public String processSubmit(@ModelAttribute User instructor, BindingResult result, SessionStatus status, @RequestParam("file") MultipartFile file) {	
+	public String processEditSubmit(@ModelAttribute User instructor, BindingResult result, SessionStatus status, @RequestParam("file") MultipartFile file) {	
 		new UserValidator().validate(instructor, result);
 		if (result.hasErrors()) {
 			return "instructors/createForm";
@@ -117,7 +221,7 @@ public class EditInstructor {
 	        	return "instructors/createForm";
 	        }						
 		}
-	}	
+	}		
 	
 	/**
 	 * Metoda pro smazani Instruktora dle zadaneho id.
@@ -140,5 +244,5 @@ public class EditInstructor {
 		this.fitnessCentre.deleteUser(instructorId);
 		return "redirect:/instructors/index";	
 	}
-		
+	
 }

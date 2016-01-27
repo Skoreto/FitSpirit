@@ -1,15 +1,8 @@
 
 package org.springframework.samples.petclinic.web;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.ActivityTypes;
 import org.springframework.samples.petclinic.FitnessCentre;
-import org.springframework.samples.petclinic.Rooms;
-import org.springframework.samples.petclinic.User;
-import org.springframework.samples.petclinic.Users;
 import org.springframework.samples.petclinic.Vets;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,8 +21,8 @@ public class FitnessCentreController {
 	private final FitnessCentre fitnessCentre;
 
 	@Autowired
-	public FitnessCentreController(FitnessCentre clinic) {
-		this.fitnessCentre = clinic;
+	public FitnessCentreController(FitnessCentre fitnessCentre) {
+		this.fitnessCentre = fitnessCentre;
 	}
 
 	/**
@@ -45,11 +38,19 @@ public class FitnessCentreController {
 	}
 	
 	/**
-	 * Handler pro zobrazeni hlavni stranky fitness centra.
+	 * Handler pro zobrazeni Hlavni stranky fitness centra.
 	 */
 	@RequestMapping("/index")
 	public String indexHandler() {
 		return "index";
+	}
+	
+	/**
+	 * Handler pro zobrazeni JSP Prihlasovaci obrazovky.
+	 */
+	@RequestMapping("/login")
+	public String loginHandler() {
+		return "login/login";
 	}
 
 	/**
@@ -68,58 +69,7 @@ public class FitnessCentreController {
 		vets.getVetList().addAll(this.fitnessCentre.getVets());
 		return new ModelMap(vets);
 	}
-	
-	
-	/**
-	 * Vlastní handler pro zobrazení místností.
-	 * 
-	 * @return ModelMap s atributy modelu pro dané view
-	 */
-	@RequestMapping("/rooms/index")
-	public ModelMap roomsHandler() {
-		Rooms rooms = new Rooms();
-		rooms.getRoomList().addAll(this.fitnessCentre.getRooms());
-		return new ModelMap(rooms);
-	}
-	
-	/**
-	 * Vlastní handler pro zobrazení aktivit.
-	 * 
-	 * @return ModelMap s atributy modelu pro dané view
-	 */
-	@RequestMapping("/activityTypes/index")
-	public ModelMap activityTypesHandler() {
-		ActivityTypes activityTypes = new ActivityTypes();
-		activityTypes.getActivityTypeList().addAll(this.fitnessCentre.getActivityTypes());
-		return new ModelMap(activityTypes);
-	}
-	
-	/**
-	 * Vlastni handler pro zobrazeni instruktoru.
-	 * Nejprve ziska seznam vsech uzivatelu. Z nich vybere ty, s id instruktora, a naplni
-	 * je do pomocneho seznamu instructorUsers. Teprve pomocny seznam instructorUsers
-	 * preleje do seznamu instructors tridy Users, ktery slouzi pro ucely odkazani ve view.
-	 * 
-	 * @return ModelMap s atributy modelu pro dané view
-	 */
-	@RequestMapping("/instructors/index")
-	public ModelMap instructorsHandler() {
-		List<User> instructorUsers = new ArrayList<User>();
-		List<User> allUsers = new ArrayList<User>();
-		allUsers.addAll(this.fitnessCentre.getUsers());
-		
-		// TODO Rychlejsi by byl dotaz primo na databazi, nez prochazet vsechny usery.
-		for (User user : allUsers) {
-			if (user.getUserRole().getId() == 2) {
-				instructorUsers.add(user);
-			}
-		}
-		
-		Users instructors = new Users();
-		instructors.getUserList().addAll(instructorUsers);
-		return new ModelMap(instructors);
-	}
-		
+			
 	/**
 	 * Custom handler for displaying an owner.
 	 *
@@ -134,36 +84,6 @@ public class FitnessCentreController {
 	}
 	
 	/**
-	 * Vlastni handler pro zobrazeni detailu o mistnosti.
-	 */
-	@RequestMapping("/rooms/{roomId}")
-	public ModelAndView roomHandler(@PathVariable("roomId") int roomId) {
-		ModelAndView mav = new ModelAndView("rooms/detail");
-		mav.addObject(this.fitnessCentre.loadRoom(roomId));
-		return mav;
-	}
-	
-	/**
-	 * Vlastni handler pro zobrazeni detailu o aktivite.
-	 */
-	@RequestMapping("/activityTypes/{activityTypeId}")
-	public ModelAndView activityTypeHandler(@PathVariable("activityTypeId") int activityTypeId) {
-		ModelAndView mav = new ModelAndView("activityTypes/detail");
-		mav.addObject(this.fitnessCentre.loadActivityType(activityTypeId));
-		return mav;
-	}
-	
-	/**
-	 * Handler pro zobrazeni detailu instruktora.
-	 */
-	@RequestMapping("/instructors/{instructorId}")
-	public ModelAndView instructorHandler(@PathVariable("instructorId") int instructorId) {
-		ModelAndView mav = new ModelAndView("instructors/detail");
-		mav.addObject(this.fitnessCentre.loadUser(instructorId));
-		return mav;
-	}
-	
-	/**
 	 * Custom handler for displaying an list of visits.
 	 *
 	 * @param petId the ID of the pet whose visits to display
@@ -174,23 +94,6 @@ public class FitnessCentreController {
 		ModelAndView mav = new ModelAndView("visits");
 		mav.addObject("visits", this.fitnessCentre.loadPet(petId).getVisits());
 		return mav;
-	}
-	
-	/**
-	 * Handler pro JSP k nahrávání obrázku.
-	 * @return
-	 */
-	@RequestMapping("/upload")
-	public String uploadHandler() {
-		return "upload";
-	}
-	
-	/**
-	 * Handler pro zobrazeni JSP Prihlasovaci obrazovky.
-	 */
-	@RequestMapping("/login")
-	public String loginHandler() {
-		return "login/login";
 	}
 	
 }

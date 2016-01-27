@@ -8,12 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.ActivityType;
+import org.springframework.samples.petclinic.ActivityTypes;
 import org.springframework.samples.petclinic.FitnessCentre;
-import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.samples.petclinic.validation.ActivityTypeValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -25,39 +26,119 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * Controller pro handlovani Aktivit v systemu.
+ * @author Tomas Skorepa
+ */
 @Controller
 @SessionAttributes("activityType")
-public class EditActivityType {
-	
+public class ActivityTypeController {
+
 	private final FitnessCentre fitnessCentre;
 	
-	private static final Logger logger = LoggerFactory.getLogger(EditActivityType.class);
+	private static final Logger logger = LoggerFactory.getLogger(ActivityTypeController.class);
+	
 	private final String myProjectPath = ProjectUtils.getMyProjectPath();
 	
 	@Autowired
-	public EditActivityType(FitnessCentre fitnessCentre) {
+	public ActivityTypeController(FitnessCentre fitnessCentre) {
 		this.fitnessCentre = fitnessCentre;
 	}
 	
 	@InitBinder
-	public void setAllowedFields(WebDataBinder databinder) {
-		databinder.setDisallowedFields("id");
+	public void setAllowedFields(WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
 	}
 	
 	/**
-	 * Metoda pro zobrazeni formulare pro vytvoreni aktivity a naplneni
-	 * kolonek stavajicimi hodnotami = formular upravy aktivity.
+	 * Handler pro zobrazení seznamu Aktivit.
+	 * @return ModelMap s atributy modelu pro dané view
 	 */
-	@RequestMapping(method = RequestMethod.GET)
-	public String setupForm(@PathVariable("activityTypeId") int activityTypeId, Model model) {
+	@RequestMapping("/activityTypes/index")
+	public ModelMap activityTypesHandler() {
+		ActivityTypes activityTypes = new ActivityTypes();
+		activityTypes.getActivityTypeList().addAll(this.fitnessCentre.getActivityTypes());
+		return new ModelMap(activityTypes);
+	}
+	
+	/**
+	 * Handler pro zobrazeni formulare pro vytvoreni nove Aktivity.
+	 */
+	@RequestMapping(value="/activityTypes/create", method = RequestMethod.GET)
+	public String setupForm(Model model) {
+		ActivityType activityType = new ActivityType();
+		model.addAttribute(activityType);
+		return "activityTypes/createForm";
+	}
+	
+	/**
+	 * Handler pro vytvoreni nove Aktivity.
+	 */
+	@RequestMapping(value="/activityTypes/create", method = RequestMethod.POST)
+	public String processSubmit(@ModelAttribute ActivityType activityType, BindingResult result, SessionStatus status, @RequestParam("file") MultipartFile file) {
+		new ActivityTypeValidator().validate(activityType, result);
+		if (result.hasErrors()) {
+			return "activityTypes/createForm";
+		}
+		else {			
+			if (!file.isEmpty()) {
+	            try {
+	                byte[] bytes = file.getBytes();
+	 
+	                // Creating the directory to store file                                       
+	                File directory = new File(myProjectPath + File.separator + "activityTypeImages");
+	                
+	                // TODO Lepe zmenit na GUID.
+	                String originalFileName = file.getOriginalFilename();
+	                
+	                // Create the file on server
+	                File serverFile = new File(directory.getAbsolutePath() + File.separator + originalFileName);
+	                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+	                stream.write(bytes);
+	                stream.close();
+
+	                logger.info("Uspesne umisteni souboru na serveru = " + serverFile.getAbsolutePath());
+	                
+	                activityType.setIllustrationImageName(originalFileName);
+	                
+	                this.fitnessCentre.storeActivityType(activityType);
+	    			status.setComplete();
+	    			return "redirect:/activityTypes/index";	               	                
+	            } catch (Exception e) {
+	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
+	            }
+	        } else {
+	        	logger.info("Nepodarilo se uploadnout " + file.getOriginalFilename() + " protoze soubor je prazdny.");
+	        	return "activityTypes/createForm";
+	        }						
+		}
+	}
+	
+	/**
+	 * Handler pro zobrazeni detailu o Aktivite.
+	 */
+	@RequestMapping("/activityTypes/{activityTypeId}")
+	public ModelAndView activityTypeHandler(@PathVariable("activityTypeId") int activityTypeId) {
+		ModelAndView mav = new ModelAndView("activityTypes/detail");
+		mav.addObject(this.fitnessCentre.loadActivityType(activityTypeId));
+		return mav;
+	}
+	
+	/**
+	 * Handler pro zobrazeni formulare pro vytvoreni Aktivity a naplneni
+	 * kolonek stavajicimi hodnotami = formular upravy Aktivity.
+	 */
+	@RequestMapping(value="/activityTypes/{activityTypeId}/edit", method = RequestMethod.GET)
+	public String setupEditForm(@PathVariable("activityTypeId") int activityTypeId, Model model) {
 		ActivityType activityType = this.fitnessCentre.loadActivityType(activityTypeId);
 		model.addAttribute("activityType", activityType);
 		return "activityTypes/createForm";
 	}
 	
 	/**
-	 * Metoda pro editaci stavajici aktivity.
+	 * Handler pro editaci stavajici Aktivity.
 	 * Nejprve overi, zda byl vyplnen novy nazev aktivity. 
 	 * - Pokud ne, vrati uzivatele na formular s upozornenim na povinnost vyplnit nazev aktivity.
 	 * Pote overi, zda byla zvolena fotografie aktivity.
@@ -65,7 +146,7 @@ public class EditActivityType {
 	 * - Pokud ano, pokusi se smazat puvodni obrazek z uloziste, nahrat novy obrazek a vlozit zaznam do databaze.
 	 */
 	@RequestMapping(value="/activityTypes/{activityTypeId}/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-	public String processSubmit(@ModelAttribute ActivityType actvityType, BindingResult result, SessionStatus status, @RequestParam("file") MultipartFile file) {	
+	public String processEditSubmit(@ModelAttribute ActivityType actvityType, BindingResult result, SessionStatus status, @RequestParam("file") MultipartFile file) {	
 		new ActivityTypeValidator().validate(actvityType, result);
 		if (result.hasErrors()) {
 			return "activityTypes/createForm";
@@ -119,7 +200,7 @@ public class EditActivityType {
 	}	
 	
 	/**
-	 * Metoda pro smazani Aktivity dle zadaneho id.
+	 * Handler pro smazani Aktivity dle zadaneho id.
 	 * Nejprve odstrani fotografii Aktivity ze slozky activityTypeImages, pote vymaze zaznam z databaze.
 	 */
 	@RequestMapping(value="/activityTypes/{activityTypeId}/delete")
