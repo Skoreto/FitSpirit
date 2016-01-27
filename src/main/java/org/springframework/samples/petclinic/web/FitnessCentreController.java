@@ -49,6 +49,14 @@ public class FitnessCentreController {
 	public String welcomeHandler() {
 		return "welcome";
 	}
+	
+	/**
+	 * Handler pro zobrazeni hlavni stranky fitness centra.
+	 */
+	@RequestMapping("/index")
+	public String indexHandler() {
+		return "index";
+	}
 
 	/**
 	 * Custom handler for displaying vets.

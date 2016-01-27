@@ -132,9 +132,9 @@ public class EditInstructor {
 		
 		// Smaže soubor a zároveò vrací bool, jestli byl soubor úspìšnì smazán.
 		if (profilePhoto.delete()) {
-			logger.info("Smazán obrázek: " + profilePhotoName);
+			logger.info("Smazan obrazek: " + profilePhotoName);
 		} else {
-			logger.info("Nezdaøilo se smazat obrázek: " + profilePhotoName + " z umístìní " + profilePhotoPath);
+			logger.info("Nezdarilo se smazat obrazek: " + profilePhotoName + " z umisteni " + profilePhotoPath);
 		}
 				
 		this.fitnessCentre.deleteUser(instructorId);

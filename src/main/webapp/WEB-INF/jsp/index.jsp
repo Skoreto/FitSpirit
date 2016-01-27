@@ -57,7 +57,7 @@
         <p>Chceme Ti pomoci na cestě za tvými cíli. Jsme profesionálové, náš čas věnujeme jen těm, kteří to myslí vážně. Hledáš snadnou cestu "k cíli"? Přestaň věřit na pohádky! Jsme tu pro každého, kdo chce být opravdu v kondici a zdravý. Kdo chápe, že k tomu je třeba trénink.</p>
     </div>
     <div class="col-md-3">
-        <a class="btn btn-cta" href="#"><i class="fa fa-play-circle"></i>Začni registrací</a>
+        <a class="btn btn-cta" href="<spring:url value="/registration/create" htmlEscape="true"/>"><i class="fa fa-play-circle"></i>Začni registrací</a>
     </div>
 </section>
 
