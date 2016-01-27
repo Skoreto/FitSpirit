@@ -85,7 +85,7 @@ public class CreateClient {
 	                
 	                UserRole clientRole = this.fitnessCentre.loadUserRole(3);	// id role klienta = 3
 	                client.setUserRole(clientRole);
-	                client.setActive(true);
+	                client.setActive(false);
 	                
 	                this.fitnessCentre.storeUser(client);
 	    			status.setComplete();

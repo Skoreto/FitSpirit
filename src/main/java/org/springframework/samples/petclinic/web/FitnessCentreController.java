@@ -32,7 +32,6 @@ public class FitnessCentreController {
 
 	private final FitnessCentre fitnessCentre;
 
-
 	@Autowired
 	public FitnessCentreController(FitnessCentre clinic) {
 		this.fitnessCentre = clinic;
@@ -124,6 +123,32 @@ public class FitnessCentreController {
 		Users instructors = new Users();
 		instructors.getUserList().addAll(instructorUsers);
 		return new ModelMap(instructors);
+	}
+	
+	/**
+	 * Vlastni handler pro zobrazeni klientu.
+	 * Nejprve ziska seznam vsech uzivatelu. Z nich vybere ty, s id klienta, a naplni
+	 * je do pomocneho seznamu clientUsers. Teprve pomocny seznam clientUsers
+	 * preleje do seznamu clients tridy Users, ktery slouzi pro ucely odkazani ve view.
+	 * 
+	 * @return ModelMap s atributy modelu pro dané view
+	 */
+	@RequestMapping("/admin/clients/indexStaff")
+	public ModelMap clientsHandler() {
+		List<User> clientUsers = new ArrayList<User>();
+		List<User> allUsers = new ArrayList<User>();
+		allUsers.addAll(this.fitnessCentre.getUsers());
+		
+		// TODO Rychlejsi by byl dotaz primo na databazi, nez prochazet vsechny usery.
+		for (User user : allUsers) {
+			if (user.getUserRole().getId() == 3) {
+				clientUsers.add(user);
+			}
+		}
+		
+		Users clients = new Users();
+		clients.getUserList().addAll(clientUsers);
+		return new ModelMap(clients);
 	}
 	
 	/**
