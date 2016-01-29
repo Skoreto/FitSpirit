@@ -72,8 +72,8 @@ public class RoomController {
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
-			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);
 			
 			if (loggedInUserRoleIdent.equals("obsluha")) {
 				return "rooms/indexStaff";
@@ -98,8 +98,7 @@ public class RoomController {
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
-			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
-			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);	
+			model.addAttribute("loggedInUser", loggedInUser);
 		}
 		
 		return "rooms/createForm";
@@ -158,8 +157,7 @@ public class RoomController {
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
-			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
-			mav.addObject("loggedInUserRoleIdent", loggedInUserRoleIdent);	
+			mav.addObject("loggedInUser", loggedInUser);
 		}
 			
 		return mav;
@@ -181,8 +179,7 @@ public class RoomController {
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
-			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
-			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);
+			model.addAttribute("loggedInUser", loggedInUser);
 		}
 		
 		return "rooms/createForm";

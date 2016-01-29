@@ -87,8 +87,8 @@ public class InstructorController {
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
-			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);
 			
 			if (loggedInUserRoleIdent.equals("obsluha")) {
 				return "instructors/indexStaff";
@@ -113,8 +113,7 @@ public class InstructorController {
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
-			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
-			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);	
+			model.addAttribute("loggedInUser", loggedInUser);
 		}
 		
 		return "instructors/createForm";
@@ -183,8 +182,8 @@ public class InstructorController {
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
+			mav.addObject("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
-			mav.addObject("loggedInUserRoleIdent", loggedInUserRoleIdent);
 			
 			if (loggedInUserRoleIdent.equals("obsluha")) {
 				mav.setViewName("instructors/detailStaff");
@@ -211,8 +210,7 @@ public class InstructorController {
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
-			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
-			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);
+			model.addAttribute("loggedInUser", loggedInUser);
 		}
 		
 		return "instructors/createForm";

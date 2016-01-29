@@ -52,14 +52,11 @@ public class FitnessCentreController {
 		model.addAttribute("pageTitle", pageTitle);
 		
 		// Kod, ktery musi byt v kazde GET mapovane URL, kde potrebujeme pristup k session (vsude)
-		// Preda do view promennou "loggedInUserRole", string s roli prihlaseneho uzivatele
-		// Pokud je prazdna, uzivatel neni prihlasen
 		// Bylo by vhodne udelat nejaky BaseController jako rodice kazdeho controlleru, aby tento kod nemusel byt duplicitne...
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
-			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
-			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);
+			model.addAttribute("loggedInUser", loggedInUser);
 		}
 		
 		return "index";
