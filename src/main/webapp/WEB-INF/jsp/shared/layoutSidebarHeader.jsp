@@ -35,6 +35,7 @@
                 </h1>
                 <div class="info col-md-8 col-sm-8">
                     <ul class="menu-top navbar-right hidden-xs">
+<<<<<<< HEAD
                     	<c:choose>
 							<c:when test="${empty loggedInUserRoleIdent}">
 								<li class="divider"><a href="<spring:url value="/login" htmlEscape="true"/>"><i class="fa fa-sign-in"></i> Přihlásit se</a></li>
@@ -43,6 +44,16 @@
 		                        <li class="divider">Přihlášen jako ${loggedInUserRoleIdent}<a href="<spring:url value="/logout" htmlEscape="true"/>"><i class="fa fa-sign-in"></i> Odhlásit se</a></li>
     						</c:otherwise>
 						</c:choose> 
+=======
+						<c:choose>
+							<c:when test="${empty loggedInUserRole}">
+								<li class="divider"><a href="<spring:url value="/login" htmlEscape="true"/>"><i class="fa fa-sign-in"></i> Přihlásit se</a></li>
+							</c:when>
+						  	<c:otherwise>
+		                        <li class="divider">Přihlášen jako ${loggedInUserRole}<a href="<spring:url value="/logout" htmlEscape="true"/>"><i class="fa fa-sign-in"></i> Odhlásit se</a></li>
+    						</c:otherwise>
+						</c:choose>  
+>>>>>>> branch 'master' of https://github.com/Skoreto/FitSpirit.git
                         <li class="divider"><a href="#">Úvod</a></li>
                         <li class="divider"><a href="#">FAQ</a></li>
                         <li class="divider"><a href="#">Ceník</a></li>
