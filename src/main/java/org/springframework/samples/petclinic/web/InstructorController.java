@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +64,9 @@ public class InstructorController {
 	 * Nejprve ziska seznam vsech uzivatelu. Z nich vybere ty, s id instruktora, a naplni
 	 * je do pomocneho seznamu instructorUsers. Teprve pomocny seznam instructorUsers
 	 * preleje do seznamu instructors tridy Users, ktery slouzi pro ucely odkazani ve view.
-	 * @return ModelMap s atributy modelu pro dané view
 	 */
 	@RequestMapping("/instructors/index")
-	public ModelMap instructorsHandler() {
+	public String instructorsHandler(Model modelMap,HttpServletRequest request) {	
 		List<User> instructorUsers = new ArrayList<User>();
 		List<User> allUsers = new ArrayList<User>();
 		allUsers.addAll(this.fitnessCentre.getUsers());
@@ -79,16 +80,46 @@ public class InstructorController {
 		
 		Users instructors = new Users();
 		instructors.getUserList().addAll(instructorUsers);
-		return new ModelMap(instructors);
+		
+		modelMap.addAttribute("users", instructors);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Instruktoøi";
+		modelMap.addAttribute("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			modelMap.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);
+			
+			if (loggedInUserRoleIdent.equals("obsluha")) {
+				return "instructors/indexStaff";
+			}			
+		}
+			
+		return "instructors/index";
 	}
 	
 	/**
 	 * Handler pro zobrazeni formulare pro vytvoreni noveho Instruktora.
 	 */
 	@RequestMapping(value="/instructors/create", method = RequestMethod.GET)
-	public String setupForm(Model model) {
+	public String setupForm(Model model, HttpServletRequest request) {
 		User user = new User();
 		model.addAttribute(user);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Nový instruktor";
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);	
+		}
+		
 		return "instructors/createForm";
 	}
 	
@@ -128,7 +159,7 @@ public class InstructorController {
 	                
 	                this.fitnessCentre.storeUser(instructor);
 	    			status.setComplete();
-	    			return "redirect:/instructors/index";	               	                
+	    			return "redirect:/instructors/indexStaff";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " CHYBA => " + e.getMessage();
 	            }
@@ -143,9 +174,26 @@ public class InstructorController {
 	 * Handler pro zobrazeni detailu instruktora.
 	 */
 	@RequestMapping("/instructors/{instructorId}")
-	public ModelAndView instructorHandler(@PathVariable("instructorId") int instructorId) {
+	public ModelAndView instructorHandler(@PathVariable("instructorId") int instructorId, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("instructors/detail");
-		mav.addObject(this.fitnessCentre.loadUser(instructorId));
+		User instructor = this.fitnessCentre.loadUser(instructorId);
+		mav.addObject(instructor);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Detail instruktora " + instructor.getFirstName() + " " + instructor.getLastName();
+		mav.addObject("pageTitle", pageTitle);
+			
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			mav.addObject("loggedInUserRoleIdent", loggedInUserRoleIdent);
+			
+			if (loggedInUserRoleIdent.equals("obsluha")) {
+				mav.setViewName("instructors/detailStaff");
+			}		
+		}
+			
 		return mav;
 	}
 	
@@ -155,9 +203,19 @@ public class InstructorController {
 	 * Ve view se pak odkazuji na promennou "user"!
 	 */
 	@RequestMapping(value="/instructors/{instructorId}/edit", method = RequestMethod.GET)
-	public String setupEditForm(@PathVariable("instructorId") int instructorId, Model model) {
+	public String setupEditForm(@PathVariable("instructorId") int instructorId, Model model, HttpServletRequest request) {
 		User instructor = this.fitnessCentre.loadUser(instructorId);
 		model.addAttribute("user", instructor);
+		
+		String pageTitle = "Úprava instruktora";
+		model.addAttribute("PageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUserRoleIdent", loggedInUser.getUserRole().getIdentificator());
+		}
+		
 		return "instructors/createForm";
 	}
 	
@@ -211,7 +269,7 @@ public class InstructorController {
 	                
 	                this.fitnessCentre.storeUser(instructor);
 	    			status.setComplete();
-	    			return "redirect:/instructors/index";	               	                
+	    			return "redirect:/instructors/indexStaff";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
 	            }
@@ -242,7 +300,7 @@ public class InstructorController {
 		}
 				
 		this.fitnessCentre.deleteUser(instructorId);
-		return "redirect:/instructors/index";	
+		return "redirect:/instructors/indexStaff";	
 	}
 	
 }

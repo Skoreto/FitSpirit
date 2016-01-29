@@ -1,12 +1,26 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <%@ include file="/WEB-INF/jsp/shared/layoutSidebarHeader.jsp" %>
 
+<header class="page-heading clearfix">
+    <h1 class="heading-title pull-left">${PageTitle}</h1>
+    <!-- ==== DROBECKOVA NAVIGACE ==== -->
+    <div class="breadcrumbs pull-right">
+		<ul class="breadcrumbs-list">
+		 <li class="breadcrumbs-label">Nacházíte se zde:</li>
+		 <li><a href="<spring:url value="/instructors/index" htmlEscape="true"/>">Instruktoři</a><i class="fa fa-angle-right"></i></li>
+		 <li class="current">Úprava instruktora</li>
+		</ul>             
+    </div>
+</header>
+<div class="page-content">
+    <div class="row page-row">
+    	<div class="col-md-8 col-sm-7" id="dynamicContent">
+		<!-- ==== HLAVNI OBSAH AKTUALNI STRANKY ==== -->
+
 <c:choose>
 	<c:when test="${user['new']}"><c:set var="method" value="post"/></c:when>
 	<c:otherwise><c:set var="method" value="put"/></c:otherwise>
 </c:choose>
-
-<h2><c:if test="${user['new']}">Nový </c:if>instruktor:</h2>
 
 <form:form class="form-horizontal" modelAttribute="user" method="${method}" enctype="multipart/form-data">
 	<div class="form-group">

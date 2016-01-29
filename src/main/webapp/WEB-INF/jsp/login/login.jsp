@@ -14,7 +14,8 @@
     <div class="login-container">
         <h1 hidden="hidden">Přihlášení</h1>
         <div class="avatar"></div>
-            <form:form class="form-signin">
+        <div><p><strong><c:out value="${message}" /></strong></p></div>
+            <form:form class="form-signin" method="POST">
                 <div class="form-box">
                     <input name="login" type="text" class="form-control" placeholder="login">
                     <input type="password" name="password" class="form-control" placeholder="heslo">
@@ -26,6 +27,7 @@
 
 <script src="<spring:url value="/static/scripts/jquery-2.1.3.min.js" htmlEscape="true" />"></script>
 <script src="<spring:url value="/static/scripts/bootstrap.min.js" htmlEscape="true" />"></script>
+
 <script type="text/javascript">
     // Obsluha loadingu "Ověřuji..."
     $('#submitButton').on('click', function () {

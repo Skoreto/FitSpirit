@@ -32,7 +32,7 @@ public class User extends BaseEntity {
 	
 	private String profilePhotoName;
 	
-	private String login;
+	private int login;
 	
 	private String password;
 	
@@ -132,11 +132,11 @@ public class User extends BaseEntity {
 	}
 
 	@Column(name="LOGIN")
-	public String getLogin() {
+	public int getLogin() {
 		return login;
 	}
 
-	public void setLogin(String login) {
+	public void setLogin(int login) {
 		this.login = login;
 	}
 

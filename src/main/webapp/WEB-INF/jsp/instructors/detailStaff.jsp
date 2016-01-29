@@ -26,6 +26,10 @@
 
         </thead>
         <tbody>
+        <tr>
+                <td>Login</td>
+                <td>${user.login}</td>
+            </tr>
             <tr>
                 <td>Jméno</td>
                 <td>${user.firstName}</td>
@@ -33,6 +37,26 @@
             <tr>
                 <td>Příjmení</td>
                 <td>${user.lastName}</td>
+            </tr>
+            <tr>
+                <td>Ulice</td>
+                <td>${user.street}</td>
+            </tr>
+            <tr>
+                <td>Město</td>
+                <td>${user.city}</td>
+            </tr>
+            <tr>
+                <td>PSČ</td>
+                <td>${user.postcode}</td>
+            </tr>
+            <tr>
+                <td>E-mail</td>
+                <td>${user.mail}</td>
+            </tr>
+            <tr>
+                <td>Telefon</td>
+                <td>${user.telephone}</td>
             </tr>
         </tbody>
     </table>

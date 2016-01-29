@@ -8,7 +8,7 @@
     <meta name="author" content="Tomáš Skořepa">
     <link rel="icon" href="<spring:url value="/static/images/favicon.ico" htmlEscape="true" />">
 
-    <title>Titulek stránky | FitSPIRIT</title>
+    <title>${PageTitle} | FitSPIRIT</title>
 
     <!-- Globální Bootstrap CSS -->
     <link href="<spring:url value="/static/styles/bootstrap.min.css" htmlEscape="true" />" rel="stylesheet">
@@ -35,6 +35,14 @@
                 </h1>
                 <div class="info col-md-8 col-sm-8">
                     <ul class="menu-top navbar-right hidden-xs">
+                    	<c:choose>
+							<c:when test="${empty loggedInUserRoleIdent}">
+								<li class="divider"><a href="<spring:url value="/login" htmlEscape="true"/>"><i class="fa fa-sign-in"></i> Přihlásit se</a></li>
+							</c:when>
+						  	<c:otherwise>
+		                        <li class="divider">Přihlášen jako ${loggedInUserRoleIdent}<a href="<spring:url value="/logout" htmlEscape="true"/>"><i class="fa fa-sign-in"></i> Odhlásit se</a></li>
+    						</c:otherwise>
+						</c:choose> 
                         <li class="divider"><a href="#">Úvod</a></li>
                         <li class="divider"><a href="#">FAQ</a></li>
                         <li class="divider"><a href="#">Ceník</a></li>
@@ -75,17 +83,3 @@
         <!-- ==== HLAVNÍ OBSAH ==== -->
     <div class="content container">       
         <div class="page-wrapper">
-            <header class="page-heading clearfix">
-                <h1 class="heading-title pull-left">Titulek stránky</h1>
-                <!-- ==== DROBEČKOVÁ NAVIGACE ==== -->
-                <div class="breadcrumbs pull-right">
-                    <ul class="breadcrumbs-list">
-				        <li class="breadcrumbs-label">Nacházíte se zde:</li>
-				        <li><a href="#">Předchozí stránka</a><i class="fa fa-angle-right"></i></li>
-				        <li class="current">Titulek stránky</li>
-			    	</ul>                  
-                </div>
-            </header>
-            <div class="page-content">
-                <div class="row page-row">
-                	<div class="col-md-8 col-sm-7" id="dynamicContent">
