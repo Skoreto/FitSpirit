@@ -20,7 +20,6 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jmx.export.annotation.ManagedOperation;
-import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.FitnessCentre;

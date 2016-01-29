@@ -40,10 +40,18 @@
                 </h1>
                 <div class="info col-md-8 col-sm-8">
                     <ul class="menu-top navbar-right hidden-xs">
+						<c:choose>
+							<c:when test="${empty loggedInUserRole}">
+								<li class="divider"><a href="<spring:url value="/login" htmlEscape="true"/>"><i class="fa fa-sign-in"></i> Přihlásit se</a></li>
+							</c:when>
+						  	<c:otherwise>
+		                        <li class="divider">Přihlášen jako ${loggedInUserRole}<a href="<spring:url value="/logout" htmlEscape="true"/>"><i class="fa fa-sign-in"></i> Odhlásit se</a></li>
+    						</c:otherwise>
+						</c:choose>                
                         <li class="divider"><a href="#">Úvod</a></li>
                         <li class="divider"><a href="#">FAQ</a></li>
                         <li class="divider"><a href="#">Ceník</a></li>
-                        <li><a href="#">Kontakt</a></li>
+                        <li><a href="#">Kontakt</a></li>    
                     </ul>
                     <br />
                     <div class="contact pull-right">
@@ -71,8 +79,7 @@
                         <li class="nav-item"><a href="<spring:url value="/activityTypes/index" htmlEscape="true"/>"><i class="fa fa-child"></i> Aktivity</a></li>
                         <li class="nav-item"><a href="<spring:url value="/rooms/index" htmlEscape="true"/>"><i class="fa fa-map-marker"></i> Místnosti</a></li>
                         <li class="nav-item"><a href="#"><i class="fa fa-photo"></i> Galerie</a></li>
-                        <li class="nav-item"><a href="<spring:url value="/instructors/index" htmlEscape="true"/>"><i class="fa fa-users"></i> Instruktoři</a></li>                     
-                        <li class="nav-item"><a href="<spring:url value="/login" htmlEscape="true"/>"><i class="fa fa-sign-in"></i> Přihlásit se</a></li>  
+                        <li class="nav-item"><a href="<spring:url value="/instructors/index" htmlEscape="true"/>"><i class="fa fa-users"></i> Instruktoři</a></li>                       
                     </ul>
                 </div>
             </div>
