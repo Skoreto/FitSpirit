@@ -135,7 +135,7 @@ public class RoomController {
 	                
 	                this.fitnessCentre.storeRoom(room);
 	    			status.setComplete();
-	    			return "redirect:/rooms/indexStaff";	               	                
+	    			return "redirect:/rooms/index";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
 	            }
@@ -234,7 +234,7 @@ public class RoomController {
 	                
 	                this.fitnessCentre.storeRoom(room);
 	    			status.setComplete();
-	    			return "redirect:/rooms/indexStaff";	               	                
+	    			return "redirect:/rooms/index";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
 	            }
@@ -265,7 +265,7 @@ public class RoomController {
 		}
 				
 		this.fitnessCentre.deleteRoom(roomId);
-		return "redirect:/rooms/indexStaff";	
+		return "redirect:/rooms/index";	
 	}
 	
 }

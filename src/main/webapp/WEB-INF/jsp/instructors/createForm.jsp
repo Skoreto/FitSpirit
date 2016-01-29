@@ -1,6 +1,11 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <%@ include file="/WEB-INF/jsp/shared/layoutSidebarHeader.jsp" %>
 
+<c:choose>
+	<c:when test="${user['new']}"><c:set var="currentTitle" value="Nový instruktor"/></c:when>
+	<c:otherwise><c:set var="currentTitle" value="Úprava instrukktora"/></c:otherwise>
+</c:choose>
+
 <header class="page-heading clearfix">
     <h1 class="heading-title pull-left">${pageTitle}</h1>
     <!-- ==== DROBECKOVA NAVIGACE ==== -->
@@ -8,7 +13,7 @@
 		<ul class="breadcrumbs-list">
 		 <li class="breadcrumbs-label">Nacházíte se zde:</li>
 		 <li><a href="<spring:url value="/instructors/index" htmlEscape="true"/>">Instruktoři</a><i class="fa fa-angle-right"></i></li>
-		 <li class="current">Úprava instruktora</li>
+		 <li class="current">${currentTitle}</li>
 		</ul>             
     </div>
 </header>

@@ -1,5 +1,16 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
-<%@ include file="/WEB-INF/jsp/admin/shared/layoutSidebarHeader.jsp" %>
+<%@ include file="/WEB-INF/jsp/shared/layoutSidebarHeader.jsp" %>
+
+<header class="page-heading clearfix">
+    <h1 class="heading-title pull-left">${pageTitle}</h1>
+    <!-- ==== DROBECKOVA NAVIGACE ==== -->
+    <div class="breadcrumbs pull-right">           
+    </div>
+</header>
+<div class="page-content">
+    <div class="row page-row">
+    	<div class="col-md-8 col-sm-7" id="dynamicContent">
+		<!-- ==== HLAVNI OBSAH AKTUALNI STRANKY ==== -->
 
 <!--  
 <div class="row">
@@ -31,34 +42,34 @@
     <c:forEach var="user" items="${users.userList}">
         <tr class="${user.active ? "active" : "row-disabled"}">
             <td>${user.id}</td>
-            <td><a href="<spring:url value="/admin/clients/${user.id}" htmlEscape="true" />">${user.firstName} ${user.lastName}</a></td>
+            <td><a href="<spring:url value="/clients/${user.id}" htmlEscape="true" />">${user.firstName} ${user.lastName}</a></td>
             <td>${user.credit} Kč</td>          
             <c:choose>
 				<c:when test="${user.active}">
 					<td><span class="label label-success"><i class="fa fa-check"> ano</i></span></td>
 	                <td>
 	                    <div class="btn-group">
-	                        <a href="<spring:url value="/admin/clients/${user.id}" htmlEscape="true" />" class="btn btn-info"><span class="glyphicon glyphicon-file"></span> Detail</a>
+	                        <a href="<spring:url value="/clients/${user.id}" htmlEscape="true" />" class="btn btn-info"><span class="glyphicon glyphicon-file"></span> Detail</a>
 	                        <button data-toggle="dropdown" class="btn btn-info dropdown-toggle"><span class="caret"></span></button>
 	                        <ul class="dropdown-menu">
-	                            <li><a href="<spring:url value="/admin/clients/${user.id}/edit" htmlEscape="true" />"><span class="glyphicon glyphicon-pencil"></span> Upravit</a></li>
+	                            <li><a href="<spring:url value="/clients/${user.id}/edit" htmlEscape="true" />"><span class="glyphicon glyphicon-pencil"></span> Upravit</a></li>
 	                        </ul>
 	                    </div>
-	                    <a href="<spring:url value="/admin/clients/${user.id}/credit" htmlEscape="true" />" class="btn btn-warning"><span class="glyphicon glyphicon-plus"></span> Kredit</a>
+	                    <a href="<spring:url value="/clients/${user.id}/credit" htmlEscape="true" />" class="btn btn-warning"><span class="glyphicon glyphicon-plus"></span> Kredit</a>
 	                </td>
 				</c:when>
 				<c:otherwise>
 					<td><span class="label label-danger"><i class="fa fa-close"> ne</i></span></td>
                 <td>
                     <div class="btn-group">
-                        <a href="<spring:url value="/admin/clients/${user.id}" htmlEscape="true" />" class="btn btn-info"><span class="glyphicon glyphicon-file"></span> Detail</a>
+                        <a href="<spring:url value="/clients/${user.id}" htmlEscape="true" />" class="btn btn-info"><span class="glyphicon glyphicon-file"></span> Detail</a>
                         <button data-toggle="dropdown" class="btn btn-info dropdown-toggle"><span class="caret"></span></button>
                         <ul class="dropdown-menu">
-                            <li><a href="<spring:url value="/admin/clients/${user.id}/edit" htmlEscape="true" />"><span class="glyphicon glyphicon-pencil"></span> Upravit</a></li>
-                            <li><a href="<spring:url value="/admin/clients/${user.id}/delete" htmlEscape="true" />"><span class="glyphicon glyphicon-trash"></span> Smazat</a></li>
+                            <li><a href="<spring:url value="/clients/${user.id}/edit" htmlEscape="true" />"><span class="glyphicon glyphicon-pencil"></span> Upravit</a></li>
+                            <li><a href="<spring:url value="/clients/${user.id}/delete" htmlEscape="true" />"><span class="glyphicon glyphicon-trash"></span> Smazat</a></li>
                         </ul>
                     </div>
-                    <a href="<spring:url value="/admin/clients/${user.id}/activate" htmlEscape="true" />" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Aktivovat</a>
+                    <a href="<spring:url value="/clients/${user.id}/activate" htmlEscape="true" />" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Aktivovat</a>
                 </td>			
 				</c:otherwise>
 			</c:choose>
@@ -67,4 +78,4 @@
     </tbody>
 </table>
 
-<%@ include file="/WEB-INF/jsp/admin/shared/layoutSidebarFooter.jsp" %>
+<%@ include file="/WEB-INF/jsp/shared/layoutSidebarFooter.jsp" %>

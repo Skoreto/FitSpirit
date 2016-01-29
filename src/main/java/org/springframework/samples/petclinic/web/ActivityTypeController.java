@@ -137,7 +137,7 @@ public class ActivityTypeController {
 	                
 	                this.fitnessCentre.storeActivityType(activityType);
 	    			status.setComplete();
-	    			return "redirect:/activityTypes/indexStaff";	               	                
+	    			return "redirect:/activityTypes/index";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
 	            }
@@ -247,7 +247,7 @@ public class ActivityTypeController {
 	                
 	                this.fitnessCentre.storeActivityType(actvityType);
 	    			status.setComplete();
-	    			return "redirect:/activityTypes/indexStaff";	               	                
+	    			return "redirect:/activityTypes/index";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
 	            }
@@ -278,7 +278,7 @@ public class ActivityTypeController {
 		}
 				
 		this.fitnessCentre.deleteActivityType(activityTypeId);
-		return "redirect:/activityTypes/indexStaff";	
+		return "redirect:/activityTypes/index";	
 	}
 	
 }

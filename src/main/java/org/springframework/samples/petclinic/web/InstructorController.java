@@ -37,7 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Tomas Skorepa
  */
 @Controller
-@SessionAttributes("user")
+//@SessionAttributes("user")
 public class InstructorController {
 	
 	private final FitnessCentre fitnessCentre;
@@ -155,7 +155,7 @@ public class InstructorController {
 	                
 	                this.fitnessCentre.storeUser(instructor);
 	    			status.setComplete();
-	    			return "redirect:/instructors/indexStaff";	               	                
+	    			return "redirect:/instructors/index";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " CHYBA => " + e.getMessage();
 	            }
@@ -266,7 +266,7 @@ public class InstructorController {
 	                
 	                this.fitnessCentre.storeUser(instructor);
 	    			status.setComplete();
-	    			return "redirect:/instructors/indexStaff";	               	                
+	    			return "redirect:/instructors/index";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
 	            }
@@ -297,7 +297,7 @@ public class InstructorController {
 		}
 				
 		this.fitnessCentre.deleteUser(instructorId);
-		return "redirect:/instructors/indexStaff";	
+		return "redirect:/instructors/index";	
 	}
 	
 }

@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Tomas Skorepa
  */
 @Controller
-@SessionAttributes("user")
+//@SessionAttributes("user")
 public class ClientController {
 	
 	private final FitnessCentre fitnessCentre;
@@ -63,8 +65,8 @@ public class ClientController {
 	 * 
 	 * @return ModelMap s atributy modelu pro dané view
 	 */
-	@RequestMapping("/admin/clients/indexStaff")
-	public ModelMap clientsHandler() {
+	@RequestMapping("/clients/index")
+	public String clientsHandler(Model model, HttpServletRequest request) {
 		List<User> clientUsers = new ArrayList<User>();
 		List<User> allUsers = new ArrayList<User>();
 		allUsers.addAll(this.fitnessCentre.getUsers());
@@ -78,16 +80,46 @@ public class ClientController {
 		
 		Users clients = new Users();
 		clients.getUserList().addAll(clientUsers);
-		return new ModelMap(clients);
+		
+		model.addAttribute("users", clients);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Klienti";
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			
+			if (loggedInUserRoleIdent.equals("obsluha")) {
+				return "clients/indexStaff";
+			}			
+		}
+		
+		// Ochrana proti vstupu bez oprávnìní.
+		return "index";
 	}
 	
 	/**
-	 * Handler pro zobrazeni formulare pro registraci noveho uzivatele.
+	 * Handler pro zobrazeni formulare pro registraci noveho klienta.
 	 */
 	@RequestMapping(value="/registration/create", method = RequestMethod.GET)
-	public String setupForm(Model model) {
+	public String setupForm(Model model, HttpServletRequest request) {
 		User user = new User();
 		model.addAttribute(user);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Registrace";
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
+		}
+		
 		return "registration/createForm";
 	}	
 	
@@ -142,19 +174,49 @@ public class ClientController {
 	 * Handler pro zobrazeni oznameni o uspesne registraci klienta.
 	 */
 	@RequestMapping("/registration/{clientId}/success")
-	public ModelAndView instructorHandler(@PathVariable("clientId") int clientId) {
+	public ModelAndView instructorHandler(@PathVariable("clientId") int clientId, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("registration/success");
 		mav.addObject(this.fitnessCentre.loadUser(clientId));
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Úspìšnì zaregistrováno";
+		mav.addObject("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			mav.addObject("loggedInUser", loggedInUser);
+		}
+		
 		return mav;
 	}
 			
 	/**
 	 * Handler pro zobrazeni detailu klienta.
+	 * Na zacatku presmerovani na index jako ochrana proti neopravnenemu pristupu.
 	 */
-	@RequestMapping("/admin/clients/{clientId}")
-	public ModelAndView clientHandler(@PathVariable("clientId") int clientId) {
-		ModelAndView mav = new ModelAndView("admin/clients/detail");
-		mav.addObject(this.fitnessCentre.loadUser(clientId));
+	@RequestMapping("/clients/{clientId}")
+	public ModelAndView clientHandler(@PathVariable("clientId") int clientId, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("index");
+		User client = this.fitnessCentre.loadUser(clientId);
+		mav.addObject(client);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Detail klienta " + client.getFirstName() + " " + client.getLastName();
+		mav.addObject("pageTitle", pageTitle);
+			
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			mav.addObject("loggedInUser", loggedInUser);
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			
+			if (loggedInUserRoleIdent.equals("obsluha")) {
+				mav.setViewName("clients/detail");
+				return mav;
+			}		
+		}
+		
 		return mav;
 	}
 	
@@ -163,11 +225,27 @@ public class ClientController {
 	 * kolonek stavajicimi hodnotami = formular upravy klienta.
 	 * Ve view se pak odkazuji na promennou "user"!
 	 */
-	@RequestMapping(value="/admin/clients/{clientId}/edit", method = RequestMethod.GET)
-	public String setupEditForm(@PathVariable("clientId") int clientId, Model model) {
+	@RequestMapping(value="/clients/{clientId}/edit", method = RequestMethod.GET)
+	public String setupEditForm(@PathVariable("clientId") int clientId, Model model, HttpServletRequest request) {
 		User client = this.fitnessCentre.loadUser(clientId);
 		model.addAttribute("user", client);
-		return "admin/clients/editForm";
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Úprava klienta " + client.getFirstName() + " " + client.getLastName();
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			
+			if (loggedInUserRoleIdent.equals("obsluha")) {
+				return "clients/editForm";
+			}	
+		}
+		
+		return "index";
 	}
 	
 	/**
@@ -178,11 +256,11 @@ public class ClientController {
 	 * - Pokud ne, vypise do konzole zpravu o nevyplneni pole fotografie a vrati uzivatele na formular.
 	 * - Pokud ano, pokusi se smazat puvodni obrazek z uloziste, nahrat novy obrazek a vlozit zaznam do databaze.
 	 */
-	@RequestMapping(value="/admin/clients/{clientId}/edit", method = {RequestMethod.PUT, RequestMethod.POST})
+	@RequestMapping(value="clients/{clientId}/edit", method = {RequestMethod.PUT, RequestMethod.POST})
 	public String processEditSubmit(@ModelAttribute User client, BindingResult result, SessionStatus status, @RequestParam("file") MultipartFile file) {	
 		new UserValidator().validate(client, result);
 		if (result.hasErrors()) {
-			return "admin/clients/editForm";
+			return "clients/editForm";
 		}
 		else {			
 			if (!file.isEmpty()) {				
@@ -220,14 +298,14 @@ public class ClientController {
 	                
 	                this.fitnessCentre.storeUser(client);
 	    			status.setComplete();
-	    			return "redirect:/admin/clients/indexStaff";	               	                
+	    			return "redirect:/clients/index";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
 	            }
 	        } else {
 	        	// TODO Informovat uzivatele o povinnosti nahrat fotografii.
 	        	logger.info("Nepodarilo se uploadnout " + file.getOriginalFilename() + " protoze soubor je prazdny.");
-	        	return "admin/clients/editForm";
+	        	return "clients/editForm";
 	        }						
 		}
 	}
@@ -235,22 +313,39 @@ public class ClientController {
 	/**
 	 * Handler pro aktivaci uctu nove registrovaneho klienta.
 	 */
-	@RequestMapping("/admin/clients/{clientId}/activate")
+	@RequestMapping("/clients/{clientId}/activate")
 	public String clientActivationHandler(@PathVariable("clientId") int clientId) {
 		User client = this.fitnessCentre.loadUser(clientId);
 		client.setActive(true);
 		this.fitnessCentre.storeUser(client);
-		return "redirect:/admin/clients/indexStaff";
+				
+		return "redirect:/clients/index";
 	}
 	
 	/**
 	 * Handler pro zobrazeni formulare pro pripsani kreditu klientovi.
 	 */
-	@RequestMapping(value="/admin/clients/{clientId}/credit", method = RequestMethod.GET)
-	public String setupCreditForm(@PathVariable("clientId") int clientId, Model model) {
+	@RequestMapping(value="/clients/{clientId}/credit", method = RequestMethod.GET)
+	public String setupCreditForm(@PathVariable("clientId") int clientId, Model model, HttpServletRequest request) {
 		User client = this.fitnessCentre.loadUser(clientId);
 		model.addAttribute("user", client);
-		return "admin/clients/creditChosenClient";
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Pøiprání kreditu klientovi " + client.getFirstName() + " " + client.getLastName();
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			
+			if (loggedInUserRoleIdent.equals("obsluha")) {
+				return "clients/creditChosenClient";
+			}	
+		}
+		
+		return "index";
 	}
 	
 	/**
@@ -258,7 +353,7 @@ public class ClientController {
 	 * Nejprve zjisti aktualni stav kreditu klienta.
 	 * Pote k nemu pricte castku vyplnenou ve formulari.
 	 */
-	@RequestMapping(value="/admin/clients/{clientId}/credit", method = {RequestMethod.PUT, RequestMethod.POST})
+	@RequestMapping(value="/clients/{clientId}/credit", method = {RequestMethod.PUT, RequestMethod.POST})
 	public String processCreditSubmit(@ModelAttribute User client, SessionStatus status, @RequestParam("addedCredit") double addedCredit) {		
 		// TODO Ošetøit pøipsání záporného kreditu.
 		double actualCredit = client.getCredit();
@@ -266,14 +361,14 @@ public class ClientController {
 		
         this.fitnessCentre.storeUser(client);
 		status.setComplete();
-		return "redirect:/admin/clients/indexStaff";	               	                
+		return "redirect:/clients/index";	               	                
 	}
 	
 	/**
 	 * Handler pro smazani Klienta dle zadaneho id.
 	 * Nejprve odstrani fotografii Klienta ze slozky userImages, pote vymaze zaznam z databaze.
 	 */
-	@RequestMapping(value="/admin/clients/{clientId}/delete")
+	@RequestMapping(value="/clients/{clientId}/delete")
 	public String deleteInstructor(@PathVariable int clientId) {
 		User client = this.fitnessCentre.loadUser(clientId);
 		String profilePhotoName = client.getProfilePhotoName();	
@@ -288,7 +383,7 @@ public class ClientController {
 		}
 				
 		this.fitnessCentre.deleteUser(clientId);
-		return "redirect:/admin/clients/indexStaff";	
+		return "redirect:/clients/index";	
 	}
 	
 }

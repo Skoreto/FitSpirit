@@ -1,5 +1,21 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
-<%@ include file="/WEB-INF/jsp/admin/shared/layoutSidebarHeader.jsp" %>
+<%@ include file="/WEB-INF/jsp/shared/layoutSidebarHeader.jsp" %>
+
+<header class="page-heading clearfix">
+    <h1 class="heading-title pull-left">${pageTitle}</h1>
+    <!-- ==== DROBECKOVA NAVIGACE ==== -->
+    <div class="breadcrumbs pull-right">
+		<ul class="breadcrumbs-list">
+		 <li class="breadcrumbs-label">Nacházíte se zde:</li>
+		 <li><a href="<spring:url value="/clients/index" htmlEscape="true"/>">Klienti</a><i class="fa fa-angle-right"></i></li>
+		 <li class="current">Detail klienta</li>
+		</ul>             
+    </div>
+</header>
+<div class="page-content">
+    <div class="row page-row">
+    	<div class="col-md-8 col-sm-7" id="dynamicContent">
+		<!-- ==== HLAVNI OBSAH AKTUALNI STRANKY ==== -->
 
 <div class="form-group margin-bottom text-center">
 	<img src="<spring:url value="/static/uploads/userImages/${user.profilePhotoName}" htmlEscape="true" />" class="img-thumbnail" />
@@ -53,8 +69,8 @@
 
 <div class="form-group margin-top">
     <div class="col-sm-offset-8 col-sm-2">
-        <a href="<spring:url value="/admin/clients/indexStaff" htmlEscape="true"/>" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span> Klienti</a>
+        <a href="<spring:url value="/clients/index" htmlEscape="true"/>" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span> Klienti</a>
     </div>
 </div>
 
-<%@ include file="/WEB-INF/jsp/admin/shared/layoutSidebarFooter.jsp" %>
+<%@ include file="/WEB-INF/jsp/shared/layoutSidebarFooter.jsp" %>
