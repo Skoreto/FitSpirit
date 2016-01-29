@@ -23,6 +23,7 @@ import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.FitnessCentre;
+import org.springframework.samples.petclinic.Lesson;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
@@ -73,6 +74,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	private final List<Room> rooms = new ArrayList<Room>();
 	private final List<ActivityType> activityTypes = new ArrayList<ActivityType>();
 	private final List<User> users = new ArrayList<User>();
+	private final List<Lesson> lessons = new ArrayList<Lesson>();
 
 	@Autowired
 	public void init(DataSource dataSource) {
@@ -173,6 +175,23 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	}
 	
 	/**
+	 * Refreshne cache Lekci, ktetou udržuje rozhraní FitnessCentre.
+	 * @throws DataAccessException
+	 */
+	@ManagedOperation
+	@Transactional(readOnly = true)
+	private void refreshLessonsCache() throws DataAccessException {
+		synchronized (this.lessons) {
+			this.logger.info("Refreshuji cache lekci");
+			
+			// Vrátí list všech Lekci
+			this.lessons.clear();
+			this.lessons.addAll(this.simpleJdbcTemplate.query("SELECT id, start_time, end_time, activityType_id, room_id, original_capacity, actual_capacity, description, instructor_id, is_active FROM lessons ORDER BY id",
+					ParameterizedBeanPropertyRowMapper.newInstance(Lesson.class)));			
+		}
+	}
+	
+	/**
 	 * Refreshne cache Uzivatelu, ktetou udrzuje rozhrani FitnessCentre.
 	 * @throws DataAccessException
 	 */
@@ -184,7 +203,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			
 			// Vrati list vsech Uzivatelu
 			this.users.clear();
-			this.users.addAll(this.simpleJdbcTemplate.query("SELECT id, first_name, last_name, street, city, postcode, mail, telephone, credit, description, profile_photo_name, login, password, userRole_id FROM users ORDER BY id",
+			this.users.addAll(this.simpleJdbcTemplate.query("SELECT id, first_name, last_name, street, city, postcode, mail, telephone, credit, description, profile_photo_name, login, password, userRole_id, is_active FROM users ORDER BY id",
 					ParameterizedBeanPropertyRowMapper.newInstance(User.class)));
 			
 			// Vrati list vsech moznych Uzivatelskych roli
@@ -233,6 +252,14 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			refreshUsersCache();
 		}
 		return this.users;
+	}
+	
+	@Transactional(readOnly = true)
+	public Collection<Lesson> getLessons() throws DataAccessException {
+		synchronized (this.lessons) {
+			refreshLessonsCache();
+		}
+		return this.lessons;
 	}
 
 	@Transactional(readOnly = true)

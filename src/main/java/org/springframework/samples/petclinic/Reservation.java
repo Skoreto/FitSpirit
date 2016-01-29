@@ -1,11 +1,11 @@
 package org.springframework.samples.petclinic;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Reservation extends BaseEntity {
 
 	// TODO Vybrat jeden z druhù DateTime.
-	private Date reservationTime;
+	private Timestamp reservationTime;
 	
 	private Lesson lesson;
 	

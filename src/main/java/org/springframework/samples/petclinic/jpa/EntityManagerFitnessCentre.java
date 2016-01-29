@@ -8,6 +8,7 @@ import javax.persistence.Query;
 
 import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.FitnessCentre;
+import org.springframework.samples.petclinic.Lesson;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
@@ -60,6 +61,12 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	@SuppressWarnings("unchecked")
 	public Collection<User> getUsers() throws DataAccessException {
 		return this.em.createQuery("SELECT user FROM User user ORDER BY user.id").getResultList();
+	}
+	
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public Collection<Lesson> getLessons() throws DataAccessException {
+		return this.em.createQuery("SELECT lesson FROM Lesson lesson ORDER BY lesson.id").getResultList();
 	}
 
 	@Transactional(readOnly = true)
