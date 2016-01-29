@@ -19,7 +19,6 @@ import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.samples.petclinic.validation.UserValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -64,7 +63,7 @@ public class InstructorController {
 	 * preleje do seznamu instructors tridy Users, ktery slouzi pro ucely odkazani ve view.
 	 */
 	@RequestMapping("/instructors/index")
-	public String instructorsHandler(Model modelMap,HttpServletRequest request) {	
+	public String instructorsHandler(Model model, HttpServletRequest request) {	
 		List<User> instructorUsers = new ArrayList<User>();
 		List<User> allUsers = new ArrayList<User>();
 		allUsers.addAll(this.fitnessCentre.getUsers());
@@ -79,17 +78,17 @@ public class InstructorController {
 		Users instructors = new Users();
 		instructors.getUserList().addAll(instructorUsers);
 		
-		modelMap.addAttribute("users", instructors);
+		model.addAttribute("users", instructors);
 		
 		// Predani titulku stranky do view
 		String pageTitle = "Instruktoøi";
-		modelMap.addAttribute("pageTitle", pageTitle);
+		model.addAttribute("pageTitle", pageTitle);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
-			modelMap.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);
+			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);
 			
 			if (loggedInUserRoleIdent.equals("obsluha")) {
 				return "instructors/indexStaff";
@@ -196,7 +195,7 @@ public class InstructorController {
 	}
 	
 	/**
-	 * Metoda pro zobrazeni formulare pro vytvoreni Instruktora a naplneni
+	 * Handler pro zobrazeni formulare pro vytvoreni Instruktora a naplneni
 	 * kolonek stavajicimi hodnotami = formular upravy Instruktora.
 	 * Ve view se pak odkazuji na promennou "user"!
 	 */
@@ -205,20 +204,22 @@ public class InstructorController {
 		User instructor = this.fitnessCentre.loadUser(instructorId);
 		model.addAttribute("user", instructor);
 		
+		// Predani titulku stranky do view
 		String pageTitle = "Úprava instruktora";
-		model.addAttribute("PageTitle", pageTitle);
+		model.addAttribute("pageTitle", pageTitle);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
-			model.addAttribute("loggedInUserRoleIdent", loggedInUser.getUserRole().getIdentificator());
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);
 		}
 		
 		return "instructors/createForm";
 	}
 	
 	/**
-	 * Metoda pro editaci stavajiciho instruktora.
+	 * Handler pro editaci stavajiciho instruktora.
 	 * Nejprve overi, zda bylo vyplneno jmeno, prijmeni, mail, heslo. 
 	 * - Pokud ne, vrati uzivatele na formular s upozornenim na povinnost vyplnit problemova pole.
 	 * Pote overi, zda byla zvolena fotografie.

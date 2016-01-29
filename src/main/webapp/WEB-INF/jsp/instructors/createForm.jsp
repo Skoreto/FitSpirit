@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/jsp/shared/layoutSidebarHeader.jsp" %>
 
 <header class="page-heading clearfix">
-    <h1 class="heading-title pull-left">${PageTitle}</h1>
+    <h1 class="heading-title pull-left">${pageTitle}</h1>
     <!-- ==== DROBECKOVA NAVIGACE ==== -->
     <div class="breadcrumbs pull-right">
 		<ul class="breadcrumbs-list">

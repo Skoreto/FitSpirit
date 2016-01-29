@@ -20,6 +20,7 @@ encoding//src/main/webapp/WEB-INF/jsp/registration/createForm.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/registration/success.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/rooms/createForm.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/rooms/index.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/rooms/indexStaff.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/shared/layoutSidebarFooter.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/shared/layoutSidebarHeader.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/shared/layoutSidelessFooter.jsp=UTF-8

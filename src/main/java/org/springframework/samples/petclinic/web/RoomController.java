@@ -4,12 +4,15 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.Rooms;
+import org.springframework.samples.petclinic.User;
 import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.samples.petclinic.validation.RoomValidator;
 import org.springframework.stereotype.Controller;
@@ -54,22 +57,51 @@ public class RoomController {
 	
 	/**
 	 * Handler pro zobrazeni seznamu mistnosti.
-	 * @return ModelMap s atributy modelu pro dane view
 	 */
 	@RequestMapping("/rooms/index")
-	public ModelMap roomsHandler() {
+	public String roomsHandler(Model model, HttpServletRequest request) {
 		Rooms rooms = new Rooms();
 		rooms.getRoomList().addAll(this.fitnessCentre.getRooms());
-		return new ModelMap(rooms);
+				
+		model.addAttribute("rooms", rooms);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Místnosti";
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);
+			
+			if (loggedInUserRoleIdent.equals("obsluha")) {
+				return "rooms/indexStaff";
+			}			
+		}
+		
+		return "rooms/index";
 	}
 	
 	/**
 	 * Handler pro zobrazeni formulare pro vytvoreni nove Mistnosti.
 	 */
 	@RequestMapping(value="/rooms/create", method = RequestMethod.GET)
-	public String setupForm(Model model) {
+	public String setupForm(Model model, HttpServletRequest request) {
 		Room room = new Room();
 		model.addAttribute(room);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Nová místnost";
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);	
+		}
+		
 		return "rooms/createForm";
 	}
 	
@@ -104,7 +136,7 @@ public class RoomController {
 	                
 	                this.fitnessCentre.storeRoom(room);
 	    			status.setComplete();
-	    			return "redirect:/rooms/index";	               	                
+	    			return "redirect:/rooms/indexStaff";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
 	            }
@@ -118,25 +150,46 @@ public class RoomController {
 	 * Handler pro zobrazeni detailu o Mistnosti.
 	 */
 	@RequestMapping("/rooms/{roomId}")
-	public ModelAndView roomHandler(@PathVariable("roomId") int roomId) {
+	public ModelAndView roomHandler(@PathVariable("roomId") int roomId, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("rooms/detail");
-		mav.addObject(this.fitnessCentre.loadRoom(roomId));
+		Room room = this.fitnessCentre.loadRoom(roomId);
+		mav.addObject(room);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			mav.addObject("loggedInUserRoleIdent", loggedInUserRoleIdent);	
+		}
+			
 		return mav;
 	}
 		
 	/**
-	 * Metoda pro zobrazeni formulare pro vytvoreni Mistnosti a naplneni
+	 * Handler pro zobrazeni formulare pro vytvoreni Mistnosti a naplneni
 	 * kolonek stavajicimi hodnotami = formular upravy Mistnosti.
 	 */
 	@RequestMapping(value="/rooms/{roomId}/edit", method = RequestMethod.GET)
-	public String setupForm(@PathVariable("roomId") int roomId, Model model) {
+	public String setupForm(@PathVariable("roomId") int roomId, Model model, HttpServletRequest request) {
 		Room room = this.fitnessCentre.loadRoom(roomId);
 		model.addAttribute("room", room);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Úprava místnosti " + room.getName();
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);
+		}
+		
 		return "rooms/createForm";
 	}
 	
 	/**
-	 * Metoda pro editaci stavajici Mistnosti.
+	 * Handler pro editaci stavajici Mistnosti.
 	 * Nejprve overi, zda byl vyplnen novy nazev Mistnosti. 
 	 * - Pokud ne, vrati uzivatele na formular s upozornenim na povinnost vyplnit nazev Mistnosti.
 	 * Pote overi, zda byla zvolena fotografie Mistnosti.
@@ -184,7 +237,7 @@ public class RoomController {
 	                
 	                this.fitnessCentre.storeRoom(room);
 	    			status.setComplete();
-	    			return "redirect:/rooms/index";	               	                
+	    			return "redirect:/rooms/indexStaff";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
 	            }
@@ -215,7 +268,7 @@ public class RoomController {
 		}
 				
 		this.fitnessCentre.deleteRoom(roomId);
-		return "redirect:/rooms/index";	
+		return "redirect:/rooms/indexStaff";	
 	}
 	
 }

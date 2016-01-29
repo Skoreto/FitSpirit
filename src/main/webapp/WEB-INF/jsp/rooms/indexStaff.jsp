@@ -28,14 +28,18 @@
 <div class="row page-row">
   <c:forEach var="room" items="${rooms.roomList}">
         <div class="col-md-6 col-sm-6 col-xs-12 text-center">
-            <div class="album-cover rooms-client">
+            <div class="album-cover rooms-staff">
                     <a href="<spring:url value="/static/uploads/roomImages/${room.illustrationImageName}" htmlEscape="true" />" data-gallery><img class="img-responsive" src="<spring:url value="/static/uploads/roomImages/${room.illustrationImageName}" htmlEscape="true" />" alt="Ilustrace ${room.name}" /></a>
                 <div class="desc">
                     <h4><small><a href="#" title="${room.name}">${room.name}</a></small></h4>                  
+                	<a href="<spring:url value="/rooms/${room.id}/edit" htmlEscape="true"/>" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Upravit</a>                                   
+                    <a href="<spring:url value="/rooms/${room.id}/delete" htmlEscape="true"/>" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Zrušit</a>
                 </div>
             </div>
         </div>
   </c:forEach>
 </div>
+
+<a href="<spring:url value="/rooms/create" htmlEscape="true"/>" class="btn btn-default pull-right">Přidat místnost</a>
 
 <%@ include file="/WEB-INF/jsp/shared/layoutSidebarFooter.jsp" %>

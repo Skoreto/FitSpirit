@@ -18,7 +18,7 @@
             <form:form class="form-signin" method="POST">
                 <div class="form-box">
                     <input name="login" type="text" class="form-control" placeholder="login">
-                    <input type="password" name="password" class="form-control" placeholder="heslo">
+                    <input type="password" name="password" class="form-control" placeholder="heslo" value="h">
                     <button class="btn btn-theme btn-block login" type="submit" onclick=" getAjaxContent() " id="submitButton" data-loading-text="Ověřuji...">Přihlásit</button>
                 </div>
             </form:form>

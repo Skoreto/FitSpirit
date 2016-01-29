@@ -45,15 +45,21 @@ public class FitnessCentreController {
 	 * Handler pro zobrazeni Hlavni stranky fitness centra.
 	 */
 	@RequestMapping("/index")
-	public String indexHandler(HttpServletRequest request, Model model) {
+	public String indexHandler(Model model, HttpServletRequest request) {
+			
+		// Predani titulku stranky do view
+		String pageTitle = "Hlavní strana";
+		model.addAttribute("pageTitle", pageTitle);
 		
 		// Kod, ktery musi byt v kazde GET mapovane URL, kde potrebujeme pristup k session (vsude)
 		// Preda do view promennou "loggedInUserRole", string s roli prihlaseneho uzivatele
 		// Pokud je prazdna, uzivatel neni prihlasen
 		// Bylo by vhodne udelat nejaky BaseController jako rodice kazdeho controlleru, aby tento kod nemusel byt duplicitne...
+		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
-			model.addAttribute("loggedInUserRole", loggedInUser.getUserRole().getIdentificator());
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			model.addAttribute("loggedInUserRoleIdent", loggedInUserRoleIdent);
 		}
 		
 		return "index";
@@ -63,10 +69,13 @@ public class FitnessCentreController {
 	 * Handler pro zobrazeni JSP Prihlasovaci obrazovky.
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginHandler() {
+	public String loginHandler(Model model) {		
 		return "login/login";
 	}
-	   
+	
+	/**
+	 * Handler pro obsluhu prihlaseni uzivatele do systemu.
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String loginUser(HttpServletRequest request, Model model) {
 		

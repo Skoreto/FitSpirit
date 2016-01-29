@@ -8,7 +8,7 @@
     <meta name="author" content="Tomáš Skořepa">
     <link rel="icon" href="<spring:url value="/static/images/favicon.ico" htmlEscape="true" />">
 
-    <title>${PageTitle} | FitSPIRIT</title>
+    <title>${pageTitle} | FitSPIRIT</title>
 
     <!-- Globální Bootstrap CSS -->
     <link href="<spring:url value="/static/styles/bootstrap.min.css" htmlEscape="true" />" rel="stylesheet">
