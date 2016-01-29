@@ -2,11 +2,30 @@
 <%@ include file="/WEB-INF/jsp/shared/layoutSidebarHeader.jsp" %>
 
 <c:choose>
+	<c:when test="${activityType['new']}"><c:set var="currentTitle" value="Nová aktivita"/></c:when>
+	<c:otherwise><c:set var="currentTitle" value="Úprava aktivity"/></c:otherwise>
+</c:choose>
+
+<header class="page-heading clearfix">
+    <h1 class="heading-title pull-left">${pageTitle}</h1>
+    <!-- ==== DROBECKOVA NAVIGACE ==== -->
+    <div class="breadcrumbs pull-right">
+		<ul class="breadcrumbs-list">
+		 <li class="breadcrumbs-label">Nacházíte se zde:</li>
+		 <li><a href="<spring:url value="/activityTypes/index" htmlEscape="true"/>">Aktivity</a><i class="fa fa-angle-right"></i></li>
+		 <li class="current">${currentTitle}</li>
+		</ul>             
+    </div>
+</header>
+<div class="page-content">
+    <div class="row page-row">
+    	<div class="col-md-8 col-sm-7" id="dynamicContent">
+		<!-- ==== HLAVNI OBSAH AKTUALNI STRANKY ==== -->
+
+<c:choose>
 	<c:when test="${activityType['new']}"><c:set var="method" value="post"/></c:when>
 	<c:otherwise><c:set var="method" value="put"/></c:otherwise>
 </c:choose>
-
-<h2><c:if test="${activityType['new']}">Nová </c:if>aktivita:</h2>
 
 <form:form class="form-horizontal" modelAttribute="activityType" method="${method}" enctype="multipart/form-data">
 	<div class="form-group">

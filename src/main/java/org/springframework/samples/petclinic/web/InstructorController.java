@@ -204,7 +204,7 @@ public class InstructorController {
 		model.addAttribute("user", instructor);
 		
 		// Predani titulku stranky do view
-		String pageTitle = "Úprava instruktora";
+		String pageTitle = "Úprava instruktora " + instructor.getFirstName() + " " + instructor.getLastName();
 		model.addAttribute("pageTitle", pageTitle);
 		
 		// Pristup k session prihlaseneho uzivatele

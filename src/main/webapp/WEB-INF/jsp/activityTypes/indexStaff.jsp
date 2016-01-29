@@ -23,10 +23,14 @@
                 <div class="desc">
                     <h4><small><a href="<spring:url value="/activityTypes/${activityType.id}" htmlEscape="true" />">${activityType.name}</a></small></h4>
                     <p>${activityType.shortDescription}</p>          
+                	<a href="<spring:url value="/activityTypes/${activityType.id}/edit" htmlEscape="true"/>" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Upravit</a>                                   
+                    <a href="<spring:url value="/activityTypes/${activityType.id}/delete" htmlEscape="true"/>" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Zrušit</a>
                 </div>
             </div>
         </div>
   </c:forEach>
 </div>
+
+<a href="<spring:url value="/activityTypes/create" htmlEscape="true"/>" class="btn btn-default pull-right">Přidat aktivitu</a>
 
 <%@ include file="/WEB-INF/jsp/shared/layoutSidebarFooter.jsp" %>

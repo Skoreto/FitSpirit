@@ -4,12 +4,15 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.ActivityTypes;
 import org.springframework.samples.petclinic.FitnessCentre;
+import org.springframework.samples.petclinic.User;
 import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.samples.petclinic.validation.ActivityTypeValidator;
 import org.springframework.stereotype.Controller;
@@ -57,19 +60,48 @@ public class ActivityTypeController {
 	 * @return ModelMap s atributy modelu pro dané view
 	 */
 	@RequestMapping("/activityTypes/index")
-	public ModelMap activityTypesHandler() {
+	public String activityTypesHandler(Model model, HttpServletRequest request) {
 		ActivityTypes activityTypes = new ActivityTypes();
 		activityTypes.getActivityTypeList().addAll(this.fitnessCentre.getActivityTypes());
-		return new ModelMap(activityTypes);
+		
+		model.addAttribute("activityTypes", activityTypes);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Aktivity";
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			
+			if (loggedInUserRoleIdent.equals("obsluha")) {
+				return "activityTypes/indexStaff";
+			}			
+		}
+		
+		return "activityTypes/index";	
 	}
 	
 	/**
 	 * Handler pro zobrazeni formulare pro vytvoreni nove Aktivity.
 	 */
 	@RequestMapping(value="/activityTypes/create", method = RequestMethod.GET)
-	public String setupForm(Model model) {
+	public String setupForm(Model model, HttpServletRequest request) {
 		ActivityType activityType = new ActivityType();
 		model.addAttribute(activityType);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Nová aktivita";
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
+		}
+		
 		return "activityTypes/createForm";
 	}
 	
@@ -105,7 +137,7 @@ public class ActivityTypeController {
 	                
 	                this.fitnessCentre.storeActivityType(activityType);
 	    			status.setComplete();
-	    			return "redirect:/activityTypes/index";	               	                
+	    			return "redirect:/activityTypes/indexStaff";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
 	            }
@@ -120,9 +152,26 @@ public class ActivityTypeController {
 	 * Handler pro zobrazeni detailu o Aktivite.
 	 */
 	@RequestMapping("/activityTypes/{activityTypeId}")
-	public ModelAndView activityTypeHandler(@PathVariable("activityTypeId") int activityTypeId) {
+	public ModelAndView activityTypeHandler(@PathVariable("activityTypeId") int activityTypeId, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("activityTypes/detail");
-		mav.addObject(this.fitnessCentre.loadActivityType(activityTypeId));
+		ActivityType activityType = this.fitnessCentre.loadActivityType(activityTypeId);
+		mav.addObject(activityType);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Detail aktivity " + activityType.getName();
+		mav.addObject("pageTitle", pageTitle);
+			
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			mav.addObject("loggedInUser", loggedInUser);
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			
+			if (loggedInUserRoleIdent.equals("obsluha")) {
+				mav.setViewName("activityTypes/detail");
+			}	
+		}
+		
 		return mav;
 	}
 	
@@ -131,9 +180,20 @@ public class ActivityTypeController {
 	 * kolonek stavajicimi hodnotami = formular upravy Aktivity.
 	 */
 	@RequestMapping(value="/activityTypes/{activityTypeId}/edit", method = RequestMethod.GET)
-	public String setupEditForm(@PathVariable("activityTypeId") int activityTypeId, Model model) {
+	public String setupEditForm(@PathVariable("activityTypeId") int activityTypeId, Model model, HttpServletRequest request) {
 		ActivityType activityType = this.fitnessCentre.loadActivityType(activityTypeId);
 		model.addAttribute("activityType", activityType);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Úprava aktivity " + activityType.getName();
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
+		}
+		
 		return "activityTypes/createForm";
 	}
 	
@@ -187,7 +247,7 @@ public class ActivityTypeController {
 	                
 	                this.fitnessCentre.storeActivityType(actvityType);
 	    			status.setComplete();
-	    			return "redirect:/activityTypes/index";	               	                
+	    			return "redirect:/activityTypes/indexStaff";	               	                
 	            } catch (Exception e) {
 	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
 	            }
@@ -218,7 +278,7 @@ public class ActivityTypeController {
 		}
 				
 		this.fitnessCentre.deleteActivityType(activityTypeId);
-		return "redirect:/activityTypes/index";	
+		return "redirect:/activityTypes/indexStaff";	
 	}
 	
 }
