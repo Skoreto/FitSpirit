@@ -370,9 +370,9 @@ public class ClientController {
 	 * Pote k nemu pricte castku vyplnenou ve formulari.
 	 */
 	@RequestMapping(value="/clients/{clientId}/credit", method = {RequestMethod.PUT, RequestMethod.POST})
-	public String processCreditSubmit(@ModelAttribute User client, SessionStatus status, @RequestParam("addedCredit") double addedCredit) {		
+	public String processCreditSubmit(@ModelAttribute User client, SessionStatus status, @RequestParam("addedCredit") int addedCredit) {		
 		// TODO Ošetøit pøipsání záporného kreditu.
-		double actualCredit = client.getCredit();
+		int actualCredit = client.getCredit();
 		client.setCredit(actualCredit + addedCredit);
 		
         this.fitnessCentre.storeUser(client);

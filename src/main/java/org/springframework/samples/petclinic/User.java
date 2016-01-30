@@ -25,7 +25,7 @@ public class User extends BaseEntity {
 	private String telephone;
 	
 	// TODO mìl by být BigDecimal
-	private double credit;
+	private int credit;
 	
 	// Pro úèely informací pro klienty o instruktorovi.
 	private String description;
@@ -105,11 +105,11 @@ public class User extends BaseEntity {
 	}
 
 	@Column(name="CREDIT")
-	public double getCredit() {
+	public int getCredit() {
 		return credit;
 	}
 
-	public void setCredit(double credit) {
+	public void setCredit(int credit) {
 		this.credit = credit;
 	}
 

@@ -1,16 +1,22 @@
 package org.springframework.samples.petclinic.web;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.FitnessCentre;
+import org.springframework.samples.petclinic.Lesson;
 import org.springframework.samples.petclinic.Lessons;
+import org.springframework.samples.petclinic.Reservation;
 import org.springframework.samples.petclinic.Reservations;
 import org.springframework.samples.petclinic.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -47,8 +53,7 @@ public class ReservationController {
 		// Predani titulku stranky do view
 		String pageTitle = "Rezervace";
 		model.addAttribute("pageTitle", pageTitle);
-		
-		
+				
 		// Predani seznamu lekci pro widget
 		Lessons lessons = new Lessons();
 		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
@@ -68,6 +73,58 @@ public class ReservationController {
 		return "index";	
 	}
 	
+	/**
+	 * Handler pro rezervaci vybrane Lekce.
+	 */
+	@RequestMapping("/reservations/{lessonId}/reserve")
+	public String lessonReservationHandler(@PathVariable("lessonId") int lessonId, HttpServletRequest request) {
+		
+		Lesson lesson = this.fitnessCentre.loadLesson(lessonId);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("user");
+		
+		// Overeni, zda lekce je aktivni (z duvodu casu ci aktivnosti instruktora).
+		if (lesson.isActive()) {
+			// Overeni, zda na lekci je volne misto pro registraci.
+			if (lesson.getActualCapacity() > 0) {
+				// Overeni, zda ma klient dostatecny kredit pro rezervaci aktivity.
+				if (loggedInUser.getCredit() >= lesson.getActivityType().getPrice()) {
+					// Nastaveni parametru rezervace.
+					Reservation reservation = new Reservation();
+					reservation.setLesson(lesson);
+					reservation.setClient(loggedInUser);
+					
+					Timestamp actualTime = new Timestamp(new Date().getTime());
+					reservation.setReservationTime(actualTime);
+					
+					Timestamp sixHoursBeforeStart = new Timestamp(lesson.getStartTime().getTime() - 21600000);		
+					// Porovnani compareTo vraci hodnoty -1, 0, 1. 
+					// Pokud aktualni cas je v rozmezi 6 hodin pred zahajenim lekce a vice, pak jiz rezervaci nelze zrusit.
+					if (actualTime.compareTo(sixHoursBeforeStart) > 0) {
+						reservation.setCancellable(false);
+					} else {
+						reservation.setCancellable(true);
+					}
+								
+					// Vlozeni rezervace do databaze.
+					this.fitnessCentre.storeReservation(reservation);
+					
+					// Odecteni ceny aktivity z kreditu klienta a odecteni 1 volneho mista z kapacity lekce. 
+					// Update hodnot v databazi.
+					loggedInUser.setCredit(loggedInUser.getCredit() - lesson.getActivityType().getPrice());
+					this.fitnessCentre.storeUser(loggedInUser);
+					lesson.setActualCapacity(lesson.getActualCapacity() - 1);
+					this.fitnessCentre.storeLesson(lesson);
+					return "redirect:/lessons/index";
+				}
+							
+			}
+					
+		}
+		// TODO Oznameni o chybach v ruznych pripadech.		
+		return "redirect:/lessons/index";
+	}
 	
-	
+		
 }

@@ -71,6 +71,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	private SimpleJdbcInsert insertVisit;
 	private SimpleJdbcInsert insertUser;
 	private SimpleJdbcInsert insertLesson;
+	private SimpleJdbcInsert insertReservation;
 
 	private final List<Vet> vets = new ArrayList<Vet>();
 	private final List<Room> rooms = new ArrayList<Room>();
@@ -103,6 +104,9 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 				.usingGeneratedKeyColumns("id");
 		this.insertLesson = new SimpleJdbcInsert(dataSource)
 				.withTableName("lessons")
+				.usingGeneratedKeyColumns("id");
+		this.insertReservation = new SimpleJdbcInsert(dataSource)
+				.withTableName("reservations")
 				.usingGeneratedKeyColumns("id");
 	}
 
@@ -408,6 +412,24 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 		}		
 		return user;
 	}
+	
+	/**
+	 * Nacte Lekci dle id.
+	 */
+	@Transactional(readOnly = true)
+	public Lesson loadLesson(int id) throws DataAccessException {
+		Lesson lesson;
+		try {
+			lesson = this.simpleJdbcTemplate.queryForObject(
+					"SELECT id, start_time, end_time, activityType_id, room_id, original_capacity, actual_capacity, description, instructor_id, is_active, is_reserved FROM lessons WHERE id=?",
+					ParameterizedBeanPropertyRowMapper.newInstance(Lesson.class),
+					id);
+		}
+		catch (EmptyResultDataAccessException ex) {
+			throw new ObjectRetrievalFailureException(Lesson.class, new Integer(id));
+		}		
+		return lesson;
+	}
 
 	@Transactional(readOnly = true)
 	public Pet loadPet(int id) throws DataAccessException {
@@ -516,6 +538,23 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 					"actual_capacity=:actualCapacity, description=:description, instructor_id=:instructor_id, " +
 					"is_active=:isActive, is_reserved=:isReserved WHERE id=:id",
 					new BeanPropertySqlParameterSource(lesson));	
+		}
+	}
+	
+	/**
+	 * Prida novou Rezervaci nebo updatne stavajici.
+	 */
+	@Transactional
+	public void storeReservation(Reservation reservation) throws DataAccessException {
+		if (reservation.isNew()) {
+			Number newKey = this.insertReservation.executeAndReturnKey(
+					new BeanPropertySqlParameterSource(reservation));
+			reservation.setId(newKey.intValue());
+		}
+		else {
+			this.simpleJdbcTemplate.update(
+					"UPDATE reservations SET reservation_time=:reservationTime, lesson_id=:lesson_id, client_id=:client_id, is_cancellable=:isCancellable WHERE id=:id",
+					new BeanPropertySqlParameterSource(reservation));	
 		}
 	}
 	

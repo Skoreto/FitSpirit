@@ -39,7 +39,7 @@
 	                        <c:choose>
 								<c:when test="${not lesson.reserved}">
 		                            <div class="btn-group">
-		                                <a href="<spring:url value="/reservations/${reservation.id}/reserve" htmlEscape="true" />" class="btn btn-info"> Rezervovat</a>
+		                                <a href="<spring:url value="/reservations/${lesson.id}/reserve" htmlEscape="true" />" class="btn btn-info"> Rezervovat</a>
 		                                <button data-toggle="dropdown" class="btn btn-info dropdown-toggle"><span class="caret"></span></button>
 		                                <ul class="dropdown-menu">
 		                                    <li><a href="<spring:url value="/lessons/${lesson.id}" htmlEscape="true" />"><span class="glyphicon glyphicon-file"></span> Detail</a></li>

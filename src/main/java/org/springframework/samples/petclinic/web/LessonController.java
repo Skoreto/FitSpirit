@@ -96,7 +96,7 @@ public class LessonController {
 				allReservations.addAll(this.fitnessCentre.getReservations());
 				
 				// Ziskani seznamu rezervaci prihlaseneho klienta.
-				// TODO Lépe pøímo dotaz na databázi.
+				// TODO Lepe primo dotaz na databazi.
 				for (Reservation reservation : allReservations) {
 					if (reservation.getClient().getId() == loggedInUser.getId()) {		// BUG1 Proc nikdy neprojde???
 						clientReservations.add(reservation);

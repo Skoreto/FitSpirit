@@ -97,6 +97,11 @@ public interface FitnessCentre {
 	 * Vrati Uzivatele z data store dle zadaneho id.
 	 */
 	User loadUser(int id) throws DataAccessException;
+	
+	/**
+	 * Vrati Lekci z data store podle id.
+	 */
+	Lesson loadLesson(int id) throws DataAccessException;
 
 	/**
 	 * Retrieve a <code>Pet</code> from the data store by id.
@@ -136,10 +141,17 @@ public interface FitnessCentre {
 	
 	/**
 	 * Ulozi Lekci do data store, at uz insertovaneho nebo updatovaneho.
-	 * @param user
+	 * @param lesson
 	 * @throws DataAccessException
 	 */
 	void storeLesson(Lesson lesson) throws DataAccessException;
+	
+	/**
+	 * Ulozi Rezervaci do data store, at uz insertovanou nebo updatovanou.
+	 * @param reservation
+	 * @throws DataAccessException
+	 */
+	void storeReservation(Reservation reservation) throws DataAccessException;
 	
 	/**
 	 * Save a <code>Pet</code> to the data store, either inserting or updating it.

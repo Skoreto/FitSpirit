@@ -11,7 +11,7 @@ public class ActivityType extends BaseEntity {
 	
 	// Cena za jednu lekci dane aktivity.
 	// TODO Mel by byt BigDecimal.
-	private double price;
+	private int price;
 	
 	private String illustrationImageName;
 	
@@ -31,11 +31,11 @@ public class ActivityType extends BaseEntity {
 	}
 
 	@Column(name="PRICE")
-	public double getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 

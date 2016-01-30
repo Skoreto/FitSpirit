@@ -114,6 +114,11 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	public User loadUser(int id) throws DataAccessException {
 		return this.em.find(User.class, id);
 	}
+	
+	@Transactional(readOnly = true)
+	public Lesson loadLesson(int id) throws DataAccessException {
+		return this.em.find(Lesson.class, id);
+	}
 
 	@Transactional(readOnly = true)
 	public Pet loadPet(int id) {
@@ -150,6 +155,12 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 		Lesson merged = this.em.merge(lesson);
 		this.em.flush();
 		lesson.setId(merged.getId());
+	}
+	
+	public void storeReservation(Reservation reservation) throws DataAccessException {
+		Reservation merged = this.em.merge(reservation);
+		this.em.flush();
+		reservation.setId(merged.getId());
 	}
 
 	public void storePet(Pet pet) {
