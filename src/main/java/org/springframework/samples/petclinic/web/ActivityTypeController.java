@@ -57,7 +57,6 @@ public class ActivityTypeController {
 	
 	/**
 	 * Handler pro zobrazení seznamu Aktivit.
-	 * @return ModelMap s atributy modelu pro dané view
 	 */
 	@RequestMapping("/activityTypes/index")
 	public String activityTypesHandler(Model model, HttpServletRequest request) {

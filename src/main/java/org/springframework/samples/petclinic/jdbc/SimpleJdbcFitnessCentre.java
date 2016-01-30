@@ -69,6 +69,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	private SimpleJdbcInsert insertPet;
 	private SimpleJdbcInsert insertVisit;
 	private SimpleJdbcInsert insertUser;
+	private SimpleJdbcInsert insertLesson;
 
 	private final List<Vet> vets = new ArrayList<Vet>();
 	private final List<Room> rooms = new ArrayList<Room>();
@@ -97,6 +98,9 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			.usingGeneratedKeyColumns("id");
 		this.insertUser = new SimpleJdbcInsert(dataSource)
 				.withTableName("users")
+				.usingGeneratedKeyColumns("id");
+		this.insertLesson = new SimpleJdbcInsert(dataSource)
+				.withTableName("lessons")
 				.usingGeneratedKeyColumns("id");
 	}
 
@@ -433,8 +437,6 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 
 	/**
 	 * Prida novou mistnost nebo updatne stavajici.
-	 * @param activityType
-	 * @throws DataAccessException
 	 */
 	@Transactional
 	public void storeActivityType(ActivityType activityType) throws DataAccessException {
@@ -467,6 +469,26 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 					"credit=:credit, description=:description, profile_photo_name=:profilePhotoName, " + 
 					"login=:login, password=:password, userRole_id=:userRole_id, is_active=:isActive WHERE id=:id",
 					new BeanPropertySqlParameterSource(user));	
+		}
+	}
+	
+	/**
+	 * Prida novou Lekci nebo updatne stavajici.
+	 */
+	@Transactional
+	public void storeLesson(Lesson lesson) throws DataAccessException {
+		if (lesson.isNew()) {
+			Number newKey = this.insertLesson.executeAndReturnKey(
+					new BeanPropertySqlParameterSource(lesson));
+			lesson.setId(newKey.intValue());
+		}
+		else {
+			this.simpleJdbcTemplate.update(
+					"UPDATE lessons SET start_time=:startTime, end_time=:endTime, " +
+					"activityType_id=:activityType_id, room_id=:room_id, original_capacity=:originalCapacity, " +
+					"actual_capacity=:actualCapacity, description=:description, instructor_id=:instructor_id, " +
+					"is_active=:isActive, is_reserved=:isReserved WHERE id=:id",
+					new BeanPropertySqlParameterSource(lesson));	
 		}
 	}
 	

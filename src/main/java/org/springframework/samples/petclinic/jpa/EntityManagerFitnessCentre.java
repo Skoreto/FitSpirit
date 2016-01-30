@@ -138,6 +138,12 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 		this.em.flush();
 		user.setId(merged.getId());
 	}
+	
+	public void storeLesson(Lesson lesson) throws DataAccessException {
+		Lesson merged = this.em.merge(lesson);
+		this.em.flush();
+		lesson.setId(merged.getId());
+	}
 
 	public void storePet(Pet pet) {
 		// Consider returning the persistent object here, for exposing

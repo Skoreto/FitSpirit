@@ -129,6 +129,13 @@ public interface FitnessCentre {
 	void storeUser(User user) throws DataAccessException;
 	
 	/**
+	 * Ulozi Lekci do data store, at uz insertovaneho nebo updatovaneho.
+	 * @param user
+	 * @throws DataAccessException
+	 */
+	void storeLesson(Lesson lesson) throws DataAccessException;
+	
+	/**
 	 * Save a <code>Pet</code> to the data store, either inserting or updating it.
 	 * @param pet the <code>Pet</code> to save
 	 * @see BaseEntity#isNew
