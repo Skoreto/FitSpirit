@@ -118,6 +118,7 @@ public class Lesson extends BaseEntity {
 		this.isActive = isActive;
 	}
 
+	// Atribut by nebylo potreba vest v databazi, ale dochazi ke kolizi s Hibernate.
 	@Column(name="IS_RESERVED")
 	public boolean isReserved() {
 		return isReserved;

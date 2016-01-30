@@ -27,6 +27,7 @@ import org.springframework.samples.petclinic.Lesson;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
+import org.springframework.samples.petclinic.Reservation;
 import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.Specialty;
 import org.springframework.samples.petclinic.User;
@@ -76,6 +77,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	private final List<ActivityType> activityTypes = new ArrayList<ActivityType>();
 	private final List<User> users = new ArrayList<User>();
 	private final List<Lesson> lessons = new ArrayList<Lesson>();
+	private final List<Reservation> reservations = new ArrayList<Reservation>();
 
 	@Autowired
 	public void init(DataSource dataSource) {
@@ -196,6 +198,23 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	}
 	
 	/**
+	 * Refreshne cache Rezervaci, ktetou udržuje rozhraní FitnessCentre.
+	 * @throws DataAccessException
+	 */
+	@ManagedOperation
+	@Transactional(readOnly = true)
+	private void refreshReservationsCache() throws DataAccessException {
+		synchronized (this.reservations) {
+			this.logger.info("Refreshuji cache rezervaci");
+			
+			// Vrátí list všech Rezervaci
+			this.reservations.clear();
+			this.reservations.addAll(this.simpleJdbcTemplate.query("SELECT id, reservation_time, lesson_id, client_id, is_cancellable FROM reservations ORDER BY id",
+					ParameterizedBeanPropertyRowMapper.newInstance(Reservation.class)));			
+		}
+	}
+	
+	/**
 	 * Refreshne cache Uzivatelu, ktetou udrzuje rozhrani FitnessCentre.
 	 * @throws DataAccessException
 	 */
@@ -222,7 +241,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	}
 	
 	
-	// START of Clinic implementation section *******************************
+	// ==== START of FitnessCentre implementation section ====
 
 	@Transactional(readOnly = true)
 	public Collection<Vet> getVets() throws DataAccessException {
@@ -264,6 +283,14 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			refreshLessonsCache();
 		}
 		return this.lessons;
+	}
+	
+	@Transactional(readOnly = true)
+	public Collection<Reservation> getReservations() throws DataAccessException {
+		synchronized (this.reservations) {
+			refreshReservationsCache();
+		}
+		return this.reservations;
 	}
 
 	@Transactional(readOnly = true)

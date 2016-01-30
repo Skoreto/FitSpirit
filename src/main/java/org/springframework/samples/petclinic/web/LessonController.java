@@ -1,36 +1,22 @@
 package org.springframework.samples.petclinic.web;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.ActivityType;
-import org.springframework.samples.petclinic.ActivityTypes;
 import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Lesson;
 import org.springframework.samples.petclinic.Lessons;
-import org.springframework.samples.petclinic.PetType;
 import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.User;
-import org.springframework.samples.petclinic.UserRole;
-import org.springframework.samples.petclinic.util.ProjectUtils;
-import org.springframework.samples.petclinic.validation.UserValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -39,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Controller pro handlovani Lekci v systemu.
@@ -51,20 +36,18 @@ public class LessonController {
 
 	private final FitnessCentre fitnessCentre;
 	
-	private static final Logger logger = LoggerFactory.getLogger(LessonController.class);
-	
-	private final String myProjectPath = ProjectUtils.getMyProjectPath();
-	
 	@Autowired
 	public LessonController(FitnessCentre fitnessCentre) {
 		this.fitnessCentre = fitnessCentre;
 	}
 	
+	// ModelAttribute pro select box
 	@ModelAttribute("activityTypes")
 	public Collection<ActivityType> populateActivityTypes() {
 		return this.fitnessCentre.getActivityTypes();
 	}
 	
+	// ModelAttribute pro select box
 	@ModelAttribute("rooms")
 	public Collection<Room> populateRooms() {	
 		return this.fitnessCentre.getRooms();

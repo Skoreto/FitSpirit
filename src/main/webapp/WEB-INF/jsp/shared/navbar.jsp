@@ -9,6 +9,7 @@
 		<li class="nav-item"><a href="<spring:url value="/instructors/index" htmlEscape="true"/>"><i class="fa fa-users"></i> Instruktoři</a></li>		
 	</c:when>
 	<c:when test="${loggedInUser.userRole.id == 3}">
+		<li class="nav-item"><a href="<spring:url value="/reservations/index" htmlEscape="true"/>"><i class="fa fa-check-square-o"></i> Rezervace</a></li>
 		<li class="nav-item"><a href="<spring:url value="/activityTypes/index" htmlEscape="true"/>"><i class="fa fa-child"></i> Aktivity</a></li>
 		<li class="nav-item"><a href="<spring:url value="/rooms/index" htmlEscape="true"/>"><i class="fa fa-map-marker"></i> Místnosti</a></li>
 		<li class="nav-item"><a href="<spring:url value="/gallery/index" htmlEscape="true"/>"><i class="fa fa-photo"></i> Galerie</a></li>

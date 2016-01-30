@@ -12,6 +12,7 @@ import org.springframework.samples.petclinic.Lesson;
 import org.springframework.samples.petclinic.Owner;
 import org.springframework.samples.petclinic.Pet;
 import org.springframework.samples.petclinic.PetType;
+import org.springframework.samples.petclinic.Reservation;
 import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.User;
 import org.springframework.samples.petclinic.UserRole;
@@ -67,6 +68,12 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	@SuppressWarnings("unchecked")
 	public Collection<Lesson> getLessons() throws DataAccessException {
 		return this.em.createQuery("SELECT lesson FROM Lesson lesson ORDER BY lesson.id").getResultList();
+	}
+	
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public Collection<Reservation> getReservations() throws DataAccessException {
+		return this.em.createQuery("SELECT reservation FROM Reservation reservation ORDER BY reservation.id").getResultList();
 	}
 
 	@Transactional(readOnly = true)

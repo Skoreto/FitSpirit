@@ -47,6 +47,12 @@ public interface FitnessCentre {
 	Collection<Lesson> getLessons() throws DataAccessException;
 	
 	/**
+	 * Retrieve all <code>Reservation</code>s from the data store.
+	 * @return a <code>Collection</code> of <code>Reservation</code>s
+	 */
+	Collection<Reservation> getReservations() throws DataAccessException;
+	
+	/**
 	 * Retrieve all <code>PetType</code>s from the data store.
 	 * @return a <code>Collection</code> of <code>PetType</code>s
 	 */
