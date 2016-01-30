@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.FitnessCentre;
+import org.springframework.samples.petclinic.Lessons;
 import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.Rooms;
 import org.springframework.samples.petclinic.User;
@@ -69,6 +70,11 @@ public class RoomController {
 		String pageTitle = "Místnosti";
 		model.addAttribute("pageTitle", pageTitle);
 		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		model.addAttribute("lessonsForWidget", lessons);
+		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
@@ -94,6 +100,11 @@ public class RoomController {
 		// Predani titulku stranky do view
 		String pageTitle = "Nová místnost";
 		model.addAttribute("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
@@ -175,6 +186,11 @@ public class RoomController {
 		// Predani titulku stranky do view
 		String pageTitle = "Úprava místnosti " + room.getName();
 		model.addAttribute("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");

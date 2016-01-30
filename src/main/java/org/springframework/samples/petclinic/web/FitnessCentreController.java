@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.FitnessCentre;
+import org.springframework.samples.petclinic.Lessons;
 import org.springframework.samples.petclinic.User;
 import org.springframework.samples.petclinic.Vets;
 import org.springframework.stereotype.Controller;
@@ -50,6 +51,11 @@ public class FitnessCentreController {
 		// Predani titulku stranky do view
 		String pageTitle = "Hlavní strana";
 		model.addAttribute("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Kod, ktery musi byt v kazde GET mapovane URL, kde potrebujeme pristup k session (vsude)
 		// Bylo by vhodne udelat nejaky BaseController jako rodice kazdeho controlleru, aby tento kod nemusel byt duplicitne...

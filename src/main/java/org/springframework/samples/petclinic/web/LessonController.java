@@ -89,6 +89,9 @@ public class LessonController {
 		String pageTitle = "Lekce";
 		model.addAttribute("pageTitle", pageTitle);
 		
+		// Predani seznamu lekci pro widget
+		model.addAttribute("lessonsForWidget", lessons);
+		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
@@ -121,6 +124,11 @@ public class LessonController {
 		String pageTitle = "Nová lekce";
 		model.addAttribute("pageTitle", pageTitle);
 		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		model.addAttribute("lessonsForWidget", lessons);
+		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
@@ -137,7 +145,7 @@ public class LessonController {
 	@RequestMapping(value="/lessons/create", method = RequestMethod.POST)
 	public String processSubmit(SessionStatus status, HttpServletRequest request, @RequestParam("startTime") String startTime, 
 			@RequestParam("endTime") String endTime, @RequestParam("originalCapacity") int originalCapacity, 
-			@RequestParam("activityType") int activityTypeId, @RequestParam("room") int roomId) {
+			@RequestParam("activityType") int activityTypeId, @RequestParam("room") int roomId, @RequestParam("description") String description) {
 		
 		Lesson lesson = new Lesson();
 		
@@ -170,7 +178,9 @@ public class LessonController {
 		User loggedInUser = (User)request.getSession().getAttribute("user");	
 		lesson.setInstructor(loggedInUser);
 
+		lesson.setDescription(description);
         lesson.setActive(true);
+        lesson.setReserved(false);
         
         this.fitnessCentre.storeLesson(lesson);
 		status.setComplete();

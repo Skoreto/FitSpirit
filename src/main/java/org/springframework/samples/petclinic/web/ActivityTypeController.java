@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.ActivityTypes;
 import org.springframework.samples.petclinic.FitnessCentre;
+import org.springframework.samples.petclinic.Lessons;
 import org.springframework.samples.petclinic.User;
 import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.samples.petclinic.validation.ActivityTypeValidator;
@@ -69,6 +70,11 @@ public class ActivityTypeController {
 		String pageTitle = "Aktivity";
 		model.addAttribute("pageTitle", pageTitle);
 		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		model.addAttribute("lessonsForWidget", lessons);
+		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
 		if (null != loggedInUser) {
@@ -94,6 +100,11 @@ public class ActivityTypeController {
 		// Predani titulku stranky do view
 		String pageTitle = "Nová aktivita";
 		model.addAttribute("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
@@ -159,6 +170,11 @@ public class ActivityTypeController {
 		// Predani titulku stranky do view
 		String pageTitle = "Detail aktivity " + activityType.getName();
 		mav.addObject("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		mav.addObject("lessonsForWidget", lessons);
 			
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
@@ -186,6 +202,11 @@ public class ActivityTypeController {
 		// Predani titulku stranky do view
 		String pageTitle = "Úprava aktivity " + activityType.getName();
 		model.addAttribute("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");

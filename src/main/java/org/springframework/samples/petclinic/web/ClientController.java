@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.FitnessCentre;
+import org.springframework.samples.petclinic.Lessons;
 import org.springframework.samples.petclinic.User;
 import org.springframework.samples.petclinic.UserRole;
 import org.springframework.samples.petclinic.Users;
@@ -86,6 +87,11 @@ public class ClientController {
 		// Predani titulku stranky do view
 		String pageTitle = "Klienti";
 		model.addAttribute("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
@@ -204,6 +210,11 @@ public class ClientController {
 		// Predani titulku stranky do view
 		String pageTitle = "Detail klienta " + client.getFirstName() + " " + client.getLastName();
 		mav.addObject("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		mav.addObject("lessonsForWidget", lessons);
 			
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");
@@ -233,6 +244,11 @@ public class ClientController {
 		// Predani titulku stranky do view
 		String pageTitle = "Úprava klienta " + client.getFirstName() + " " + client.getLastName();
 		model.addAttribute("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("user");

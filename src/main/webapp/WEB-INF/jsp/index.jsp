@@ -67,7 +67,7 @@
             <h1 class="section-heading text-highlight"><span class="line">Nadcházející lekce</span></h1>
             <div class="section-content">
             	<!-- Dočasné řešení. Nutné upravit eventsBar pro Sideless layout. -->    
-                <%@ include file="/WEB-INF/jsp/sideBar/eventsBar.jsp" %>
+                <%@ include file="/WEB-INF/jsp/sideBar/lessonsWidget.jsp" %>
 			</div>
         </section>
     </div>

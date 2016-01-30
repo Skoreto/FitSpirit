@@ -8,7 +8,7 @@
                         <!-- ==== PANEL NADCHÃZEJÍCÍ LEKCE ==== -->
                         <section class="events col-md-offset-1">
                             <h3 class="title">Nadcházející lekce</h3>
-                            <%@ include file="/WEB-INF/jsp/sideBar/eventsBar.jsp" %>
+                            <%@ include file="/WEB-INF/jsp/sideBar/lessonsWidget.jsp" %>
                         </section>
                     </aside>
                 </div>
