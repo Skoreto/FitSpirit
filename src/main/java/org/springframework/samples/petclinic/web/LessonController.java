@@ -3,8 +3,10 @@ package org.springframework.samples.petclinic.web;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +15,7 @@ import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Lesson;
 import org.springframework.samples.petclinic.Lessons;
+import org.springframework.samples.petclinic.Reservation;
 import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.User;
 import org.springframework.stereotype.Controller;
@@ -64,9 +67,7 @@ public class LessonController {
 	@RequestMapping("/lessons/index")
 	public String activityTypesHandler(Model model, HttpServletRequest request) {
 		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
-		
-		model.addAttribute("lessons", lessons);
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());	
 		
 		// Predani titulku stranky do view
 		String pageTitle = "Lekce";
@@ -82,16 +83,43 @@ public class LessonController {
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
 			
 			if (loggedInUserRoleIdent.equals("obsluha")) {
+				model.addAttribute("lessons", lessons);
 				return "lessons/indexStaff";
 			}	
 			if (loggedInUserRoleIdent.equals("instruktor")) {
+				model.addAttribute("lessons", lessons);
 				return "lessons/indexInstructor";
 			}
-			if (loggedInUserRoleIdent.equals("klient")) {
+			if (loggedInUserRoleIdent.equals("klient")) {								
+				List<Reservation> clientReservations = new ArrayList<Reservation>();
+				List<Reservation> allReservations = new ArrayList<Reservation>();
+				allReservations.addAll(this.fitnessCentre.getReservations());
+				
+				// Ziskani seznamu rezervaci prihlaseneho klienta.
+				// TODO Lépe pøímo dotaz na databázi.
+				for (Reservation reservation : allReservations) {
+					if (reservation.getClient().getId() == loggedInUser.getId()) {		// BUG1 Proc nikdy neprojde???
+						clientReservations.add(reservation);
+					}			
+				}
+				
+				// Vyznaceni rezervovanych lekci pro prihlaseneho klienta.
+				for (Lesson lesson : lessons.getLessonList()) {
+					lesson.setReserved(false);	// Pro jistotu vyplneni vlastnosti.
+					
+					for (Reservation reservation : clientReservations) {
+						if (reservation.getLesson().getId() == lesson.getId()) {	// BUG2 Proc nikdy neprojde???
+							lesson.setReserved(true);
+						}					
+					}
+				}
+				
+				model.addAttribute("lessons", lessons);			
 				return "lessons/indexClient";
 			}
 		}
 		
+		model.addAttribute("lessons", lessons);
 		return "lessons/index";	
 	}
 	

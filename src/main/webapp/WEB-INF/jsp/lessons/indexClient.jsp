@@ -37,7 +37,7 @@
                     <c:choose>
 						<c:when test="${lesson.active && lesson.actualCapacity != 0}">
 	                        <c:choose>
-								<c:when test="${lesson.reserved}">
+								<c:when test="${not lesson.reserved}">
 		                            <div class="btn-group">
 		                                <a href="<spring:url value="/reservations/${reservation.id}/reserve" htmlEscape="true" />" class="btn btn-info"> Rezervovat</a>
 		                                <button data-toggle="dropdown" class="btn btn-info dropdown-toggle"><span class="caret"></span></button>
