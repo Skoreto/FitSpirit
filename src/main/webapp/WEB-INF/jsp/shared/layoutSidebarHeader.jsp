@@ -43,7 +43,7 @@
 		                        <li class="divider">Přihlášen jako ${loggedInUser.userRole.identificator}<a href="<spring:url value="/logout" htmlEscape="true"/>"><i class="fa fa-sign-in"></i> Odhlásit se</a></li>
     						</c:otherwise>
 						</c:choose>
-                        <li class="divider"><a href="#">Úvod</a></li>
+                        <li class="divider"><a href="<spring:url value="/index" htmlEscape="true"/>">Úvod</a></li>
                         <li class="divider"><a href="#">FAQ</a></li>
                         <li class="divider"><a href="#">Ceník</a></li>
                         <li><a href="#">Kontakt</a></li>
