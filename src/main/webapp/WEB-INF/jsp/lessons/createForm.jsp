@@ -7,7 +7,7 @@
     <div class="breadcrumbs pull-right">
 		<ul class="breadcrumbs-list">
 		 <li class="breadcrumbs-label">Nacházíte se zde:</li>
-		 <li><a href="<spring:url value="/activityTypes/index" htmlEscape="true"/>">Lekce</a><i class="fa fa-angle-right"></i></li>
+		 <li><a href="<spring:url value="/lessons/index" htmlEscape="true"/>">Lekce</a><i class="fa fa-angle-right"></i></li>
 		 <li class="current">Nová lekce</li>
 		</ul>             
     </div>

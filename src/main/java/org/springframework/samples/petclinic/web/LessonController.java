@@ -18,16 +18,19 @@ import org.springframework.samples.petclinic.Lessons;
 import org.springframework.samples.petclinic.Reservation;
 import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.User;
+import org.springframework.samples.petclinic.Users;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Controller pro handlovani Lekci v systemu.
@@ -98,7 +101,7 @@ public class LessonController {
 				// Ziskani seznamu rezervaci prihlaseneho klienta.
 				// TODO Lepe primo dotaz na databazi.
 				for (Reservation reservation : allReservations) {
-					if (reservation.getClient().getId() == loggedInUser.getId()) {		// BUG1 Proc nikdy neprojde???
+					if (reservation.getClient().getId().equals(loggedInUser.getId())) {		// BUG1 Proc nikdy neprojde???
 						clientReservations.add(reservation);
 					}			
 				}
@@ -108,7 +111,7 @@ public class LessonController {
 					lesson.setReserved(false);	// Pro jistotu vyplneni vlastnosti.
 					
 					for (Reservation reservation : clientReservations) {
-						if (reservation.getLesson().getId() == lesson.getId()) {	// BUG2 Proc nikdy neprojde???
+						if (reservation.getLesson().getId().equals(lesson.getId())) {	// BUG2 Proc nikdy neprojde???
 							lesson.setReserved(true);
 						}					
 					}
@@ -197,6 +200,55 @@ public class LessonController {
 		status.setComplete();
 		return "redirect:/lessons/index";						
 	}	
+	
+	/**
+	 * Handler pro zobrazeni detailu Lekce.
+	 */
+	@RequestMapping("/lessons/{lessonId}")
+	public ModelAndView instructorHandler(@PathVariable("lessonId") int lessonId, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("lessons/detail");
+		Lesson lesson = this.fitnessCentre.loadLesson(lessonId);
+		mav.addObject(lesson);
+		
+		// Predani klientu rezervovanych na vybranou lekci do JSP
+		List<User> reservedClients = new ArrayList<User>();		
+		List<Reservation> allReservations = new ArrayList<Reservation>();
+		allReservations.addAll(this.fitnessCentre.getReservations());
+		
+		// Projde vsechny rezervace. Pokud nalezne rezervaci na vybranou lekci, prida
+		// klienta, ktery vlastni tuto rezervaci do seznamu klientu rezervovanych na vybranou lekci.
+		for (Reservation reservation : allReservations) {
+			if (reservation.getLesson().getId().equals(lesson.getId())) {
+				reservedClients.add(this.fitnessCentre.loadUser(reservation.getClient().getId()));
+			}	
+		}
+		
+		Users reservedClientsList = new Users();
+		reservedClientsList.getUserList().addAll(reservedClients);		
+		mav.addObject("users", reservedClientsList);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Detail lekce " + lesson.getActivityType().getName();
+		mav.addObject("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		Lessons lessons = new Lessons();
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		mav.addObject("lessonsForWidget", lessons);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
+		if (null != loggedInUser) {
+			mav.addObject("loggedInUser", loggedInUser);
+			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
+			
+			if (loggedInUserRoleIdent.equals("obsluha")) {
+				mav.setViewName("lessons/detailStaff");
+			}		
+		}
+			
+		return mav;
+	}
 	
 		
 }

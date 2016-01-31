@@ -178,7 +178,7 @@ public class InstructorController {
 	}
 	
 	/**
-	 * Handler pro zobrazeni detailu instruktora.
+	 * Handler pro zobrazeni detailu Instruktora.
 	 */
 	@RequestMapping("/instructors/{instructorId}")
 	public ModelAndView instructorHandler(@PathVariable("instructorId") int instructorId, HttpServletRequest request) {
