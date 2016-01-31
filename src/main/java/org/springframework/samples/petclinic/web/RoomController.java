@@ -72,7 +72,7 @@ public class RoomController {
 		
 		// Predani seznamu lekci pro widget
 		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		lessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
@@ -103,7 +103,7 @@ public class RoomController {
 		
 		// Predani seznamu lekci pro widget
 		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		lessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
@@ -189,7 +189,7 @@ public class RoomController {
 		
 		// Predani seznamu lekci pro widget
 		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		lessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele

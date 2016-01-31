@@ -71,9 +71,9 @@ public class ActivityTypeController {
 		model.addAttribute("pageTitle", pageTitle);
 		
 		// Predani seznamu lekci pro widget
-		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
-		model.addAttribute("lessonsForWidget", lessons);
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		model.addAttribute("lessonsForWidget", activeLessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("logUser");
@@ -102,9 +102,9 @@ public class ActivityTypeController {
 		model.addAttribute("pageTitle", pageTitle);
 		
 		// Predani seznamu lekci pro widget
-		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
-		model.addAttribute("lessonsForWidget", lessons);
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		model.addAttribute("lessonsForWidget", activeLessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("logUser");
@@ -172,9 +172,9 @@ public class ActivityTypeController {
 		mav.addObject("pageTitle", pageTitle);
 		
 		// Predani seznamu lekci pro widget
-		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
-		mav.addObject("lessonsForWidget", lessons);
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		mav.addObject("lessonsForWidget", activeLessons);
 			
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("logUser");
@@ -204,9 +204,9 @@ public class ActivityTypeController {
 		model.addAttribute("pageTitle", pageTitle);
 		
 		// Predani seznamu lekci pro widget
-		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
-		model.addAttribute("lessonsForWidget", lessons);
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		model.addAttribute("lessonsForWidget", activeLessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("logUser");

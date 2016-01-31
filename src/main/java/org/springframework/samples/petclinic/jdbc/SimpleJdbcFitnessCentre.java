@@ -202,6 +202,23 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	}
 	
 	/**
+	 * Refreshne cache aktivnich Lekci, ktetou udržuje rozhraní FitnessCentre.
+	 * @throws DataAccessException
+	 */
+	@ManagedOperation
+	@Transactional(readOnly = true)
+	private void refreshActiveLessonsCache() throws DataAccessException {
+		synchronized (this.lessons) {
+			this.logger.info("Refreshuji cache aktivnich lekci");
+			
+			// Vrátí list všech aktivnich Lekci
+			this.lessons.clear();
+			this.lessons.addAll(this.simpleJdbcTemplate.query("SELECT id, start_time, end_time, activityType_id, room_id, original_capacity, actual_capacity, description, instructor_id, is_active FROM lessons WHERE is_active=1 ORDER BY id",
+					ParameterizedBeanPropertyRowMapper.newInstance(Lesson.class)));			
+		}
+	}
+	
+	/**
 	 * Refreshne cache Rezervaci, ktetou udržuje rozhraní FitnessCentre.
 	 * @throws DataAccessException
 	 */
@@ -285,6 +302,14 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	public Collection<Lesson> getLessons() throws DataAccessException {
 		synchronized (this.lessons) {
 			refreshLessonsCache();
+		}
+		return this.lessons;
+	}
+	
+	@Transactional(readOnly = true)
+	public Collection<Lesson> getActiveLessons() throws DataAccessException {
+		synchronized (this.lessons) {
+			refreshActiveLessonsCache();
 		}
 		return this.lessons;
 	}

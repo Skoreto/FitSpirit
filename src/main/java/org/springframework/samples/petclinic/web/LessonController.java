@@ -79,7 +79,9 @@ public class LessonController {
 		model.addAttribute("pageTitle", pageTitle);
 		
 		// Predani seznamu lekci pro widget
-		model.addAttribute("lessonsForWidget", lessons);
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		model.addAttribute("lessonsForWidget", activeLessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("logUser");
@@ -101,7 +103,6 @@ public class LessonController {
 				allReservations.addAll(this.fitnessCentre.getReservations());
 				
 				// Ziskani seznamu rezervaci prihlaseneho klienta.
-				// TODO Lepe primo dotaz na databazi.
 				for (Reservation reservation : allReservations) {
 					if (reservation.getClient().getId().equals(loggedInUser.getId())) {
 						clientReservations.add(reservation);

@@ -55,9 +55,9 @@ public class FitnessCentreController {
 		
 		// Predani seznamu lekci pro widget
 		new ProjectUtils(fitnessCentre).setExpiredLessons();
-		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
-		model.addAttribute("lessonsForWidget", lessons);
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		model.addAttribute("lessonsForWidget", activeLessons);
 		
 		// Kod, ktery musi byt v kazde GET mapovane URL, kde potrebujeme pristup k session (vsude)
 		// Bylo by vhodne udelat nejaky BaseController jako rodice kazdeho controlleru, aby tento kod nemusel byt duplicitne...

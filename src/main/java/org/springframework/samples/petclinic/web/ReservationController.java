@@ -54,10 +54,10 @@ public class ReservationController {
 		String pageTitle = "Rezervace";
 		model.addAttribute("pageTitle", pageTitle);
 				
-		// Predani seznamu lekci pro widget
-		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
-		model.addAttribute("lessonsForWidget", lessons);
+		// Predani seznamu lekci pro widget		
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		model.addAttribute("lessonsForWidget", activeLessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("logUser");
@@ -65,7 +65,7 @@ public class ReservationController {
 			model.addAttribute("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
 			
-			if (loggedInUserRoleIdent.equals("klient")) {
+			if (loggedInUserRoleIdent.equals("klient")) {				
 				// Filtrace rezervaci pouze pro prihlaseneho klienta.
 				Reservations clientReservations = new Reservations();
 				List<Reservation> allReservations = new ArrayList<Reservation>();
@@ -131,7 +131,7 @@ public class ReservationController {
 					} else {
 						reservation.setCancellable(true);
 					}
-								
+					
 					// Vlozeni rezervace do databaze.
 					this.fitnessCentre.storeReservation(reservation);
 					
