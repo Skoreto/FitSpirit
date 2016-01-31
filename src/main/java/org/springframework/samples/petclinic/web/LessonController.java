@@ -101,7 +101,7 @@ public class LessonController {
 				// Ziskani seznamu rezervaci prihlaseneho klienta.
 				// TODO Lepe primo dotaz na databazi.
 				for (Reservation reservation : allReservations) {
-					if (reservation.getClient().getId().equals(loggedInUser.getId())) {		// BUG1 Proc nikdy neprojde???
+					if (reservation.getClient().getId().equals(loggedInUser.getId())) {
 						clientReservations.add(reservation);
 					}			
 				}
@@ -111,7 +111,7 @@ public class LessonController {
 					lesson.setReserved(false);	// Pro jistotu vyplneni vlastnosti.
 					
 					for (Reservation reservation : clientReservations) {
-						if (reservation.getLesson().getId().equals(lesson.getId())) {	// BUG2 Proc nikdy neprojde???
+						if (reservation.getLesson().getId().equals(lesson.getId())) {
 							lesson.setReserved(true);
 						}					
 					}

@@ -25,16 +25,12 @@
         </thead>
         <tbody>
             <tr>
-                <td>Id</td>
-                <td>${lesson.id}</td>
+                <td>Datum</td>
+                <td><fmt:formatDate value="${lesson.startTime}" pattern="EEEE d.M.yyyy" /></td>
             </tr>
             <tr>
-                <td>Čas zahájení</td>
-                <td><fmt:formatDate value="${lesson.startTime}" pattern="EEEE d.M.yyyy H:mm" /></td>
-            </tr>
-            <tr>
-                <td>Čas ukončení</td>
-                <td><fmt:formatDate value="${lesson.endTime}" pattern="EEEE d.M.yyyy H:mm" /></td>
+                <td>Čas zahájení/ukončení</td>
+                <td><fmt:formatDate value="${lesson.startTime}" pattern="H:mm" /> - <fmt:formatDate value="${lesson.endTime}" pattern="H:mm" /></td>
             </tr>
             <tr>
                 <td>Aktivita</td>
