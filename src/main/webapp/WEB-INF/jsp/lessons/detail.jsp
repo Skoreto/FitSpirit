@@ -66,7 +66,7 @@
     <div class="panel-heading">Registrovaní klienti</div>
     <ul class="list-group">
         <c:forEach var="user" items="${users.userList}">
-            <li class="list-group-item"><span class="badge">ID ${user.id}</span>${user.firstName} ${user.lastName}</li>
+            <li class="list-group-item">${user.firstName} ${user.lastName}</li>
         </c:forEach>
     </ul>
 </div>
