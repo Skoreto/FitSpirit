@@ -132,7 +132,7 @@ public class FitnessCentreController {
 	public String logoutUser(HttpServletRequest request, Model model) {
 		
 		// Vycistime data prihlaseneho uzivatele ze session
-		request.getSession().removeAttribute("user");
+		request.getSession().removeAttribute("logUser");
 		// Uzivatele presmerujeme na homepage
 		return "redirect:/index";		
 	}
