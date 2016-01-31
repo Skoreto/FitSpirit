@@ -76,7 +76,7 @@ public class ActivityTypeController {
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
@@ -107,7 +107,7 @@ public class ActivityTypeController {
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 		}
@@ -177,7 +177,7 @@ public class ActivityTypeController {
 		mav.addObject("lessonsForWidget", lessons);
 			
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			mav.addObject("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
@@ -209,7 +209,7 @@ public class ActivityTypeController {
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 		}

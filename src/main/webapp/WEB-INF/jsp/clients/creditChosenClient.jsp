@@ -34,7 +34,7 @@
         <label class="control-label col-xs-2">Kredit</label>
         <div class="col-sm-10">
             <div class="input-group">
-                <input type="text" name="addedCredit" value="0.0" class="form-control" />
+                <input type="text" name="addedCredit" value="0" class="form-control" />
                 <span class="input-group-addon">Kč</span>
             </div>
         </div>

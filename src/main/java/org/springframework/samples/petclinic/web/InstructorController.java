@@ -38,7 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Tomas Skorepa
  */
 @Controller
-//@SessionAttributes("user")
+@SessionAttributes("user")
 public class InstructorController {
 	
 	private final FitnessCentre fitnessCentre;
@@ -91,7 +91,7 @@ public class InstructorController {
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
@@ -122,7 +122,7 @@ public class InstructorController {
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 		}
@@ -196,7 +196,7 @@ public class InstructorController {
 		mav.addObject("lessonsForWidget", lessons);
 			
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			mav.addObject("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
@@ -229,7 +229,7 @@ public class InstructorController {
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 		}

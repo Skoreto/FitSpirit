@@ -39,7 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Tomas Skorepa
  */
 @Controller
-//@SessionAttributes("user")
+@SessionAttributes("user")
 public class ClientController {
 	
 	private final FitnessCentre fitnessCentre;
@@ -94,7 +94,7 @@ public class ClientController {
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
@@ -121,7 +121,7 @@ public class ClientController {
 		model.addAttribute("pageTitle", pageTitle);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 		}
@@ -189,7 +189,7 @@ public class ClientController {
 		mav.addObject("pageTitle", pageTitle);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			mav.addObject("loggedInUser", loggedInUser);
 		}
@@ -217,7 +217,7 @@ public class ClientController {
 		mav.addObject("lessonsForWidget", lessons);
 			
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			mav.addObject("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
@@ -251,7 +251,7 @@ public class ClientController {
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
@@ -351,7 +351,7 @@ public class ClientController {
 		model.addAttribute("pageTitle", pageTitle);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();

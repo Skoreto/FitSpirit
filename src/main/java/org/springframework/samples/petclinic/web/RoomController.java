@@ -76,7 +76,7 @@ public class RoomController {
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
@@ -107,7 +107,7 @@ public class RoomController {
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 		}
@@ -166,7 +166,7 @@ public class RoomController {
 		mav.addObject(room);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			mav.addObject("loggedInUser", loggedInUser);
 		}
@@ -193,7 +193,7 @@ public class RoomController {
 		model.addAttribute("lessonsForWidget", lessons);
 		
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 		}

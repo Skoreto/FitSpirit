@@ -60,7 +60,7 @@ public class FitnessCentreController {
 		// Kod, ktery musi byt v kazde GET mapovane URL, kde potrebujeme pristup k session (vsude)
 		// Bylo by vhodne udelat nejaky BaseController jako rodice kazdeho controlleru, aby tento kod nemusel byt duplicitne...
 		// Pristup k session prihlaseneho uzivatele
-		User loggedInUser = (User)request.getSession().getAttribute("user");
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
 		if (null != loggedInUser) {
 			model.addAttribute("loggedInUser", loggedInUser);
 		}
@@ -114,7 +114,7 @@ public class FitnessCentreController {
 		}
 		
 		// Jinak je vse v poradku a uzivatele si ulozime do session
-		request.getSession().setAttribute("user", user);
+		request.getSession().setAttribute("logUser", user);
 
 		// Takto pak muzeme kdekoliv k uzivateli pristoupit
 		// User loggedInUser = (User)request.getSession().getAttribute("user");
