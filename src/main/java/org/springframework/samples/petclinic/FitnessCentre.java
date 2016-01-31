@@ -108,6 +108,11 @@ public interface FitnessCentre {
 	 * Vrati Lekci z data store podle id.
 	 */
 	Lesson loadLesson(int id) throws DataAccessException;
+	
+	/**
+	 * Vrati Rezervaci z data store podle id.
+	 */
+	Reservation loadReservation(int id) throws DataAccessException;
 
 	/**
 	 * Retrieve a <code>Pet</code> from the data store by id.
@@ -192,5 +197,10 @@ public interface FitnessCentre {
 	 * Deletes a <code>User</code> from the data store.
 	 */
 	void deleteUser(int id) throws DataAccessException;
+	
+	/**
+	 * Deletes a <code>Reservation</code> from the data store.
+	 */
+	void deleteReservation(int id) throws DataAccessException;
 
 }

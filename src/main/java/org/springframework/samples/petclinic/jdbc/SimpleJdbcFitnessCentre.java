@@ -455,6 +455,24 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 		}		
 		return lesson;
 	}
+	
+	/**
+	 * Nacte Rezervaci dle id.
+	 */
+	@Transactional(readOnly = true)
+	public Reservation loadReservation(int id) throws DataAccessException {
+		Reservation reservation;
+		try {
+			reservation = this.simpleJdbcTemplate.queryForObject(
+					"SELECT id, reservation_time, lesson_id, client_id, is_cancellable FROM reservations WHERE id=?",
+					ParameterizedBeanPropertyRowMapper.newInstance(Reservation.class),
+					id);
+		}
+		catch (EmptyResultDataAccessException ex) {
+			throw new ObjectRetrievalFailureException(Reservation.class, new Integer(id));
+		}		
+		return reservation;
+	}
 
 	@Transactional(readOnly = true)
 	public Pet loadPet(int id) throws DataAccessException {
@@ -623,6 +641,10 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	
 	public void deleteUser(int id) throws DataAccessException {
 		this.simpleJdbcTemplate.update("DELETE FROM users WHERE id=?", id);
+	}
+	
+	public void deleteReservation(int id) throws DataAccessException {
+		this.simpleJdbcTemplate.update("DELETE FROM reservations WHERE id=?", id);
 	}
 
 	// END of Clinic implementation section ************************************

@@ -20,7 +20,6 @@ import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.samples.petclinic.validation.UserValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -347,7 +346,7 @@ public class ClientController {
 		model.addAttribute("user", client);
 		
 		// Predani titulku stranky do view
-		String pageTitle = "Pøiprání kreditu klientovi " + client.getFirstName() + " " + client.getLastName();
+		String pageTitle = "Pøipsání kreditu klientovi " + client.getFirstName() + " " + client.getLastName();
 		model.addAttribute("pageTitle", pageTitle);
 		
 		// Pristup k session prihlaseneho uzivatele

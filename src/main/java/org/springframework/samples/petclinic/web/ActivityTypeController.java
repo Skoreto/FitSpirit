@@ -18,7 +18,6 @@ import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.samples.petclinic.validation.ActivityTypeValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;

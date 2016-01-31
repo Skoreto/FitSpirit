@@ -72,7 +72,7 @@ public class ReservationController {
 				allReservations.addAll(this.fitnessCentre.getReservations());
 							
 				for (Reservation reservation : allReservations) {
-					if (reservation.getClient().getId().equals(loggedInUser.getId())) {
+					if (reservation.getClient().getId().equals(loggedInUser.getId()) && reservation.getLesson().isActive()) {
 						// Protoze rezervaci lekce lze zrusit nejdele do 6 hodin pred 
 						// zahajenim lekce, je zde nastaveno, zda rezervaci lze jeste zrusit.
 						Timestamp actualTime = new Timestamp(new Date().getTime());						
@@ -84,8 +84,9 @@ public class ReservationController {
 						} else {
 							reservation.setCancellable(true);
 						}
-						
+											
 						// Pridani rezervace do seznamu rezervaci prihlaseneho klienta.
+						// Zmenu neni nutne provest v databazi.
 						clientReservations.getReservationList().add(reservation);
 					}
 				}		
@@ -149,6 +150,34 @@ public class ReservationController {
 		}
 		// TODO Oznameni o chybach v ruznych pripadech.		
 		return "redirect:/lessons/index";
+	}
+	
+	/**
+	 * Metoda pro zruseni Rezervace dle zadaneho id.
+	 */
+	@RequestMapping(value="/reservations/{reservationId}/cancel")
+	public String deleteReservation(@PathVariable int reservationId, HttpServletRequest request) {
+		Reservation reservation = this.fitnessCentre.loadReservation(reservationId);
+		User client = this.fitnessCentre.loadUser(reservation.getClient().getId());	
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
+		
+		// Pokud se rezervaci pokousi zrusit pravy prihlaseny klient a rezervaci lze zrusit,
+		// pak pricte cenu lekce zpet k jeho kreditu, pricte +1 k aktualnimu poctu volnych mist.
+		// Nakonec provede zmeny v databazi a smaze rezervaci z databaze.
+		if (client.getId().equals(loggedInUser.getId()) && reservation.isCancellable()) {
+			int clientCredit = loggedInUser.getCredit();
+			int activityTypePrice = reservation.getLesson().getActivityType().getPrice();
+			loggedInUser.setCredit(clientCredit + activityTypePrice);
+			
+			Lesson lesson = reservation.getLesson();
+			lesson.setActualCapacity(lesson.getActualCapacity() + 1);
+			
+			this.fitnessCentre.storeLesson(lesson);
+			this.fitnessCentre.storeUser(loggedInUser);
+			this.fitnessCentre.deleteReservation(reservationId);
+		}
+	
+		return "redirect:/reservations/index";	
 	}
 	
 		
