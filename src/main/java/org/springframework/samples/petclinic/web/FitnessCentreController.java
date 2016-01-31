@@ -8,6 +8,7 @@ import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Lessons;
 import org.springframework.samples.petclinic.User;
 import org.springframework.samples.petclinic.Vets;
+import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -53,6 +54,7 @@ public class FitnessCentreController {
 		model.addAttribute("pageTitle", pageTitle);
 		
 		// Predani seznamu lekci pro widget
+		new ProjectUtils(fitnessCentre).setExpiredLessons();
 		Lessons lessons = new Lessons();
 		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
 		model.addAttribute("lessonsForWidget", lessons);

@@ -19,6 +19,7 @@ import org.springframework.samples.petclinic.Reservation;
 import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.User;
 import org.springframework.samples.petclinic.Users;
+import org.springframework.samples.petclinic.util.ProjectUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -69,8 +70,9 @@ public class LessonController {
 	 */
 	@RequestMapping("/lessons/index")
 	public String activityTypesHandler(Model model, HttpServletRequest request) {
+		new ProjectUtils(fitnessCentre).setExpiredLessons();
 		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());	
+		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
 		
 		// Predani titulku stranky do view
 		String pageTitle = "Lekce";
