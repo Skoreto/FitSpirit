@@ -1,7 +1,9 @@
 package org.springframework.samples.petclinic.web;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,12 +46,7 @@ public class ReservationController {
 	 * Handler pro zobrazení seznamu Lekci.
 	 */
 	@RequestMapping("/reservations/index")
-	public String activityTypesHandler(Model model, HttpServletRequest request) {
-		Reservations reservations = new Reservations();
-		reservations.getReservationList().addAll(this.fitnessCentre.getReservations());
-				
-		model.addAttribute("reservations", reservations);
-		
+	public String activityTypesHandler(Model model, HttpServletRequest request) {	
 		// Predani titulku stranky do view
 		String pageTitle = "Rezervace";
 		model.addAttribute("pageTitle", pageTitle);
@@ -66,6 +63,31 @@ public class ReservationController {
 			String loggedInUserRoleIdent = loggedInUser.getUserRole().getIdentificator();
 			
 			if (loggedInUserRoleIdent.equals("klient")) {
+				// Filtrace rezervaci pouze pro prihlaseneho klienta.
+				Reservations clientReservations = new Reservations();
+				List<Reservation> allReservations = new ArrayList<Reservation>();
+				allReservations.addAll(this.fitnessCentre.getReservations());
+							
+				for (Reservation reservation : allReservations) {
+					if (reservation.getClient().getId().equals(loggedInUser.getId())) {
+						// Protoze rezervaci lekce lze zrusit nejdele do 6 hodin pred 
+						// zahajenim lekce, je zde nastaveno, zda rezervaci lze jeste zrusit.
+						Timestamp actualTime = new Timestamp(new Date().getTime());						
+						Timestamp sixHoursBeforeStart = new Timestamp(reservation.getLesson().getStartTime().getTime() - 21600000);	
+						
+						// Porovnani compareTo vraci hodnoty -1, 0, 1. 
+						if (actualTime.compareTo(sixHoursBeforeStart) > 0) {
+							reservation.setCancellable(false);
+						} else {
+							reservation.setCancellable(true);
+						}
+						
+						// Pridani rezervace do seznamu rezervaci prihlaseneho klienta.
+						clientReservations.getReservationList().add(reservation);
+					}
+				}		
+				
+				model.addAttribute("reservations", clientReservations);							
 				return "reservations/index";
 			}
 		}
