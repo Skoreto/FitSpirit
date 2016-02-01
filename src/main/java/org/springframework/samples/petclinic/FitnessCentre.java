@@ -208,5 +208,10 @@ public interface FitnessCentre {
 	 * Deletes a <code>Reservation</code> from the data store.
 	 */
 	void deleteReservation(int id) throws DataAccessException;
+	
+	/**
+	 * Deletes a <code>Lesson</code> from the data store.
+	 */
+	void deleteLesson(int id) throws DataAccessException;
 
 }

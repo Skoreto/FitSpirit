@@ -46,16 +46,6 @@ import org.springframework.transaction.annotation.Transactional;
  * {@link BeanPropertySqlParameterSource} and
  * {@link ParameterizedBeanPropertyRowMapper} which provide automatic mapping
  * between JavaBean properties and JDBC parameters or query results.
- *
- * <p>SimpleJdbcClinic is a rewrite of the AbstractJdbcClinic which was the base
- * class for JDBC implementations of the Clinic interface for Spring 2.0.
- *
- * @author Ken Krebs
- * @author Juergen Hoeller
- * @author Rob Harrop
- * @author Sam Brannen
- * @author Thomas Risberg
- * @author Mark Fisher
  */
 @Service
 public class SimpleJdbcFitnessCentre implements FitnessCentre {
@@ -666,6 +656,10 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	
 	public void deleteReservation(int id) throws DataAccessException {
 		this.simpleJdbcTemplate.update("DELETE FROM reservations WHERE id=?", id);
+	}
+	
+	public void deleteLesson(int id) throws DataAccessException {
+		this.simpleJdbcTemplate.update("DELETE FROM lessons WHERE id=?", id);
 	}
 
 	// END of Clinic implementation section ************************************

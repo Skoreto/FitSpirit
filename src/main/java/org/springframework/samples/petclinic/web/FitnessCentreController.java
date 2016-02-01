@@ -32,15 +32,28 @@ public class FitnessCentreController {
 	}
 
 	/**
-	 * Custom handler for the welcome view.
-	 * <p>
-	 * Note that this handler relies on the RequestToViewNameTranslator to
-	 * determine the logical view name based on the request URL: "/welcome.do"
-	 * -&gt; "welcome".
+	 * Handler pro prvotni presmerovani.
 	 */
 	@RequestMapping("/")
-	public String welcomeHandler() {
-		return "welcome";
+	public String welcomeHandler(Model model, HttpServletRequest request) {
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Hlavní strana";
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		new ProjectUtils(fitnessCentre).setExpiredLessons();
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		model.addAttribute("lessonsForWidget", activeLessons);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
+		}
+		
+		return "index";
 	}
 	
 	/**

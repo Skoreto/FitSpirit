@@ -23,14 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataAccessException;
 
 /**
- * JPA implementation of the Clinic interface using EntityManager.
+ * JPA implementation of the FitnessCentre interface using EntityManager.
  *
  * <p>The mappings are defined in "orm.xml" located in the META-INF directory.
- *
- * @author Mike Keith
- * @author Rod Johnson
- * @author Sam Brannen
- * @since 22.4.2006
  */
 @Repository
 @Transactional
@@ -38,7 +33,6 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 
 	@PersistenceContext
 	private EntityManager em;
-
 
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
@@ -219,6 +213,11 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	public void deleteReservation(int id) throws DataAccessException {
 		Reservation reservation = loadReservation(id);
 		this.em.remove(reservation);
+	}
+
+	public void deleteLesson(int id) throws DataAccessException {
+		Lesson lesson = loadLesson(id);
+		this.em.remove(lesson);
 	}
 
 }

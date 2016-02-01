@@ -413,5 +413,25 @@ public class LessonController {
 		status.setComplete();
 		return "redirect:/lessons/index";						
 	}
+	
+	/**
+	 * Metoda pro zruseni Lekce dle zadaneho id.
+	 */
+	@RequestMapping(value="/lessons/{lessonId}/delete")
+	public String deleteReservation(@PathVariable int lessonId, HttpServletRequest request) {
+		Lesson lesson = this.fitnessCentre.loadLesson(lessonId);
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
+		
+		// Pokud se lekci pokousi zrusit instruktor, ktery ji vypsal, nebo uzivatel v roli obsluhy.
+		if (lesson.getInstructor().getId().equals(loggedInUser.getId()) || loggedInUser.getUserRole().getIdentificator().equals("obsluha")) {
+			// Pokud na lekci neni nikdo prihlaseny.
+			if (lesson.getActualCapacity() == lesson.getOriginalCapacity()) {
+				// Pak smaz lekci z databaze.
+				this.fitnessCentre.deleteLesson(lessonId);
+			}
+		}
+		
+		return "redirect:/lessons/index";	
+	}
 		
 }
