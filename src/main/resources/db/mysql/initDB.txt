@@ -1,61 +1,108 @@
---CREATE DATABASE IF NOT EXISTS petclinic;
---GRANT ALL PRIVILEGES ON petclinic.* TO pc@localhost IDENTIFIED BY 'pc';
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
---USE petclinic;
+-- Exportování struktury databáze pro
+--CREATE DATABASE IF NOT EXISTS `fitspirit` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_czech_ci */;
+--GRANT ALL PRIVILEGES ON fitspirit.* TO pc@localhost IDENTIFIED BY 'pc';
+--USE `fitspirit`;
 
-CREATE TABLE IF NOT EXISTS vets (
-  id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(30),
-  last_name VARCHAR(30),
-  INDEX(last_name)
-) engine=InnoDB;
 
-CREATE TABLE IF NOT EXISTS specialties (
-  id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(80),
-  INDEX(name)
-) engine=InnoDB;
+-- Exportování struktury pro tabulka fitspirit.activity_types
+CREATE TABLE IF NOT EXISTS `activity_types` (
+  `id` int(6) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8_czech_ci DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  `illustration_image_name` varchar(60) COLLATE utf8_czech_ci DEFAULT NULL,
+  `short_description` text COLLATE utf8_czech_ci,
+  `description` mediumtext COLLATE utf8_czech_ci,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
-CREATE TABLE IF NOT EXISTS vet_specialties (
-  vet_id INT(4) UNSIGNED NOT NULL,
-  specialty_id INT(4) UNSIGNED NOT NULL,
-  FOREIGN KEY (vet_id) REFERENCES vets(id),
-  FOREIGN KEY (specialty_id) REFERENCES specialties(id),
-  UNIQUE (vet_id,specialty_id)
-) engine=InnoDB;
+-- Export dat nebyl vybrán.
 
-CREATE TABLE IF NOT EXISTS types (
-  id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(80),
-  INDEX(name)
-) engine=InnoDB;
 
-CREATE TABLE IF NOT EXISTS owners (
-  id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(30),
-  last_name VARCHAR(30),
-  address VARCHAR(255),
-  city VARCHAR(80),
-  telephone VARCHAR(20),
-  email VARCHAR(50),
-  INDEX(last_name)
-) engine=InnoDB;
+-- Exportování struktury pro tabulka fitspirit.lessons
+CREATE TABLE IF NOT EXISTS `lessons` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `start_time` timestamp NULL DEFAULT NULL,
+  `end_time` timestamp NULL DEFAULT NULL,
+  `activityType_id` int(6) NOT NULL,
+  `room_id` int(6) NOT NULL,
+  `original_capacity` int(5) DEFAULT NULL,
+  `actual_capacity` int(5) DEFAULT NULL,
+  `description` text COLLATE utf8_czech_ci,
+  `instructor_id` int(11) NOT NULL,
+  `is_active` bit(1) DEFAULT NULL,
+  `is_reserved` bit(1) DEFAULT b'0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
-CREATE TABLE IF NOT EXISTS pets (
-  id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(30),
-  birth_date DATE,
-  type_id INT(4) UNSIGNED NOT NULL,
-  owner_id INT(4) UNSIGNED NOT NULL,
-  INDEX(name),
-  FOREIGN KEY (owner_id) REFERENCES owners(id),
-  FOREIGN KEY (type_id) REFERENCES types(id)
-) engine=InnoDB;
+-- Export dat nebyl vybrán.
 
-CREATE TABLE IF NOT EXISTS visits (
-  id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  pet_id INT(4) UNSIGNED NOT NULL,
-  visit_date DATE,
-  description VARCHAR(255),
-  FOREIGN KEY (pet_id) REFERENCES pets(id)
-) engine=InnoDB;
+
+-- Exportování struktury pro tabulka fitspirit.reservations
+CREATE TABLE IF NOT EXISTS `reservations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reservation_time` timestamp NULL DEFAULT NULL,
+  `lesson_id` int(8) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `is_cancellable` bit(1) DEFAULT b'1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- Export dat nebyl vybrán.
+
+
+-- Exportování struktury pro tabulka fitspirit.rooms
+CREATE TABLE IF NOT EXISTS `rooms` (
+  `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) COLLATE utf8_czech_ci DEFAULT NULL,
+  `illustration_image_name` varchar(60) COLLATE utf8_czech_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- Export dat nebyl vybrán.
+
+
+-- Exportování struktury pro tabulka fitspirit.users
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `last_name` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `street` varchar(80) COLLATE utf8_czech_ci DEFAULT NULL,
+  `city` varchar(80) COLLATE utf8_czech_ci DEFAULT NULL,
+  `postcode` varchar(6) COLLATE utf8_czech_ci DEFAULT NULL,
+  `mail` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `telephone` varchar(17) COLLATE utf8_czech_ci DEFAULT NULL,
+  `credit` int(11) DEFAULT NULL,
+  `description` text COLLATE utf8_czech_ci,
+  `profile_photo_name` varchar(100) COLLATE utf8_czech_ci DEFAULT NULL,
+  `login` int(11) NOT NULL,
+  `password` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `userRole_id` int(4) NOT NULL,
+  `is_active` bit(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `login` (`login`),
+  KEY `users_ibfk_1` (`userRole_id`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`userRole_id`) REFERENCES `user_roles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- Export dat nebyl vybrán.
+
+
+-- Exportování struktury pro tabulka fitspirit.user_roles
+CREATE TABLE IF NOT EXISTS `user_roles` (
+  `id` int(4) NOT NULL AUTO_INCREMENT,
+  `identificator` varchar(20) COLLATE utf8_czech_ci DEFAULT NULL,
+  `role_description` varchar(100) COLLATE utf8_czech_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- Export dat nebyl vybrán.
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+

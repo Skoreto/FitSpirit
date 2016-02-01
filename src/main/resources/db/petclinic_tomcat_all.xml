@@ -71,7 +71,7 @@
     -->
     <parameter>
       <name>url</name>
-      <value>jdbc:mysql://localhost:3306/petclinic?autoReconnect=true</value>
+      <value>jdbc:mysql://localhost:3306/fitspirit?autoReconnect=true</value>
     </parameter>
     <parameter>
       <name>username</name>
