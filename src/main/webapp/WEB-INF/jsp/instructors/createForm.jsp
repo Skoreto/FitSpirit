@@ -3,7 +3,7 @@
 
 <c:choose>
 	<c:when test="${user['new']}"><c:set var="currentTitle" value="Nový instruktor"/></c:when>
-	<c:otherwise><c:set var="currentTitle" value="Úprava instrukktora"/></c:otherwise>
+	<c:otherwise><c:set var="currentTitle" value="Úprava instruktora"/></c:otherwise>
 </c:choose>
 
 <header class="page-heading clearfix">

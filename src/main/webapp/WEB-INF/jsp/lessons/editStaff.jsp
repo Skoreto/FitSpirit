@@ -1,11 +1,6 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <%@ include file="/WEB-INF/jsp/shared/layoutSidebarHeader.jsp" %>
 
-<c:choose>
-	<c:when test="${lesson['new']}"><c:set var="currentTitle" value="Nová lekce"/></c:when>
-	<c:otherwise><c:set var="currentTitle" value="Úprava lekce"/></c:otherwise>
-</c:choose>
-
 <header class="page-heading clearfix">
     <h1 class="heading-title pull-left">${pageTitle}</h1>
     <!-- ==== DROBECKOVA NAVIGACE ==== -->
@@ -13,7 +8,7 @@
 		<ul class="breadcrumbs-list">
 		 <li class="breadcrumbs-label">Nacházíte se zde:</li>
 		 <li><a href="<spring:url value="/lessons/index" htmlEscape="true"/>">Lekce</a><i class="fa fa-angle-right"></i></li>
-		 <li class="current">${currentTitle}</li>
+		 <li class="current">Úprava lekce</li>
 		</ul>             
     </div>
 </header>
@@ -22,12 +17,7 @@
     	<div class="col-md-8 col-sm-7" id="dynamicContent">
 		<!-- ==== HLAVNI OBSAH AKTUALNI STRANKY ==== -->
 
-<c:choose>
-	<c:when test="${lesson['new']}"><c:set var="method" value="post"/></c:when>
-	<c:otherwise><c:set var="method" value="put"/></c:otherwise>
-</c:choose>
-
-<form:form class="form-horizontal" modelAttribute="lesson" method="${method}">
+<form:form class="form-horizontal" modelAttribute="lesson" method="put">
 
 	<div class="form-group">
         <label class="col-sm-2 control-label">Čas zahájení</label>
@@ -84,7 +74,9 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">Instruktor</label>
         <div class="col-sm-10">
-            <input name="instructor" type="text" class="form-control" value="${loggedInUser.firstName} ${loggedInUser.lastName} (ID ${loggedInUser.id})" disabled="disabled">
+            <form:select path="instructor" class="form-control" >
+        		<form:options items="${instructors}" itemLabel="lastName" itemValue="id" />
+        	</form:select>
         </div>
     </div>
 
@@ -97,14 +89,7 @@
     
     <div class="form-group margin-top">
         <div class="col-sm-offset-2 col-sm-10">
-        	<c:choose>
-	    		<c:when test="${lesson['new']}">
-	    			<button type="submit" class="btn btn-success pull-right margin-left"><span class="glyphicon glyphicon-ok"></span> Vytvořit</button>
-	    		</c:when>
-	    		<c:otherwise>
-           	 		<button type="submit" class="btn btn-success pull-right margin-left"><span class="glyphicon glyphicon-ok"></span> Upravit</button>
-          		</c:otherwise>
-	    	</c:choose>         
+           	<button type="submit" class="btn btn-success pull-right margin-left"><span class="glyphicon glyphicon-ok"></span> Upravit</button>       
             <button type="reset" class="btn btn-default pull-right margin-left"><span class="glyphicon glyphicon-repeat"></span> Reset</button>
             <a href="<spring:url value="/lessons/index" htmlEscape="true"/>" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Zrušit</a>
         </div>
