@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
-<%@ include file="/WEB-INF/jsp/header.jsp" %>
+<%@ include file="/WEB-INF/jsp/shared/layoutSidelessHeader.jsp" %>
 
 <%
 Exception ex = (Exception) request.getAttribute("exception");
@@ -16,4 +16,4 @@ ex.printStackTrace(new java.io.PrintWriter(out));
 <br/>
 <a href="<spring:url value="/" htmlEscape="true" />">Home</a>
 
-<%@ include file="/WEB-INF/jsp/footer.jsp" %>
+<%@ include file="/WEB-INF/jsp/shared/layoutSidelessFooter.jsp" %>

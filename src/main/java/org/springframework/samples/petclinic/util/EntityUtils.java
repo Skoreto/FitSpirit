@@ -10,11 +10,6 @@ import org.springframework.samples.petclinic.BaseEntity;
  * Utility methods for handling entities. Separate from the BaseEntity class
  * mainly because of dependency on the ORM-associated
  * ObjectRetrievalFailureException.
- *
- * @author Juergen Hoeller
- * @author Sam Brannen
- * @since 29.10.2003
- * @see org.springframework.samples.petclinic.BaseEntity
  */
 public abstract class EntityUtils {
 

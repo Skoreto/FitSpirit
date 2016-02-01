@@ -4,20 +4,14 @@ import java.util.Collection;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import org.springframework.samples.petclinic.ActivityType;
 import org.springframework.samples.petclinic.FitnessCentre;
 import org.springframework.samples.petclinic.Lesson;
-import org.springframework.samples.petclinic.Owner;
-import org.springframework.samples.petclinic.Pet;
-import org.springframework.samples.petclinic.PetType;
 import org.springframework.samples.petclinic.Reservation;
 import org.springframework.samples.petclinic.Room;
 import org.springframework.samples.petclinic.User;
 import org.springframework.samples.petclinic.UserRole;
-import org.springframework.samples.petclinic.Vet;
-import org.springframework.samples.petclinic.Visit;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataAccessException;
@@ -33,12 +27,6 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 
 	@PersistenceContext
 	private EntityManager em;
-
-	@Transactional(readOnly = true)
-	@SuppressWarnings("unchecked")
-	public Collection<Vet> getVets() {
-		return this.em.createQuery("SELECT vet FROM Vet vet ORDER BY vet.lastName, vet.firstName").getResultList();
-	}
 	
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
@@ -81,25 +69,6 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	public Collection<Reservation> getReservations() throws DataAccessException {
 		return this.em.createQuery("SELECT reservation FROM Reservation reservation ORDER BY reservation.id").getResultList();
 	}
-
-	@Transactional(readOnly = true)
-	@SuppressWarnings("unchecked")
-	public Collection<PetType> getPetTypes() {
-		return this.em.createQuery("SELECT ptype FROM PetType ptype ORDER BY ptype.name").getResultList();
-	}
-
-	@Transactional(readOnly = true)
-	@SuppressWarnings("unchecked")
-	public Collection<Owner> findOwners(String lastName) {
-		Query query = this.em.createQuery("SELECT owner FROM Owner owner WHERE owner.lastName LIKE :lastName");
-		query.setParameter("lastName", lastName + "%");
-		return query.getResultList();
-	}
-
-	@Transactional(readOnly = true)
-	public Owner loadOwner(int id) {
-		return this.em.find(Owner.class, id);
-	}
 	
 	@Transactional(readOnly = true)
 	public Room loadRoom(int id) {
@@ -130,19 +99,6 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	public Reservation loadReservation(int id) throws DataAccessException {
 		return this.em.find(Reservation.class, id);
 	}
-
-	@Transactional(readOnly = true)
-	public Pet loadPet(int id) {
-		return this.em.find(Pet.class, id);
-	}
-
-	public void storeOwner(Owner owner) {
-		// Consider returning the persistent object here, for exposing
-		// a newly assigned id using any persistence provider...
-		Owner merged = this.em.merge(owner);
-		this.em.flush();
-		owner.setId(merged.getId());
-	}
 	
 	public void storeRoom(Room room) {
 		Room merged = this.em.merge(room);
@@ -172,27 +128,6 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 		Reservation merged = this.em.merge(reservation);
 		this.em.flush();
 		reservation.setId(merged.getId());
-	}
-
-	public void storePet(Pet pet) {
-		// Consider returning the persistent object here, for exposing
-		// a newly assigned id using any persistence provider...
-		Pet merged = this.em.merge(pet);
-		this.em.flush();
-		pet.setId(merged.getId());
-	}
-
-	public void storeVisit(Visit visit) {
-		// Consider returning the persistent object here, for exposing
-		// a newly assigned id using any persistence provider...
-		Visit merged = this.em.merge(visit);
-		this.em.flush();
-		visit.setId(merged.getId());
-	}
-
-	public void deletePet(int id) throws DataAccessException {
-		Pet pet = loadPet(id);
-		this.em.remove(pet);
 	}
 
 	public void deleteRoom(int id) throws DataAccessException {
