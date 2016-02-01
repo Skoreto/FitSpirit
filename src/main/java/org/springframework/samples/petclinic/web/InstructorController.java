@@ -65,20 +65,9 @@ public class InstructorController {
 	 */
 	@RequestMapping("/instructors/index")
 	public String instructorsHandler(Model model, HttpServletRequest request) {	
-		List<User> instructorUsers = new ArrayList<User>();
-		List<User> allUsers = new ArrayList<User>();
-		allUsers.addAll(this.fitnessCentre.getUsers());
-		
-		// TODO Rychlejsi by byl dotaz primo na databazi, nez prochazet vsechny usery.
-		for (User user : allUsers) {
-			if (user.getUserRole().getId() == 2) {
-				instructorUsers.add(user);
-			}
-		}
-		
+		// Predani seznamu instruktoru do view.
 		Users instructors = new Users();
-		instructors.getUserList().addAll(instructorUsers);
-		
+		instructors.getUserList().addAll(this.fitnessCentre.getInstructors());
 		model.addAttribute("users", instructors);
 		
 		// Predani titulku stranky do view

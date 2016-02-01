@@ -66,6 +66,12 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
+	public Collection<User> getInstructors() throws DataAccessException {
+		return this.em.createQuery("SELECT user FROM User user WHERE user.userRole.id=2 ORDER BY user.id").getResultList();
+	}
+	
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public Collection<Lesson> getLessons() throws DataAccessException {
 		return this.em.createQuery("SELECT lesson FROM Lesson lesson ORDER BY lesson.id").getResultList();
 	}

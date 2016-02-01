@@ -77,6 +77,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	private final List<Room> rooms = new ArrayList<Room>();
 	private final List<ActivityType> activityTypes = new ArrayList<ActivityType>();
 	private final List<User> users = new ArrayList<User>();
+	private final List<User> instructors = new ArrayList<User>();
 	private final List<Lesson> lessons = new ArrayList<Lesson>();
 	private final List<Reservation> reservations = new ArrayList<Reservation>();
 
@@ -253,14 +254,26 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			// Vrati list vsech moznych Uzivatelskych roli
 //			final List<UserRole> userRoles = this.simpleJdbcTemplate.query(
 //					"SELECT id, identificator, role_description FROM user_roles", 
-//					ParameterizedBeanPropertyRowMapper.newInstance(UserRole.class));
-			
-			
-			
-			
+//					ParameterizedBeanPropertyRowMapper.newInstance(UserRole.class));	
 		}
 	}
 	
+	/**
+	 * Refreshne cache instruktoru, ktetou udrzuje rozhrani FitnessCentre.
+	 * @throws DataAccessException
+	 */
+	@ManagedOperation
+	@Transactional(readOnly = true)
+	private void refreshInstructorsCache() throws DataAccessException {
+		synchronized (this.instructors) {
+			this.logger.info("Refreshuji cache instruktoru");
+			
+			// Vrati list vsech Uzivatelu
+			this.instructors.clear();
+			this.instructors.addAll(this.simpleJdbcTemplate.query("SELECT id, first_name, last_name, street, city, postcode, mail, telephone, credit, description, profile_photo_name, login, password, userRole_id, is_active FROM users WHERE userRole_id=2 ORDER BY id",
+					ParameterizedBeanPropertyRowMapper.newInstance(User.class)));
+		}
+	}
 	
 	// ==== START of FitnessCentre implementation section ====
 
@@ -296,6 +309,14 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			refreshUsersCache();
 		}
 		return this.users;
+	}
+	
+	@Transactional(readOnly = true)
+	public Collection<User> getInstructors() throws DataAccessException {
+		synchronized (this.instructors) {
+			refreshInstructorsCache();
+		}
+		return this.instructors;
 	}
 	
 	@Transactional(readOnly = true)
