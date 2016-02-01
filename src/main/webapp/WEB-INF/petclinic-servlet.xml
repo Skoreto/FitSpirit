@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	- DispatcherServlet application context for PetClinic's web tier.
+	- DispatcherServlet application context for FitSpirit's web tier.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
@@ -12,13 +12,13 @@
 	<!--
 		- The controllers are autodetected POJOs labeled with the @Controller annotation.
 	-->
-	<context:component-scan base-package="org.springframework.samples.petclinic.web"/>
+	<context:component-scan base-package="cz.uhk.fim.fitspirit.web"/>
 
 	<!--
 		- The form-based controllers within this application provide @RequestMapping 
 		- annotations at the type level for path mapping URLs and @RequestMapping 
 		- at the method level for request type mappings (e.g., GET and POST). 
-		- In contrast, ClinicController - which is not form-based - provides 
+		- In contrast, FitnessCentreController - which is not form-based - provides 
 		- @RequestMapping only at the method level for path mapping URLs.
 		-
 		- DefaultAnnotationHandlerMapping is driven by these annotations and is 
@@ -26,12 +26,12 @@
 	-->
 	
 	<!--
-		- This bean processes annotated handler methods, applying PetClinic-specific PropertyEditors
+		- This bean processes annotated handler methods, applying FitSpirit-specific PropertyEditors
 		- for request parameter binding. It overrides the default AnnotationMethodHandlerAdapter.
 	-->
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="webBindingInitializer">
-			<bean class="org.springframework.samples.petclinic.web.FitnessCentreBindingInitializer"/>
+			<bean class="cz.uhk.fim.fitspirit.web.FitnessCentreBindingInitializer"/>
 		</property>
 	</bean>
 
@@ -55,13 +55,13 @@
 
 		- This bean configures the 'prefix' and 'suffix' properties of
 		- InternalResourceViewResolver, which resolves logical view names
-		- returned by Controllers. For example, a logical view name of "vets"
-		- will be mapped to "/WEB-INF/jsp/vets.jsp".
+		- returned by Controllers. For example, a logical view name of "index"
+		- will be mapped to "/WEB-INF/jsp/index.jsp".
 	-->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/jsp/"
 			p:suffix=".jsp" />
 
-	<!-- Nahrávání obrázku - Konfigurace multipartResolveru pro využití Apache Commons FileUpload k handlingu multipart requestů -->
+	<!-- Nahravani obrazku - Konfigurace multipartResolveru pro vyuziti Apache Commons FileUpload k handlingu multipart requestu -->
 	<bean id="multipartResolver"
         class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
  
@@ -73,7 +73,7 @@
 	<!--
 		- Message source for this context, loaded from localized "messages_xx" files.
 		- Could also reside in the root application context, as it is generic,
-		- but is currently just used within PetClinic's web tier.
+		- but is currently just used within FitSpirit's web tier.
 		- Pro UTF-8 je nutné použít defaultEncoding a od JDK 1.6 ReloadableResourceBundleMessageSource .
 	-->
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">

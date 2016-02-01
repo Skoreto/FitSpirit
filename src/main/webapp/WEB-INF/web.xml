@@ -186,7 +186,7 @@
 	</welcome-file-list>
 
 	<!--
-		- Reference to PetClinic database.
+		- Reference to FitSpirit database.
 		- Only needed if not using a local DataSource but a JNDI one instead.
 	-->
 	<!--

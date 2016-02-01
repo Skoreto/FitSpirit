@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Application context definition for PetClinic on JDBC.
+	Application context definition for FitSpirit on JDBC.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
@@ -44,8 +44,8 @@
 	<tx:annotation-driven/>
 
 
-	<!-- PetClinic's central data access object using Spring's SimpleJdbcTemplate -->
-	<bean id="clinic" class="org.springframework.samples.petclinic.jdbc.SimpleJdbcFitnessCentre"/>
+	<!-- FitSpirit's central data access object using Spring's SimpleJdbcTemplate -->
+	<bean id="clinic" class="cz.uhk.fim.fitspirit.jdbc.SimpleJdbcFitnessCentre"/>
 
 
 </beans>
