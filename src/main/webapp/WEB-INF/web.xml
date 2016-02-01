@@ -12,7 +12,7 @@
 	-->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>petclinic.root</param-value>
+		<param-value>fitspirit.root</param-value>
 	</context-param>
 	
 	<!-- Konfigurace UTF-8  -->
@@ -141,7 +141,7 @@
 		- of all DispatcherServlet contexts.
 	-->
 	<servlet>
-		<servlet-name>petclinic</servlet-name>
+		<servlet-name>fitspirit</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
@@ -155,7 +155,7 @@
 		- NOTE: A single dispatcher can be mapped to multiple paths, like any servlet.
 	-->
 	<servlet-mapping>
-		<servlet-name>petclinic</servlet-name>
+		<servlet-name>fitspirit</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
@@ -166,7 +166,7 @@
 
 	<filter-mapping>
 		<filter-name>httpMethodFilter</filter-name>
-		<servlet-name>petclinic</servlet-name>
+		<servlet-name>fitspirit</servlet-name>
 	</filter-mapping>
 
 	<session-config>
