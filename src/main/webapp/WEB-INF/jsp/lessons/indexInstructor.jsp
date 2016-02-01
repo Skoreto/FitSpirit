@@ -42,7 +42,7 @@
 		                                <a href="<spring:url value="/lessons/${lesson.id}" htmlEscape="true" />" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Detail</a>
 		                                <button data-toggle="dropdown" class="btn btn-success dropdown-toggle"><span class="caret"></span></button>
 		                                <ul class="dropdown-menu">
-		                                    <li><a href="<spring:url value="/lessons/${lesson.id}/edit" htmlEscape="true" />"><span class="glyphicon glyphicon-pencil"></span> Upravit</a></li>
+		                                    <li><a href="<spring:url value="/lessons/${lesson.id}/editInstructor" htmlEscape="true" />"><span class="glyphicon glyphicon-pencil"></span> Upravit</a></li>
 		                                    <li><a href="<spring:url value="/lessons/${lesson.id}/delete" htmlEscape="true" />"><span class="glyphicon glyphicon-trash"></span> Smazat</a></li>
 		                                </ul>
 		                            </div>

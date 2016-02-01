@@ -92,7 +92,14 @@
     
     <div class="form-group margin-top">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-success pull-right margin-left"><span class="glyphicon glyphicon-ok"></span> Vytvořit</button>
+        	<c:choose>
+	    		<c:when test="${lesson['new']}">
+	    			<button type="submit" class="btn btn-success pull-right margin-left"><span class="glyphicon glyphicon-ok"></span> Vytvořit</button>
+	    		</c:when>
+	    		<c:otherwise>
+           	 		<button type="submit" class="btn btn-success pull-right margin-left"><span class="glyphicon glyphicon-ok"></span> Upravit</button>
+          		</c:otherwise>
+	    	</c:choose>         
             <button type="reset" class="btn btn-default pull-right margin-left"><span class="glyphicon glyphicon-repeat"></span> Reset</button>
             <a href="<spring:url value="/lessons/index" htmlEscape="true"/>" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Zrušit</a>
         </div>

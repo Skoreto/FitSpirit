@@ -60,6 +60,12 @@ public class LessonController {
 		return this.fitnessCentre.getRooms();
 	}
 	
+	// ModelAttribute pro select box
+	@ModelAttribute("instructors")
+	public Collection<User> populateInstructors() {	
+		return this.fitnessCentre.getInstructors();
+	}
+	
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
@@ -142,9 +148,9 @@ public class LessonController {
 		model.addAttribute("pageTitle", pageTitle);
 		
 		// Predani seznamu lekci pro widget
-		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
-		model.addAttribute("lessonsForWidget", lessons);
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		model.addAttribute("lessonsForWidget", activeLessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("logUser");
@@ -208,7 +214,7 @@ public class LessonController {
 	 * Handler pro zobrazeni detailu Lekce.
 	 */
 	@RequestMapping("/lessons/{lessonId}")
-	public ModelAndView instructorHandler(@PathVariable("lessonId") int lessonId, HttpServletRequest request) {
+	public ModelAndView lessonHandler(@PathVariable("lessonId") int lessonId, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("lessons/detail");
 		Lesson lesson = this.fitnessCentre.loadLesson(lessonId);
 		mav.addObject(lesson);
@@ -235,9 +241,9 @@ public class LessonController {
 		mav.addObject("pageTitle", pageTitle);
 		
 		// Predani seznamu lekci pro widget
-		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
-		mav.addObject("lessonsForWidget", lessons);
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		mav.addObject("lessonsForWidget", activeLessons);
 		
 		// Pristup k session prihlaseneho uzivatele
 		User loggedInUser = (User)request.getSession().getAttribute("logUser");
@@ -252,6 +258,82 @@ public class LessonController {
 			
 		return mav;
 	}
+
+	/**
+	 * Handler pro zobrazeni formulare pro upravu lekce instruktorem.
+	 * Zobrazeni formulare pro vytvoreni Lekce a naplneni
+	 * kolonek stavajicimi hodnotami = formular upravy Lekce.
+	 */
+	@RequestMapping(value="/lessons/{lessonId}/editInstructor", method = RequestMethod.GET)
+	public String setupEditForm(@PathVariable("lessonId") int lessonId, Model model, HttpServletRequest request) {
+		Lesson lesson = this.fitnessCentre.loadLesson(lessonId);
+		model.addAttribute("lesson", lesson);
+					
+		// Predani titulku stranky do view.
+		String pageTitle = "Úprava lekce " + lesson.getActivityType().getName();
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget.
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		model.addAttribute("lessonsForWidget", activeLessons);
+		
+		// Pristup k session prihlaseneho uzivatele.
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
+		}
+		
+		return "lessons/createForm";
+	}
 	
+	/**
+	 * Handler pro editaci Lekce instruktorem.
+	 * Upravuje pouze aktualne prihlaseny instruktor.
+	 */
+	@RequestMapping(value="/lessons/{lessonId}/editInstructor", method = {RequestMethod.PUT, RequestMethod.POST})
+	public String processEditSubmit(@PathVariable("lessonId") int lessonId, SessionStatus status, HttpServletRequest request, @RequestParam("startTime") String startTime, 
+			@RequestParam("endTime") String endTime, @RequestParam("originalCapacity") int originalCapacity, 
+			@RequestParam("activityType") int activityTypeId, @RequestParam("room") int roomId, @RequestParam("description") String description) {
+		
+		Lesson lesson = this.fitnessCentre.loadLesson(lessonId);
+		
+		// Parsovani casu ze Stringu z datepickeru
+		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy H:mm");
+		Date startTimeDate;
+		Date endTimeDate;
+		try {
+			startTimeDate = df.parse(startTime);
+			Timestamp startTimeTS = new Timestamp(startTimeDate.getTime());
+			lesson.setStartTime(startTimeTS);
+			
+			endTimeDate = df.parse(endTime);
+			Timestamp endTimeTS = new Timestamp(endTimeDate.getTime());
+			lesson.setEndTime(endTimeTS);
+		} catch (ParseException e) {
+			System.out.println("Nepodarilo se naparsovat èas!!!!!");
+			e.printStackTrace();
+		}
+		
+		// aktualni kapacita = originalni kapacite
+		int actualCapacity = originalCapacity;
+		lesson.setOriginalCapacity(originalCapacity);
+		lesson.setActualCapacity(actualCapacity);
+				
+		lesson.setActivityType(this.fitnessCentre.loadActivityType(activityTypeId));
+		lesson.setRoom(this.fitnessCentre.loadRoom(roomId));
+		
+		// Predani intruktora jako prave prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");	
+		lesson.setInstructor(loggedInUser);
+
+		lesson.setDescription(description);
+        lesson.setActive(true);
+        lesson.setReserved(false);
+        
+        this.fitnessCentre.storeLesson(lesson);
+		status.setComplete();
+		return "redirect:/lessons/index";						
+	}
 		
 }
