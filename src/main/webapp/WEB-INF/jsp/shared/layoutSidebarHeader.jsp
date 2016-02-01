@@ -19,7 +19,7 @@
     <link href="<spring:url value="/static/styles/blueimp-gallery/css/blueimp-gallery.min.css" htmlEscape="true" />" rel="stylesheet">
     <link href="<spring:url value="/static/styles/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" htmlEscape="true" />" rel="stylesheet">
     <!-- Fonty Open Sans z CDN Google https://www.google.com/fonts#UsePlace:use/Collection:Open+Sans -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin-ext" rel="stylesheet">
     <!-- HTML5Shiv a Respond.js - skripty pro aplikaci CSS na HTML5 elementy ve starších IE -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
