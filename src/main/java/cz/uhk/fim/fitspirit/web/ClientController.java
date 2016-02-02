@@ -382,23 +382,13 @@ public class ClientController {
 	
 	/**
 	 * Handler pro smazani Klienta dle zadaneho id.
-	 * Nejprve odstrani fotografii Klienta ze slozky userImages, pote vymaze zaznam z databaze.
 	 */
 	@RequestMapping(value="/clients/{clientId}/delete")
 	public String deleteInstructor(@PathVariable int clientId) {
 		User client = this.fitnessCentre.loadUser(clientId);
-		String profilePhotoName = client.getProfilePhotoName();	
-		String profilePhotoPath = myProjectPath + File.separator + "userImages" + File.separator + profilePhotoName;
-		File profilePhoto = new File(profilePhotoPath);
+		client.setActive(false);
 		
-		// Smaže soubor a zároveò vrací bool, jestli byl soubor úspìšnì smazán.
-		if (profilePhoto.delete()) {
-			logger.info("Smazan obrazek: " + profilePhotoName);
-		} else {
-			logger.info("Nezdarilo se smazat obrazek: " + profilePhotoName + " z umisteni " + profilePhotoPath);
-		}
-				
-		this.fitnessCentre.deleteUser(clientId);
+		this.fitnessCentre.storeUser(client);
 		return "redirect:/clients/index";	
 	}
 	

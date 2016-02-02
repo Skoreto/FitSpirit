@@ -285,24 +285,14 @@ public class InstructorController {
 	}		
 	
 	/**
-	 * Metoda pro smazani Instruktora dle zadaneho id.
-	 * Nejprve odstrani fotografii Instruktora ze slozky userImages, pote vymaze zaznam z databaze.
+	 * Metoda pro deaktivaci Instruktora dle zadaneho id.
 	 */
 	@RequestMapping(value="/instructors/{instructorId}/delete")
 	public String deleteInstructor(@PathVariable int instructorId) {
-		User instructor = this.fitnessCentre.loadUser(instructorId);
-		String profilePhotoName = instructor.getProfilePhotoName();	
-		String profilePhotoPath = myProjectPath + File.separator + "userImages" + File.separator + profilePhotoName;
-		File profilePhoto = new File(profilePhotoPath);
+		User instructor = this.fitnessCentre.loadUser(instructorId);			
+		instructor.setActive(false);
 		
-		// Smaže soubor a zároveò vrací bool, jestli byl soubor úspìšnì smazán.
-		if (profilePhoto.delete()) {
-			logger.info("Smazan obrazek: " + profilePhotoName);
-		} else {
-			logger.info("Nezdarilo se smazat obrazek: " + profilePhotoName + " z umisteni " + profilePhotoPath);
-		}
-				
-		this.fitnessCentre.deleteUser(instructorId);
+		this.fitnessCentre.storeUser(instructor);
 		return "redirect:/instructors/index";	
 	}
 	
