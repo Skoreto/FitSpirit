@@ -289,6 +289,16 @@ public class StaffController {
 		}
 	}		
 	
+	/**
+	 * Metoda pro deaktivaci Obsluhy dle zadaneho id.
+	 */
+	@RequestMapping(value="/staffs/{staffId}/delete")
+	public String deleteStaff(@PathVariable int staffId) {
+		User staff = this.fitnessCentre.loadUser(staffId);
+		staff.setActive(false);
 	
-
+		this.fitnessCentre.storeUser(staff);
+		return "redirect:/staffs/index";	
+	}
+	
 }
