@@ -163,6 +163,11 @@ public class ClientController {
 	                client.setUserRole(clientRole);
 	                client.setActive(false);
 	                
+	                // Generovani loginu
+	                int usersCount = this.fitnessCentre.getUsers().size();
+	                int login = usersCount + 1;
+	                client.setLogin(login);
+	                
 	                this.fitnessCentre.storeUser(client);
 	    			status.setComplete();
 	    			return "redirect:/registration/" + client.getId().toString() + "/success";	               	                

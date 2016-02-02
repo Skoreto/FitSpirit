@@ -149,6 +149,11 @@ public class InstructorController {
 	                instructor.setUserRole(instructorRole);
 	                instructor.setActive(true);
 	                
+	                // Generovani loginu
+	                int usersCount = this.fitnessCentre.getUsers().size();
+	                int login = usersCount + 1;
+	                instructor.setLogin(login);
+	                
 	                this.fitnessCentre.storeUser(instructor);
 	    			status.setComplete();
 	    			return "redirect:/instructors/index";	               	                

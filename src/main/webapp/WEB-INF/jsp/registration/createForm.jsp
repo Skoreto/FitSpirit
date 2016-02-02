@@ -24,13 +24,6 @@
             <form:input type="text" path="lastName" class="form-control" />
         </div>
     </div>
-    
-    <div class="form-group">
-        <label class="col-sm-3 control-label">Login <form:errors path="login" cssClass="errors"/></label>
-        <div class="col-sm-6">
-            <form:input type="text" path="login" class="form-control" />
-        </div>
-    </div>
 
     <div class="form-group">
         <label class="col-sm-3 control-label">Heslo</label>

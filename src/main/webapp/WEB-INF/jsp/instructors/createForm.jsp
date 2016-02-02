@@ -43,13 +43,6 @@
 	</div>
 	
 	<div class="form-group">
-	    <label class="col-sm-2 control-label">Login <form:errors path="login" cssClass="errors"/></label>
-	    <div class="col-sm-10">
-	    	<form:input type="text" path="login" class="form-control" />
-	    </div>
-	</div>	
-	
-	<div class="form-group">
 	    <label class="col-sm-2 control-label">Heslo <form:errors path="password" cssClass="errors"/></label>
 	    <div class="col-sm-10">
 	    	<form:input type="password" path="password" class="form-control" />
