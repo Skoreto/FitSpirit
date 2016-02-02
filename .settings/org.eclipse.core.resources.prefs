@@ -35,5 +35,6 @@ encoding//src/main/webapp/WEB-INF/jsp/shared/layoutSidelessHeader.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/shared/navbar.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/sideBar/lessonsWidget.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/sideBar/profileBarAuthenticated.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/staffs/createForm.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/staffs/detail.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/staffs/indexStaff.jsp=UTF-8

@@ -1,5 +1,9 @@
 package cz.uhk.fim.fitspirit.web;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -7,18 +11,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import cz.uhk.fim.fitspirit.FitnessCentre;
 import cz.uhk.fim.fitspirit.Lessons;
 import cz.uhk.fim.fitspirit.User;
+import cz.uhk.fim.fitspirit.UserRole;
 import cz.uhk.fim.fitspirit.Users;
 import cz.uhk.fim.fitspirit.util.ProjectUtils;
+import cz.uhk.fim.fitspirit.validation.UserValidator;
 
 /**
  * Controller pro handlovani Obsluhy v systemu.
@@ -109,6 +121,84 @@ public class StaffController {
 		}
 		
 		return mav;
+	}
+	
+	/**
+	 * Handler pro zobrazeni formulare pro vytvoreni nove Obsluhy.
+	 */
+	@RequestMapping(value="/staffs/create", method = RequestMethod.GET)
+	public String setupForm(Model model, HttpServletRequest request) {
+		User user = new User();
+		model.addAttribute(user);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Nová obsluha";
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		model.addAttribute("lessonsForWidget", activeLessons);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
+		}
+		
+		return "staffs/createForm";
+	}
+	
+	/**
+	 * Handler pro vytvoreni nove Obsluhy.
+	 */
+	@RequestMapping(value="/staffs/create", method = RequestMethod.POST)
+	public String processSubmit(@ModelAttribute User staff, BindingResult result, SessionStatus status, @RequestParam("file") MultipartFile file) {
+		new UserValidator().validate(staff, result);
+		if (result.hasErrors()) {
+			return "staffs/createForm";
+		}
+		else {			
+			if (!file.isEmpty()) {
+	            try {
+	                byte[] bytes = file.getBytes();
+	 
+	                // Creating the directory to store file                                       
+	                File directory = new File(myProjectPath + File.separator + "userImages");
+	                
+	                // TODO Lepe zmenit na GUID.
+	                String originalFileName = file.getOriginalFilename();
+	                
+	                // Create the file on server
+	                File serverFile = new File(directory.getAbsolutePath() + File.separator + originalFileName);
+	                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+	                stream.write(bytes);
+	                stream.close();
+
+	                logger.info("Uspesne umisteni souboru na serveru = " + serverFile.getAbsolutePath());
+	                
+	                staff.setProfilePhotoName(originalFileName);
+	                
+	                UserRole staffRole = this.fitnessCentre.loadUserRole(1);	// id role obsluhy = 1
+	                staff.setUserRole(staffRole);
+	                staff.setActive(true);
+	                
+	                // Generovani loginu
+	                int usersCount = this.fitnessCentre.getUsers().size();
+	                int login = usersCount + 1;
+	                staff.setLogin(login);
+	                
+	                this.fitnessCentre.storeUser(staff);
+	    			status.setComplete();
+	    			return "redirect:/staffs/index";	               	                
+	            } catch (Exception e) {
+	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " CHYBA => " + e.getMessage();
+	            }
+	        } else {
+	        	logger.info("Nepodarilo se uploadnout " + file.getOriginalFilename() + " protoze soubor je prazdny.");
+	        	return "staffs/createForm";
+	        }						
+		}
 	}
 	
 
