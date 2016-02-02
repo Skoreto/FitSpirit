@@ -201,5 +201,94 @@ public class StaffController {
 		}
 	}
 	
+	/**
+	 * Handler pro zobrazeni formulare pro upravu Obsluhy.
+	 */
+	@RequestMapping(value="/staffs/{staffId}/edit", method = RequestMethod.GET)
+	public String setupEditForm(@PathVariable("staffId") int staffId, Model model, HttpServletRequest request) {
+		User staff = this.fitnessCentre.loadUser(staffId);
+		model.addAttribute("user", staff);
+		
+		// Predani titulku stranky do view
+		String pageTitle = "Úprava obsluhy " + staff.getFirstName() + " " + staff.getLastName();
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		model.addAttribute("lessonsForWidget", activeLessons);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
+		}
+		
+		return "staffs/createForm";
+	}
+	
+	/**
+	 * Handler pro editaci stavajici obsluhy.
+	 * Nejprve overi, zda bylo vyplneno jmeno, prijmeni, mail, heslo. 
+	 * - Pokud ne, vrati uzivatele na formular s upozornenim na povinnost vyplnit problemova pole.
+	 * Pote overi, zda byla zvolena fotografie.
+	 * - Pokud ne, vypise do konzole zpravu o nevyplneni pole fotografie a vrati uzivatele na formular.
+	 * - Pokud ano, pokusi se smazat puvodni obrazek z uloziste, nahrat novy obrazek a vlozit zaznam do databaze.
+	 */
+	@RequestMapping(value="/staffs/{staffId}/edit", method = {RequestMethod.PUT, RequestMethod.POST})
+	public String processEditSubmit(@ModelAttribute User staff, BindingResult result, SessionStatus status, @RequestParam("file") MultipartFile file) {	
+		new UserValidator().validate(staff, result);
+		if (result.hasErrors()) {
+			return "staffs/createForm";
+		}
+		else {			
+			if (!file.isEmpty()) {				
+				// Smazani puvodni fotografie z uloziste.
+				String profilePhotoName = staff.getProfilePhotoName();	
+				String profilePhotoPath = myProjectPath + File.separator + "userImages" + File.separator + profilePhotoName;
+				File profilePhoto = new File(profilePhotoPath);
+				
+				// Smaze soubor a zaroven vraci bool, jestli byl soubor uspesne smazan.
+				if (profilePhoto.delete()) {
+					logger.info("Smazan obrazek: " + profilePhotoName);
+				} else {
+					logger.info("Nezdarilo se smazat obrazek: " + profilePhotoName + " z umisteni " + profilePhotoPath);
+				}
+							
+				// Nahrani nove fotografie.
+	            try {
+	                byte[] bytes = file.getBytes();
+	 
+	                // Creating the directory to store file                                       
+	                File directory = new File(myProjectPath + File.separator + "userImages");
+	                
+	                // TODO Lepe generovat GUID.
+	                String originalFileName = file.getOriginalFilename();
+	                
+	                // Create the file on server
+	                File serverFile = new File(directory.getAbsolutePath() + File.separator + originalFileName);
+	                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+	                stream.write(bytes);
+	                stream.close();
+
+	                logger.info("Uspesne umisteni souboru na serveru = " + serverFile.getAbsolutePath());
+	                
+	                staff.setProfilePhotoName(originalFileName);
+	                
+	                this.fitnessCentre.storeUser(staff);
+	    			status.setComplete();
+	    			return "redirect:/staffs/index";	               	                
+	            } catch (Exception e) {
+	                return "Nepodarilo se uploadnout " + file.getOriginalFilename() + " => " + e.getMessage();
+	            }
+	        } else {
+	        	// TODO Informovat uzivatele o povinnosti nahrat fotografii.
+	        	logger.info("Nepodarilo se uploadnout " + file.getOriginalFilename() + " protoze soubor je prazdny.");
+	        	return "staffs/createForm";
+	        }						
+		}
+	}		
+	
+	
 
 }
