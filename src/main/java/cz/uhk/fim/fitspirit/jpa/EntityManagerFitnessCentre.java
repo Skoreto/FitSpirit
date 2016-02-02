@@ -63,13 +63,13 @@ public class EntityManagerFitnessCentre implements FitnessCentre {
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public Collection<Lesson> getLessons() throws DataAccessException {
-		return this.em.createQuery("SELECT lesson FROM Lesson lesson ORDER BY lesson.id").getResultList();
+		return this.em.createQuery("SELECT lesson FROM Lesson lesson ORDER BY lesson.startTime").getResultList();
 	}
 	
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public Collection<Lesson> getActiveLessons() throws DataAccessException {
-		return this.em.createQuery("SELECT lesson FROM Lesson lesson WHERE lesson.active=1 ORDER BY lesson.id").getResultList();
+		return this.em.createQuery("SELECT lesson FROM Lesson lesson WHERE lesson.active=1 ORDER BY lesson.startTime").getResultList();
 	}
 	
 	@Transactional(readOnly = true)

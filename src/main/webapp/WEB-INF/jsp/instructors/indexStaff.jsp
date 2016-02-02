@@ -23,7 +23,7 @@
                 <div class="desc">
                     <h4><small><a href="<spring:url value="/instructors/${user.id}" htmlEscape="true" />">${user.firstName} ${user.lastName}</a></small></h4>        
                 	<a href="<spring:url value="/instructors/${user.id}/edit" htmlEscape="true"/>" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Upravit</a>                                   
-                    <a href="<spring:url value="/instructors/${user.id}/delete" htmlEscape="true"/>" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Zrušit</a>
+                    <a href="<spring:url value="/instructors/${user.id}/delete" htmlEscape="true"/>" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Deaktivovat</a>
                 </div>
             </div>
         </div>

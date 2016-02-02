@@ -96,6 +96,7 @@ public class FitnessCentreController {
 		
 		// Univerzalni chybova hlaska jako obrana proti crackerum
 		String errorString = "Neexistujicí uživatel nebo špatné heslo!";
+		String errorInactive = "Váš úèet není aktivní. Vyèkejte na aktivaci obsluhou na baru.";
 		
 		// Test, zda ma smysl pokracovat dal
 		if ("".equals(request.getParameter("login")) // je login nevyplneny?
@@ -125,16 +126,14 @@ public class FitnessCentreController {
 			return "login/login";
 		}
 		
+		// Pokud ucet neni aktivni
+		if (!user.isActive()) {
+			model.addAttribute("message", errorInactive);
+			return "login/login";
+		}
+		
 		// Jinak je vse v poradku a uzivatele si ulozime do session
 		request.getSession().setAttribute("logUser", user);
-
-		// Takto pak muzeme kdekoliv k uzivateli pristoupit
-		// User loggedInUser = (User)request.getSession().getAttribute("user");
-		//
-		// Chceme-li zjistit roli uzivatele, zavolame jen
-		// loggedInUser.getUserRole().getIdentificator();
-		//
-		// Zbytek analogicky, je to prece User user jako kazdej jinej
 		
 		// Po prihlaseni presmerujeme na homepage
 		return "redirect:/index";		

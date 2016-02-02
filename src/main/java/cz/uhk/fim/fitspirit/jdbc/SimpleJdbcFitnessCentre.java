@@ -126,7 +126,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			
 			// Vrátí list všech Lekci
 			this.lessons.clear();
-			this.lessons.addAll(this.simpleJdbcTemplate.query("SELECT id, start_time, end_time, activityType_id, room_id, original_capacity, actual_capacity, description, instructor_id, is_active FROM lessons ORDER BY id",
+			this.lessons.addAll(this.simpleJdbcTemplate.query("SELECT id, start_time, end_time, activityType_id, room_id, original_capacity, actual_capacity, description, instructor_id, is_active FROM lessons ORDER BY start_time",
 					ParameterizedBeanPropertyRowMapper.newInstance(Lesson.class)));			
 		}
 	}
@@ -143,7 +143,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			
 			// Vrátí list všech aktivnich Lekci
 			this.lessons.clear();
-			this.lessons.addAll(this.simpleJdbcTemplate.query("SELECT id, start_time, end_time, activityType_id, room_id, original_capacity, actual_capacity, description, instructor_id, is_active FROM lessons WHERE is_active=1 ORDER BY id",
+			this.lessons.addAll(this.simpleJdbcTemplate.query("SELECT id, start_time, end_time, activityType_id, room_id, original_capacity, actual_capacity, description, instructor_id, is_active FROM lessons WHERE is_active=1 ORDER BY start_time",
 					ParameterizedBeanPropertyRowMapper.newInstance(Lesson.class)));			
 		}
 	}

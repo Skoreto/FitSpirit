@@ -40,7 +40,7 @@
                         <button data-toggle="dropdown" class="btn btn-info dropdown-toggle"><span class="caret"></span></button>
                         <ul class="dropdown-menu">
                             <li><a href="<spring:url value="/staffs/${staff.id}/edit" htmlEscape="true" />"><span class="glyphicon glyphicon-pencil"></span> Upravit</a></li>
-                            <li><a href="<spring:url value="/staffs/${staff.id}/delete" htmlEscape="true" />"><span class="glyphicon glyphicon-trash"></span> Smazat</a></li>
+                            <li><a href="<spring:url value="/staffs/${staff.id}/delete" htmlEscape="true" />"><span class="glyphicon glyphicon-trash"></span> Deaktivovat</a></li>
                         </ul>
                     </div>
                 </td>
