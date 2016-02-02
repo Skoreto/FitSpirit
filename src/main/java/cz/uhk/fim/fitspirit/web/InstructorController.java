@@ -58,9 +58,6 @@ public class InstructorController {
 	
 	/**
 	 * Handler pro zobrazeni seznamu instruktoru.
-	 * Nejprve ziska seznam vsech uzivatelu. Z nich vybere ty, s id instruktora, a naplni
-	 * je do pomocneho seznamu instructorUsers. Teprve pomocny seznam instructorUsers
-	 * preleje do seznamu instructors tridy Users, ktery slouzi pro ucely odkazani ve view.
 	 */
 	@RequestMapping("/instructors/index")
 	public String instructorsHandler(Model model, HttpServletRequest request) {	

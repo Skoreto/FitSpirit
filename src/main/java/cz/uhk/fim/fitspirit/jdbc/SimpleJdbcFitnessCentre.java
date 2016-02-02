@@ -55,6 +55,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 	private final List<ActivityType> activityTypes = new ArrayList<ActivityType>();
 	private final List<User> users = new ArrayList<User>();
 	private final List<User> instructors = new ArrayList<User>();
+	private final List<User> staffs = new ArrayList<User>();
 	private final List<Lesson> lessons = new ArrayList<Lesson>();
 	private final List<Reservation> reservations = new ArrayList<Reservation>();
 
@@ -235,6 +236,17 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			refreshInstructorsCache();
 		}
 		return this.instructors;
+	}
+	
+	@Transactional(readOnly = true)
+	public Collection<User> getStaffs() throws DataAccessException {
+		synchronized (this.staffs) {
+			// Vrati list vsech Uzivatelu
+			this.staffs.clear();
+			this.staffs.addAll(this.simpleJdbcTemplate.query("SELECT id, first_name, last_name, street, city, postcode, mail, telephone, credit, description, profile_photo_name, login, password, userRole_id, is_active FROM users WHERE userRole_id=1 ORDER BY id",
+					ParameterizedBeanPropertyRowMapper.newInstance(User.class)));
+		}
+		return this.staffs;
 	}
 	
 	@Transactional(readOnly = true)
