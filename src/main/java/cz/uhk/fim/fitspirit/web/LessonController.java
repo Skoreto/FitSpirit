@@ -79,7 +79,7 @@ public class LessonController {
 	public String activityTypesHandler(Model model, HttpServletRequest request) {
 		new ProjectUtils(fitnessCentre).setExpiredLessons();
 		Lessons lessons = new Lessons();
-		lessons.getLessonList().addAll(this.fitnessCentre.getLessons());
+		lessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
 		
 		// Predani titulku stranky do view
 		String pageTitle = "Lekce";
