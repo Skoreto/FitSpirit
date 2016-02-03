@@ -1,5 +1,5 @@
 <div class="section-content">
-	<c:forEach var="lesson" begin="0" end="5" items="${lessonsForWidget.lessonList}">
+	<c:forEach var="lesson" begin="0" end="4" items="${lessonsForWidget.lessonList}">
       		<div class="event-item">
                <p class="date-label">
                    <span class="month"><fmt:formatDate value="${lesson.startTime}" pattern="MMMM" /></span>

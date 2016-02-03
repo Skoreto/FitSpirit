@@ -87,7 +87,7 @@
        <div class="bottom-bar">
            <div class="container">
                <div class="row">
-                   <small class="copyright col-md-6 col-sm-12 col-xs-12">Copyright 2016 FitClub SPIRIT Poděbrady | Školní projekt <a href="mailto:tomik.sko@seznam.cz">Tomáš Skořepa</a></small>
+                   <small class="copyright col-md-6 col-sm-12 col-xs-12">Copyright 2016 FitClub SPIRIT Poděbrady | Školní projekt <a href="mailto:TomSkorepa@gmail.com">Tomáš Skořepa</a> a <a href="mailto:teejay.net@seznam.cz">Tomáš Janeček</a></small>
                    <ul class="social pull-right col-md-6 col-sm-12 col-xs-12">
                        <li><a href="https://www.facebook.com/FitSpirit"><i class="fa fa-facebook"></i></a></li>
                        <li class="row-end"><a href="https://www.youtube.com/user/FitSpiritgirls"><i class="fa fa-youtube"></i></a></li>
@@ -107,10 +107,6 @@
   <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.11.4.min.js")"></script> -->
   <!-- NutnÃ© k DatePickeru a Ajaxu -->
   <script type="text/javascript" src="<spring:url value="/static/scripts/jquery-2.1.3.min.js" htmlEscape="true" />"></script>
-  <!-- NutnÃ© k Ajaxu --> <!--  
-  <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"></script>
-  <script type="text/javascript" src="@Url.Content("~/Scripts/MicrosoftAjax.js")"></script>
-  <script type="text/javascript" src="@Url.Content("~/Scripts/MicrosoftMvcAjax.js")"></script> -->
   <!-- Bootstrap hlavnÃ­-->
   <script type="text/javascript" src="<spring:url value="/static/scripts/bootstrap.min.js" htmlEscape="true" />"></script>
   <!-- Unobtrusive validace formulÃ¡ÅÅ¯ --> <!-- 

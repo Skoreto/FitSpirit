@@ -178,12 +178,7 @@ public class SimpleJdbcFitnessCentre implements FitnessCentre {
 			// Vrati list vsech Uzivatelu
 			this.users.clear();
 			this.users.addAll(this.simpleJdbcTemplate.query("SELECT id, first_name, last_name, street, city, postcode, mail, telephone, credit, description, profile_photo_name, login, password, userRole_id, is_active FROM users ORDER BY id",
-					ParameterizedBeanPropertyRowMapper.newInstance(User.class)));
-			
-			// Vrati list vsech moznych Uzivatelskych roli
-//			final List<UserRole> userRoles = this.simpleJdbcTemplate.query(
-//					"SELECT id, identificator, role_description FROM user_roles", 
-//					ParameterizedBeanPropertyRowMapper.newInstance(UserRole.class));	
+					ParameterizedBeanPropertyRowMapper.newInstance(User.class)));	
 		}
 	}
 	
