@@ -160,4 +160,29 @@ public class FitnessCentreController {
 	    return true;
 	}	
 	
+	/**
+	 * Handler pro zobrazeni stranky Cile projektu.
+	 */
+	@RequestMapping("/projectObjective")
+	public String projectObjectiveHandler(Model model, HttpServletRequest request) {
+			
+		// Predani titulku stranky do view
+		String pageTitle = "Cíle projektu";
+		model.addAttribute("pageTitle", pageTitle);
+		
+		// Predani seznamu lekci pro widget
+		new ProjectUtils(fitnessCentre).setExpiredLessons();
+		Lessons activeLessons = new Lessons();
+		activeLessons.getLessonList().addAll(this.fitnessCentre.getActiveLessons());
+		model.addAttribute("lessonsForWidget", activeLessons);
+		
+		// Pristup k session prihlaseneho uzivatele
+		User loggedInUser = (User)request.getSession().getAttribute("logUser");
+		if (null != loggedInUser) {
+			model.addAttribute("loggedInUser", loggedInUser);
+		}
+		
+		return "others/projectObjective";
+	}
+	
 }

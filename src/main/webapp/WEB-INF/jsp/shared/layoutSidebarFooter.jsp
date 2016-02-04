@@ -26,7 +26,7 @@
                            <ul>
                                <li><a href="#"><i class="fa fa-caret-right"></i>Kdo jsme</a></li>
                                <li><a href="#"><i class="fa fa-caret-right"></i>Kontaktujte nás</a></li>
-                               <li><a href="#"><i class="fa fa-caret-right"></i>Cíle projektu</a></li>
+                               <li><a href="<spring:url value="/projectObjective" htmlEscape="true"/>"><i class="fa fa-caret-right"></i>Cíle projektu</a></li>
                                <li><a href="#"><i class="fa fa-caret-right"></i>Implementované funkce</a></li>
                            </ul>
                        </div>
